@@ -4,9 +4,15 @@
       // Admin Head title
       'ADMIN_HEAD_TITLE'   => 'Admin',
 
-      // Admin Navbar Section
+      // Start Admin Navbar Section
       'ADMIN_HOME'         => 'Home',
+      //------------------------------
       'ADMIN_CATEGORIES'   => 'Categories',
+      'ADMIN_ITEMS'        => 'Items',
+      'ADMIN_MEMBERS'      => 'Members',
+      'ADMIN_STATISTICS'   => 'Statistics',
+      'ADMIN_LOGS'         => 'Logs',
+      //------------------------------------
       'ADMIN_EDIT_PROFILE' => 'Edit Profile',
       'ADMIN_SETTINGS'     => 'Settings',
       'ADMIN_LOGOUT'       => 'Logout',

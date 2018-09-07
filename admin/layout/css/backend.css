@@ -1,8 +1,10 @@
 /* Start Main Rules */
 body {
   background-color: #f4f4f4;
+  font-size: 16px;
 }
 /* End Main Rules */
+
 
 /* Start Login Form */
 .login {
@@ -26,3 +28,40 @@ body {
   background-color: #008dde;
 }
 /* End Login Form */
+
+
+/* Start Bootstrap Edits */
+.navbar {
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+.nav > li > a,
+.navbar-brand {
+  padding: 15px 12px;
+}
+
+.navbar-brand {
+  font-size: 1em;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:focus,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.dropdown-menu {
+    background-color: #3498db;
+}
+
+.dropdown-menu {
+  min-width: 180px;
+  padding: 0;
+  font-size: 1em;
+  border: none;
+  border-radius: 0;
+}
+
+.dropdown-menu > li > a {
+  color: #fff;
+  padding: 10px 15px;
+}
+/* End Bootstrap Edits */

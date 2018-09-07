@@ -15,6 +15,10 @@
     <div class="collapse navbar-collapse" id="app-nav">
       <ul class="nav navbar-nav">
         <li><a href="#"><?php lang('ADMIN_CATEGORIES') ?></a></li>
+        <li><a href="#"><?php lang('ADMIN_ITEMS') ?></a></li>
+        <li><a href="#"><?php lang('ADMIN_MEMBERS') ?></a></li>
+        <li><a href="#"><?php lang('ADMIN_STATISTICS') ?></a></li>
+        <li><a href="#"><?php lang('ADMIN_LOGS') ?></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
