@@ -27,7 +27,7 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#"><?php lang('ADMIN_EDIT_PROFILE') ?></a></li>
+            <li><a href="members.php?do=edit&userid=<?php echo $_SESSION['ID']; ?>"><?php lang('ADMIN_EDIT_PROFILE') ?></a></li>
             <li><a href="#"><?php lang('ADMIN_SETTINGS') ?></a></li>
             <li><a href="logout.php"><?php lang('ADMIN_LOGOUT') ?></a></li>
           </ul>
