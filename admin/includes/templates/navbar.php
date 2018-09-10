@@ -29,7 +29,7 @@
           <ul class="dropdown-menu">
             <li><a href="#"><?php lang('ADMIN_EDIT_PROFILE') ?></a></li>
             <li><a href="#"><?php lang('ADMIN_SETTINGS') ?></a></li>
-            <li><a href="#"><?php lang('ADMIN_LOGOUT') ?></a></li>
+            <li><a href="logout.php"><?php lang('ADMIN_LOGOUT') ?></a></li>
           </ul>
         </li>
       </ul>
