@@ -2,7 +2,9 @@
   function lang( $phrase ) {
     static $lang = array(
       // Admin Head title
-      'ADMIN_HEAD_TITLE'   => 'Admin',
+      'ADMIN_DEFAULT_PAGE_TITLE'     => 'Default',
+      'ADMIN_LOGIN_PAGE_TITLE'       => 'Login',
+      'ADMIN_DASHBOARD_PAGE_TITLE'   => 'Dashboard',
 
       // Start Admin Navbar Section
       'ADMIN_HOME'         => 'Home',
