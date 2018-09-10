@@ -64,4 +64,10 @@ body {
   color: #fff;
   padding: 10px 15px;
 }
+
+.dropdown-menu > li > a:focus,
+.dropdown-menu > li > a:hover {
+  color: #fff;
+  background-color: #8e44ad;
+}
 /* End Bootstrap Edits */
