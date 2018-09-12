@@ -29,7 +29,8 @@
 ?>
         <h1 class="text-center">Edit Member</h1>
         <div class="container">
-          <form action="" class="form-horizontal">
+          <form class="form-horizontal" action="?do=update" method="post">
+            <input type="hidden" name="userid" value="<?php echo $userid; ?>">
             <!-- Start Username -->
             <div class="form-group form-group-lg">
               <label class="col-sm-2 control-label">Username</label>
@@ -80,6 +81,30 @@
         echo "There's no user with this ID";
       endif;
       // End Check if Member Exist
+    } elseif($do == 'update') { // Start Update Page
+      echo "<h1 class='text-center'>Update Member</h1>";
+
+      // Check if User Access to These Page by Post Request
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get Variables from the form
+        $member_id       = $_POST["userid"];
+        $member_username = $_POST["username"];
+        $member_password = $_POST["password"];
+        $member_email    = $_POST["email"];
+        $member_fullname = $_POST["fullname"];
+
+        // Update The Database with This Info
+        $stmt = $con->prepare("UPDATE users SET
+                              Username = ?, Email = ?, FullName = ?
+                              WHERE UserID = ?");
+        $stmt->execute(array($member_username, $member_email, $member_fullname, $member_id));
+
+        // Echo Success Message
+        echo $stmt->rowCount() . " Record Updated";
+      } else {
+        echo "Your can not browse to this page directly";
+      }
+
     }
 
     include $tpl . "footer.php";

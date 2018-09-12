@@ -33,7 +33,7 @@
   }
 ?>
 
-  <form action="" class="login" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+  <form class="login" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
     <h4 class="text-center"><?php lang('ADMIN_LOGIN') ?></h4>
     <input type="text" class="form-control" name="user" placeholder="<?php lang('ADMIN_PLACEHOLDER_USERNAME') ?>" autocomplete="off">
     <input type="password" class="form-control" name="pass" placeholder="<?php lang('ADMIN_PLACEHOLDER_PASSWORD') ?>" autocomplete="new-password">
