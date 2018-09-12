@@ -44,7 +44,8 @@
             <div class="form-group form-group-lg">
               <label class="col-sm-2 control-label">Password</label>
               <div class="col-sm-10 col-md-8">
-                <input type="password" class="form-control" value="<?php echo $row["Password"]; ?>" name="password" autocomplete="new-password">
+                <input type="hidden" value="<?php echo $row["Password"]; ?>" name="oldpassword" >
+                <input type="password" class="form-control" name="newpassword" autocomplete="new-password">
               </div>
             </div>
             <!-- End Password -->
@@ -89,15 +90,16 @@
         // Get Variables from the form
         $member_id       = $_POST["userid"];
         $member_username = $_POST["username"];
-        $member_password = $_POST["password"];
         $member_email    = $_POST["email"];
         $member_fullname = $_POST["fullname"];
+        // Password Trick
+        $member_password = (empty($_POST["newpassword"])) ? $_POST["oldpassword"] : sha1($_POST["newpassword"]);
 
         // Update The Database with This Info
         $stmt = $con->prepare("UPDATE users SET
-                              Username = ?, Email = ?, FullName = ?
+                              Username = ?,Password = ?, Email = ?, FullName = ?
                               WHERE UserID = ?");
-        $stmt->execute(array($member_username, $member_email, $member_fullname, $member_id));
+        $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
         // Echo Success Message
         echo $stmt->rowCount() . " Record Updated";
