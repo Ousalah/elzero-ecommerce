@@ -35,7 +35,7 @@
             <div class="form-group form-group-lg">
               <label class="col-sm-2 control-label">Username</label>
               <div class="col-sm-10 col-md-8">
-                <input type="text" class="form-control" value="<?php echo $row["Username"]; ?>" name="username" autocomplete="off">
+                <input type="text" class="form-control" value="<?php echo $row["Username"]; ?>" name="username" autocomplete="off" required="required">
               </div>
             </div>
             <!-- End Username -->
@@ -45,7 +45,7 @@
               <label class="col-sm-2 control-label">Password</label>
               <div class="col-sm-10 col-md-8">
                 <input type="hidden" value="<?php echo $row["Password"]; ?>" name="oldpassword" >
-                <input type="password" class="form-control" name="newpassword" autocomplete="new-password">
+                <input type="password" class="form-control" name="newpassword" placeholder="Leave blank if you don't want to change it" autocomplete="new-password">
               </div>
             </div>
             <!-- End Password -->
@@ -54,7 +54,7 @@
             <div class="form-group form-group-lg">
               <label class="col-sm-2 control-label">Email</label>
               <div class="col-sm-10 col-md-8">
-                <input type="email" class="form-control" value="<?php echo $row["Email"]; ?>" name="email">
+                <input type="email" class="form-control" value="<?php echo $row["Email"]; ?>" name="email" required="required">
               </div>
             </div>
             <!-- End Email -->
@@ -63,7 +63,7 @@
             <div class="form-group form-group-lg">
               <label class="col-sm-2 control-label">Full Name</label>
               <div class="col-sm-10 col-md-8">
-                <input type="text" class="form-control" value="<?php echo $row["FullName"]; ?>" name="fullname">
+                <input type="text" class="form-control" value="<?php echo $row["FullName"]; ?>" name="fullname" required="required">
               </div>
             </div>
             <!-- End Full Name -->
@@ -84,9 +84,11 @@
       // End Check if Member Exist
     } elseif($do == 'update') { // Start Update Page
       echo "<h1 class='text-center'>Update Member</h1>";
+      echo "<div class='container'>";
 
       // Check if User Access to These Page by Post Request
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
         // Get Variables from the form
         $member_id       = $_POST["userid"];
         $member_username = $_POST["username"];
@@ -97,28 +99,33 @@
 
         // Validate The form
         $form_errors = array();
-        if (strlen($member_username) < 4) { $form_errors[] = "Username Can't be Less Than 4 Characters."; }
-        if (strlen($member_username) > 20) { $form_errors[] = "Username Can't be More Than 20 Characters."; }
-        if (empty($member_username)) { $form_errors[] = "Username Can't be Empty."; }
-        if (empty($member_email)) { $form_errors[] = "Email Can't be Empty."; }
-        if (empty($member_fullname)) { $form_errors[] = "Full Name Can't be Empty."; }
+        if (strlen($member_username) < 4) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be Less Than <strong>4 Characters</strong>.</div>"; }
+        if (strlen($member_username) > 20) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be More Than <strong>20 Characters</strong>.</div>"; }
+        if (empty($member_username)) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($member_email)) { $form_errors[] = "<div class='alert alert-danger'>Email Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($member_fullname)) { $form_errors[] = "<div class='alert alert-danger'>Full Name Can't be <strong>Empty</strong>.</div>"; }
 
+        // Loop Into Errors Array and Echo It
         foreach ($form_errors as $error) {
-          echo $error . "<br>";
+          echo $error;
         }
 
+        // Check If There's No Error, Proceed The Update Operation
+        if (empty($form_errors)) :
+          // Update The Database with This Info
+          $stmt = $con->prepare("UPDATE users SET
+            Username = ?,Password = ?, Email = ?, FullName = ?
+            WHERE UserID = ?");
+            $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
-        // Update The Database with This Info
-        $stmt = $con->prepare("UPDATE users SET
-                              Username = ?,Password = ?, Email = ?, FullName = ?
-                              WHERE UserID = ?");
-        $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
+            // Echo Success Message
+            echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+        endif;
 
-        // Echo Success Message
-        echo $stmt->rowCount() . " Record Updated";
       } else {
-        echo "Your can not browse to this page directly";
+        echo "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
       }
+      echo "</div>";
 
     }
 

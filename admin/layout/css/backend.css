@@ -3,6 +3,14 @@ body {
   background-color: #f4f4f4;
   font-size: 16px;
 }
+
+.asterisk {
+  font-size: 30px;
+  position: absolute;
+  right: 30px;
+  top: 8px;
+  color: #d20707;
+}
 /* End Main Rules */
 
 
@@ -69,6 +77,10 @@ body {
 .dropdown-menu > li > a:hover {
   color: #fff;
   background-color: #8e44ad;
+}
+
+.form-control {
+  position: relative;
 }
 /* End Bootstrap Edits */
 
