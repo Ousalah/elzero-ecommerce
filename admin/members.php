@@ -95,6 +95,19 @@
         // Password Trick
         $member_password = (empty($_POST["newpassword"])) ? $_POST["oldpassword"] : sha1($_POST["newpassword"]);
 
+        // Validate The form
+        $form_errors = array();
+        if (strlen($member_username) < 4) { $form_errors[] = "Username Can't be Less Than 4 Characters."; }
+        if (strlen($member_username) > 20) { $form_errors[] = "Username Can't be More Than 20 Characters."; }
+        if (empty($member_username)) { $form_errors[] = "Username Can't be Empty."; }
+        if (empty($member_email)) { $form_errors[] = "Email Can't be Empty."; }
+        if (empty($member_fullname)) { $form_errors[] = "Full Name Can't be Empty."; }
+
+        foreach ($form_errors as $error) {
+          echo $error . "<br>";
+        }
+
+
         // Update The Database with This Info
         $stmt = $con->prepare("UPDATE users SET
                               Username = ?,Password = ?, Email = ?, FullName = ?
