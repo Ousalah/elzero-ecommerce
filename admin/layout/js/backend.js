@@ -20,4 +20,26 @@ $(function () {
     }
   });
 
+  // Convert Password Field To Text Fieald On Hover
+  $('.show-pass').hover(function () {
+    $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+    $(this).siblings('[name="password"]').attr('type', 'text');
+
+  }, function () {
+    $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+    $(this).siblings('[name="password"]').attr('type', 'password');
+  });
+
+  // Convert Password Field To Text Fieald On Click
+  $(".show-pass").on("click" , function () {
+    if( $(this).hasClass("fa-eye-slash") ) {
+      $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+      $(this).siblings('[name="password"]').attr('type', 'text');
+
+    } else if ( $(this).hasClass("fa-eye") ) {
+      $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+      $(this).siblings('[name="password"]').attr('type', 'password');
+    }
+  });
+
 });

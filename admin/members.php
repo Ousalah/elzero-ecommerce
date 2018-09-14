@@ -37,6 +37,7 @@
             <label class="col-sm-2 control-label">Password</label>
             <div class="col-sm-10 col-md-8">
               <input type="password" class="form-control" name="password" autocomplete="new-password" required="required" placeholder="Password must be hard & complex">
+              <i class="show-pass fa fa-eye-slash fa-2x"></i>
             </div>
           </div>
           <!-- End Password -->
@@ -72,7 +73,45 @@
 <?php
     } elseif($do == 'insert') { // Start Insert Page
 
+      echo "<h1 class='text-center'>Insert New Member</h1>";
+      echo "<div class='container'>";
 
+      // Check if User Access to These Page by Post Request
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        // Get Variables from the form
+        $member_username        = $_POST["username"];
+        $member_password        = $_POST["password"];
+        $member_email           = $_POST["email"];
+        $member_fullname        = $_POST["fullname"];
+        $member_hashed_password = sha1($member_password);
+
+        // Validate The form
+        $form_errors = array();
+        if (strlen($member_username) < 4) { $form_errors[] = "Username Can't be Less Than <strong>4 Characters</strong>."; }
+        if (strlen($member_username) > 20) { $form_errors[] = "Username Can't be More Than <strong>20 Characters</strong>."; }
+        if (empty($member_username)) { $form_errors[] = "Username Can't be <strong>Empty</strong>."; }
+        if (empty($member_password)) { $form_errors[] = "Password Can't be <strong>Empty</strong>."; }
+        if (empty($member_email)) { $form_errors[] = "Email Can't be <strong>Empty</strong>."; }
+        if (empty($member_fullname)) { $form_errors[] = "Full Name Can't be <strong>Empty</strong>."; }
+
+        // Loop Into Errors Array and Echo It
+        foreach ($form_errors as $error) {
+          echo "<div class='alert alert-danger'>" . $error . "</div>";
+        }
+
+        // Check If There's No Error, Proceed The Insert Operation
+        if (empty($form_errors)) :
+          // Insert User Info in Database
+
+          // Echo Success Message
+          echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
+        endif;
+
+      } else {
+        echo "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+      }
+      echo "</div>";
 
     } elseif($do == 'edit') { // Start Edit Page
 
@@ -161,15 +200,15 @@
 
         // Validate The form
         $form_errors = array();
-        if (strlen($member_username) < 4) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be Less Than <strong>4 Characters</strong>.</div>"; }
-        if (strlen($member_username) > 20) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be More Than <strong>20 Characters</strong>.</div>"; }
-        if (empty($member_username)) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be <strong>Empty</strong>.</div>"; }
-        if (empty($member_email)) { $form_errors[] = "<div class='alert alert-danger'>Email Can't be <strong>Empty</strong>.</div>"; }
-        if (empty($member_fullname)) { $form_errors[] = "<div class='alert alert-danger'>Full Name Can't be <strong>Empty</strong>.</div>"; }
+        if (strlen($member_username) < 4) { $form_errors[] = "Username Can't be Less Than <strong>4 Characters</strong>."; }
+        if (strlen($member_username) > 20) { $form_errors[] = "Username Can't be More Than <strong>20 Characters</strong>."; }
+        if (empty($member_username)) { $form_errors[] = "Username Can't be <strong>Empty</strong>."; }
+        if (empty($member_email)) { $form_errors[] = "Email Can't be <strong>Empty</strong>."; }
+        if (empty($member_fullname)) { $form_errors[] = "Full Name Can't be <strong>Empty</strong>."; }
 
         // Loop Into Errors Array and Echo It
         foreach ($form_errors as $error) {
-          echo $error;
+          echo "<div class='alert alert-danger'>" . $error . "</div>";
         }
 
         // Check If There's No Error, Proceed The Update Operation
@@ -178,10 +217,10 @@
           $stmt = $con->prepare("UPDATE users SET
             Username = ?,Password = ?, Email = ?, FullName = ?
             WHERE UserID = ?");
-            $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
+          $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
-            // Echo Success Message
-            echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+          // Echo Success Message
+          echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
         endif;
 
       } else {
