@@ -13,10 +13,37 @@
 
     $do = (isset($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
+?>
 
-      echo "<h1 class='text-center'>Manage Members</h1>";
-      echo '<a href="members.php?do=add">Add New Memeber</a>';
+      <h1 class='text-center'>Manage Members</h1>
+      <div class="container">
+        <div class="table-responsive">
+          <table class="main-table text-center table table-bordered">
+            <tr>
+              <th>#ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Full Name</th>
+              <th>Registered Date</th>
+              <th>Control</th>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <a href="?do=edit&userid=<?php echo ''; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                <a href="?do=delete&userid=<?php echo ''; ?>" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Remove</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <a href="members.php?do=add" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Memeber</a>
+      </div>
 
+<?php
     } elseif($do == 'add') { // Start Add Page
 ?>
 
@@ -132,62 +159,62 @@
       $count = $stmt->rowCount();
 
       // Start Check if Member Exist
+      echo '<h1 class="text-center">Edit Member</h1>';
+      echo '<div class="container">';
       if ($count > 0) :
 ?>
-        <h1 class="text-center">Edit Member</h1>
-        <div class="container">
-          <form class="form-horizontal" action="?do=update" method="post">
-            <input type="hidden" name="userid" value="<?php echo $userid; ?>">
-            <!-- Start Username -->
-            <div class="form-group form-group-lg">
-              <label class="col-sm-2 control-label">Username</label>
-              <div class="col-sm-10 col-md-8">
-                <input type="text" class="form-control" value="<?php echo $row["Username"]; ?>" name="username" autocomplete="off" required="required">
-              </div>
+        <form class="form-horizontal" action="?do=update" method="post">
+          <input type="hidden" name="userid" value="<?php echo $userid; ?>">
+          <!-- Start Username -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Username</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" value="<?php echo $row["Username"]; ?>" name="username" autocomplete="off" required="required">
             </div>
-            <!-- End Username -->
+          </div>
+          <!-- End Username -->
 
-            <!-- Start Password -->
-            <div class="form-group form-group-lg">
-              <label class="col-sm-2 control-label">Password</label>
-              <div class="col-sm-10 col-md-8">
-                <input type="hidden" value="<?php echo $row["Password"]; ?>" name="oldpassword" >
-                <input type="password" class="form-control" name="newpassword" placeholder="Leave blank if you don't want to change it" autocomplete="new-password">
-              </div>
+          <!-- Start Password -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="hidden" value="<?php echo $row["Password"]; ?>" name="oldpassword" >
+              <input type="password" class="form-control" name="newpassword" placeholder="Leave blank if you don't want to change it" autocomplete="new-password">
             </div>
-            <!-- End Password -->
+          </div>
+          <!-- End Password -->
 
-            <!-- Start Email -->
-            <div class="form-group form-group-lg">
-              <label class="col-sm-2 control-label">Email</label>
-              <div class="col-sm-10 col-md-8">
-                <input type="email" class="form-control" value="<?php echo $row["Email"]; ?>" name="email" required="required">
-              </div>
+          <!-- Start Email -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="email" class="form-control" value="<?php echo $row["Email"]; ?>" name="email" required="required">
             </div>
-            <!-- End Email -->
+          </div>
+          <!-- End Email -->
 
-            <!-- Start Full Name -->
-            <div class="form-group form-group-lg">
-              <label class="col-sm-2 control-label">Full Name</label>
-              <div class="col-sm-10 col-md-8">
-                <input type="text" class="form-control" value="<?php echo $row["FullName"]; ?>" name="fullname" required="required">
-              </div>
+          <!-- Start Full Name -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Full Name</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" value="<?php echo $row["FullName"]; ?>" name="fullname" required="required">
             </div>
-            <!-- End Full Name -->
+          </div>
+          <!-- End Full Name -->
 
-            <!-- Start Submit -->
-            <div class="form-group form-group-lg">
-              <div class="col-sm-offset-2 col-sm-4">
-                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Save">
-              </div>
+          <!-- Start Submit -->
+          <div class="form-group form-group-lg">
+            <div class="col-sm-offset-2 col-sm-4">
+              <input type="submit" class="btn btn-primary btn-lg btn-block" value="Save">
             </div>
-            <!-- End Submit -->
-          </form>
-        </div>
+          </div>
+          <!-- End Submit -->
+        </form>
 <?php
       else:
-        echo "There's no user with this ID";
+        echo "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
       endif;
+      echo "</div>";
       // End Check if Member Exist
 
     } elseif($do == 'update') { // Start Update Page

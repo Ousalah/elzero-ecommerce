@@ -98,4 +98,13 @@ h1 {
   top: 8px;
   cursor: pointer;
 }
+
+.main-table tr:first-child th { /* You can use thead */
+  background-color: #333;
+  color: #fff;
+}
+
+.main-table th, .main-table td {
+  text-align: center;
+}
 /* End Members Page */
