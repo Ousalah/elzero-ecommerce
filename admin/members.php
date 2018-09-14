@@ -14,6 +14,66 @@
     $do = (isset($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
+      echo "<h1 class='text-center'>Manage Members</h1>";
+      echo '<a href="members.php?do=add">Add New Memeber</a>';
+
+    } elseif($do == 'add') { // Start Add Page
+?>
+
+      <h1 class="text-center">Add New Member</h1>
+      <div class="container">
+        <form class="form-horizontal" action="?do=insert" method="post">
+          <!-- Start Username -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Username</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" name="username" autocomplete="off" required="required" placeholder="Username to login into shop">
+            </div>
+          </div>
+          <!-- End Username -->
+
+          <!-- Start Password -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="password" class="form-control" name="password" autocomplete="new-password" required="required" placeholder="Password must be hard & complex">
+            </div>
+          </div>
+          <!-- End Password -->
+
+          <!-- Start Email -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="email" class="form-control" name="email" required="required" placeholder="example@domain.com">
+            </div>
+          </div>
+          <!-- End Email -->
+
+          <!-- Start Full Name -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Full Name</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" name="fullname" required="required" placeholder="Full name appear in your profile page">
+            </div>
+          </div>
+          <!-- End Full Name -->
+
+          <!-- Start Submit -->
+          <div class="form-group form-group-lg">
+            <div class="col-sm-offset-2 col-sm-4">
+              <input type="submit" class="btn btn-primary btn-lg btn-block" value="Add Member">
+            </div>
+          </div>
+          <!-- End Submit -->
+        </form>
+      </div>
+
+<?php
+    } elseif($do == 'insert') { // Start Insert Page
+
+
+
     } elseif($do == 'edit') { // Start Edit Page
 
       // Check if Get Request userid is Numeric & Get The Interger Value of it
@@ -82,7 +142,9 @@
         echo "There's no user with this ID";
       endif;
       // End Check if Member Exist
+
     } elseif($do == 'update') { // Start Update Page
+
       echo "<h1 class='text-center'>Update Member</h1>";
       echo "<div class='container'>";
 
