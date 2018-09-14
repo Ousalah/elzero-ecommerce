@@ -103,6 +103,14 @@
         // Check If There's No Error, Proceed The Insert Operation
         if (empty($form_errors)) :
           // Insert User Info in Database
+          $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName)
+                                  VALUES(:username, :pass, :mail, :name)");
+          $stmt->execute(array(
+            'username' => $member_username,
+            'pass'     => $member_hashed_password,
+            'mail'     => $member_email,
+            'name'     => $member_fullname
+          ));
 
           // Echo Success Message
           echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
