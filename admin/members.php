@@ -158,7 +158,8 @@
             ));
 
             // Echo Success Message
-            echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
+            $errorMsg = "<strong>" . $stmt->rowCount() . "</strong> Record Inserted.";
+            redirectHome($errorMsg, "success");
           } else {
             // Echo Error Message (Username Not Available)
             echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
@@ -167,7 +168,7 @@
         endif;
 
       } else {
-        echo "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome("Your can not browse to this page <strong>directly</strong>.");
       }
       echo "</div>";
 
@@ -283,7 +284,8 @@
             $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
             // Echo Success Message
-            echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+            $errorMsg = "<strong>" . $stmt->rowCount() . "</strong> Record Updated.";
+            redirectHome($errorMsg, "success");
           } else {
             // Echo Error Message (Username Not Available)
             echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
@@ -292,7 +294,7 @@
         endif;
 
       } else {
-        echo "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome("Your can not browse to this page <strong>directly</strong>.");
       }
       echo "</div>";
 
@@ -314,7 +316,8 @@
         $stmt->execute();
 
         // Echo Success Message
-        echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Deleted.</div>";
+        $errorMsg = "<strong>" . $stmt->rowCount() . "</strong> Record Deleted.";
+        redirectHome($errorMsg, "success");
       else:
         echo "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
       endif;
