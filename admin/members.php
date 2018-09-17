@@ -53,7 +53,7 @@
             <?php endif; ?>
           </table>
         </div>
-        <a href="members.php?do=add" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Memeber</a>
+        <a href="members.php?do=add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> New Memeber</a>
       </div>
 
 <?php
