@@ -142,18 +142,28 @@
 
         // Check If There's No Error, Proceed The Insert Operation
         if (empty($form_errors)) :
-          // Insert User Info in Database
-          $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName)
-                                  VALUES(:username, :pass, :mail, :name)");
-          $stmt->execute(array(
-            'username' => $member_username,
-            'pass'     => $member_hashed_password,
-            'mail'     => $member_email,
-            'name'     => $member_fullname
-          ));
+          // Check If Username Exist in Database
+          $stmt = $con->prepare("SELECT Username FROM users WHERE Username = ?");
+          $stmt->execute(array($member_username));
+          $count = $stmt->rowCount();
+          if ($count <= 0) {
+            // Insert User Info in Database
+            $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName)
+            VALUES(:username, :pass, :mail, :name)");
+            $stmt->execute(array(
+              'username' => $member_username,
+              'pass'     => $member_hashed_password,
+              'mail'     => $member_email,
+              'name'     => $member_fullname
+            ));
 
-          // Echo Success Message
-          echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
+            // Echo Success Message
+            echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
+          } else {
+            // Echo Error Message (Username Not Available)
+            echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
+          }
+
         endif;
 
       } else {
@@ -261,14 +271,24 @@
 
         // Check If There's No Error, Proceed The Update Operation
         if (empty($form_errors)) :
-          // Update The Database with This Info
-          $stmt = $con->prepare("UPDATE users SET
-            Username = ?,Password = ?, Email = ?, FullName = ?
-            WHERE UserID = ?");
-          $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
+          // Check If Username Exist in Database
+          $stmt = $con->prepare("SELECT Username FROM users WHERE Username = ? AND UserID != ?");
+          $stmt->execute(array($member_username, $member_id));
+          $count = $stmt->rowCount();
+          if ($count <= 0) {
+            // Update The Database with This Info
+            $stmt = $con->prepare("UPDATE users SET
+              Username = ?,Password = ?, Email = ?, FullName = ?
+              WHERE UserID = ?");
+            $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
-          // Echo Success Message
-          echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+            // Echo Success Message
+            echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+          } else {
+            // Echo Error Message (Username Not Available)
+            echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
+          }
+
         endif;
 
       } else {
