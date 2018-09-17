@@ -13,6 +13,11 @@
 
     $do = (isset($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
+
+      $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 1");
+      $stmt->execute();
+      $rows = $stmt->fetchAll();
+      $count = $stmt->rowCount();
 ?>
 
       <h1 class='text-center'>Manage Members</h1>
@@ -27,17 +32,25 @@
               <th>Registered Date</th>
               <th>Control</th>
             </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>
-                <a href="?do=edit&userid=<?php echo ''; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                <a href="?do=delete&userid=<?php echo ''; ?>" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Remove</a>
-              </td>
-            </tr>
+            <?php if ($count > 0): ?>
+              <?php foreach ($rows as $row): ?>
+                <tr>
+                  <td><?php echo $row["UserID"]; ?></td>
+                  <td><?php echo $row["Username"]; ?></td>
+                  <td><?php echo $row["Email"]; ?></td>
+                  <td><?php echo $row["FullName"]; ?></td>
+                  <td><?php echo ""; ?></td>
+                  <td>
+                    <a href="?do=edit&userid=<?php echo $row["UserID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                    <a href="?do=delete&userid=<?php echo $row["UserID"]; ?>" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Remove</a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan='6'>No Data to Show.</td>
+              </tr>
+            <?php endif; ?>
           </table>
         </div>
         <a href="members.php?do=add" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Memeber</a>
