@@ -42,7 +42,7 @@
                   <td><?php echo ""; ?></td>
                   <td>
                     <a href="?do=edit&userid=<?php echo $row["UserID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                    <a href="?do=delete&userid=<?php echo $row["UserID"]; ?>" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Remove</a>
+                    <a href="?do=delete&userid=<?php echo $row["UserID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -275,6 +275,31 @@
         echo "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
       }
       echo "</div>";
+
+    } elseif($do == 'delete') { // Start Delete Page
+
+      // Check if Get Request userid is Numeric & Get The Interger Value of it
+      $userid = (isset($_GET["userid"]) && is_numeric($_GET["userid"])) ? intval($_GET["userid"]) : 0;
+
+      $stmt = $con->prepare("SELECT * FROM users WHERE UserID = ? LIMIT 1");
+      $stmt->execute(array($userid));
+      $count = $stmt->rowCount();
+
+      // Start Check if Member Exist
+      echo '<h1 class="text-center">Delete Member</h1>';
+      echo '<div class="container">';
+      if ($count > 0) :
+        $stmt = $con->prepare("DELETE FROM users WHERE UserID = :userid");
+        $stmt->bindParam(":userid", $userid);
+        $stmt->execute();
+
+        // Echo Success Message
+        echo "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Deleted.</div>";
+      else:
+        echo "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
+      endif;
+      echo "</div>";
+      // End Check if Member Exist
 
     }
 

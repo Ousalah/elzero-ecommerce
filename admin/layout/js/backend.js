@@ -42,4 +42,9 @@ $(function () {
     }
   });
 
+  // Confirmation Message On Button Clicked
+  $(".confirm").on("click", function () {
+    return confirm("Are you sure to so this action ?");
+  });
+
 });
