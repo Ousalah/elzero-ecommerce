@@ -39,7 +39,7 @@
                   <td><?php echo $row["Username"]; ?></td>
                   <td><?php echo $row["Email"]; ?></td>
                   <td><?php echo $row["FullName"]; ?></td>
-                  <td><?php echo ""; ?></td>
+                  <td><?php echo $row["Date"]; ?></td>
                   <td>
                     <a href="?do=edit&userid=<?php echo $row["UserID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
                     <a href="?do=delete&userid=<?php echo $row["UserID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
@@ -149,8 +149,8 @@
             redirectHome($msg, "back");
           } else {
             // Insert User Info in Database
-            $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName)
-            VALUES(:username, :pass, :mail, :name)");
+            $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, Date)
+            VALUES(:username, :pass, :mail, :name, now())");
             $stmt->execute(array(
               'username' => $member_username,
               'pass'     => $member_hashed_password,
