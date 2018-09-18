@@ -143,10 +143,10 @@
         // Check If There's No Error, Proceed The Insert Operation
         if (empty($form_errors)) :
           // Check If Username Exist in Database
-          $stmt = $con->prepare("SELECT Username FROM users WHERE Username = ?");
-          $stmt->execute(array($member_username));
-          $count = $stmt->rowCount();
-          if ($count <= 0) {
+          if(checkItem("Username", "users", $member_username)) {
+            // Echo Error Message (Username Not Available)
+            echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
+          } else {
             // Insert User Info in Database
             $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName)
             VALUES(:username, :pass, :mail, :name)");
@@ -160,9 +160,6 @@
             // Echo Success Message
             $errorMsg = "<strong>" . $stmt->rowCount() . "</strong> Record Inserted.";
             redirectHome($errorMsg, "success");
-          } else {
-            // Echo Error Message (Username Not Available)
-            echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
           }
 
         endif;
