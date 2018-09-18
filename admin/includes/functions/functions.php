@@ -12,23 +12,41 @@
   }
 
   /*
-  ** Home Redirect Function v1.0
+  ** Home Redirect Function v2.0
   ** This Function Accept Parameters
-  ** @param $errorMsg = Echo The Error Message
-  ** @param $errorType = Type of Errors (alert, danger, success, info)
+  ** @param $msg = Echo The Message (alert, danger, success, info)
+  ** @param $url = The Link You Want To Redirect To [ Accept: null, "back", custom url]
   ** @param $seconds = Seconds Before Redirecting
   */
-  function redirectHome($errorMsg = "", $errorType = "danger", $seconds = 3) {
-    if ($errorMsg != "") {
-      // Redirect To HomePage AFter Showing $errorMsg
-      echo "<div class='alert alert-$errorType'>" . $errorMsg . "</div>";
-      echo "<div class='alert alert-info'>You will be redirected to homepage after " . $seconds . " </div>";
+  function redirectHome($msg = "", $url = null, $seconds = 3) {
+    if ($url === null) {
+      $url = "index.php";
+      $link = "Homepage";
+    } else if ($url === "back") {
 
-      header("refresh:$seconds;url=index.php");
+      if(isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"])) :
+        $url = $_SERVER["HTTP_REFERER"];
+        $link = "previous page";
+      else :
+        $url = "index.php";
+        $link = "Homepage";
+      endif;
+
+    } else {
+      $url = $url;
+      $link = $url;
+    }
+
+    if ($msg != "") {
+      // Redirect To HomePage After Showing $errorMsg
+      echo $msg;
+      echo "<div class='alert alert-info'>You will be redirected to <strong>" . $link . "</strong> after <strong>" . $seconds . "</strong> seconds</div>";
+
+      header("refresh:{$seconds};url={$url}");
       exit();
     } else {
       // Redirect To HomePage Without Showing Anything
-      header("Location: index.php");
+      header("Location: {$url}");
       exit();
     }
   }

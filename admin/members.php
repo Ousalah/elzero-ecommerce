@@ -158,14 +158,15 @@
             ));
 
             // Echo Success Message
-            $errorMsg = "<strong>" . $stmt->rowCount() . "</strong> Record Inserted.";
-            redirectHome($errorMsg, "success");
+            $successMsg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
+            redirectHome($successMsg, "back");
           }
 
         endif;
 
       } else {
-        redirectHome("Your can not browse to this page <strong>directly</strong>.");
+        $errorMsg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome($errorMsg);
       }
       echo "</div>";
 
@@ -281,8 +282,8 @@
             $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
             // Echo Success Message
-            $errorMsg = "<strong>" . $stmt->rowCount() . "</strong> Record Updated.";
-            redirectHome($errorMsg, "success");
+            $successMsg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+            redirectHome($successMsg, "back");
           } else {
             // Echo Error Message (Username Not Available)
             echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
@@ -291,7 +292,8 @@
         endif;
 
       } else {
-        redirectHome("Your can not browse to this page <strong>directly</strong>.");
+        $errorMsg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome($errorMsg);
       }
       echo "</div>";
 
@@ -313,8 +315,8 @@
         $stmt->execute();
 
         // Echo Success Message
-        $errorMsg = "<strong>" . $stmt->rowCount() . "</strong> Record Deleted.";
-        redirectHome($errorMsg, "success");
+        $successMsg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Deleted.</div>";
+        redirectHome($successMsg, "back");
       else:
         echo "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
       endif;
