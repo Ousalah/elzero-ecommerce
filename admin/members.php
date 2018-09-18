@@ -305,14 +305,10 @@
       // Check if Get Request userid is Numeric & Get The Interger Value of it
       $userid = (isset($_GET["userid"]) && is_numeric($_GET["userid"])) ? intval($_GET["userid"]) : 0;
 
-      $stmt = $con->prepare("SELECT * FROM users WHERE UserID = ? LIMIT 1");
-      $stmt->execute(array($userid));
-      $count = $stmt->rowCount();
-
       // Start Check if Member Exist
       echo '<h1 class="text-center">Delete Member</h1>';
       echo '<div class="container">';
-      if ($count > 0) :
+      if (checkItem("UserID", "users", $userid)) :
         $stmt = $con->prepare("DELETE FROM users WHERE UserID = :userid");
         $stmt->bindParam(":userid", $userid);
         $stmt->execute();
