@@ -145,7 +145,8 @@
           // Check If Username Exist in Database
           if(checkItem("Username", "users", $member_username)) {
             // Echo Error Message (Username Not Available)
-            echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
+            $msg = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>";
+            redirectHome($msg, "back");
           } else {
             // Insert User Info in Database
             $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName)
@@ -158,15 +159,15 @@
             ));
 
             // Echo Success Message
-            $successMsg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
-            redirectHome($successMsg, "back");
+            $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
+            redirectHome($msg, "back");
           }
 
         endif;
 
       } else {
-        $errorMsg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
-        redirectHome($errorMsg);
+        $msg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome($msg);
       }
       echo "</div>";
 
@@ -234,7 +235,8 @@
         </form>
 <?php
       else:
-        echo "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
+        $msg = "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
+        redirectHome($msg);
       endif;
       echo "</div>";
       // End Check if Member Exist
@@ -282,18 +284,19 @@
             $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
             // Echo Success Message
-            $successMsg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
-            redirectHome($successMsg, "back");
+            $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+            redirectHome($msg, "back");
           } else {
             // Echo Error Message (Username Not Available)
-            echo "<div class='alert alert-danger'>This username is already <strong>taken<strong>.</div>";
+            $msg = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>";
+            redirectHome($msg, "back");
           }
 
         endif;
 
       } else {
-        $errorMsg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
-        redirectHome($errorMsg);
+        $msg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome($msg);
       }
       echo "</div>";
 
@@ -315,10 +318,11 @@
         $stmt->execute();
 
         // Echo Success Message
-        $successMsg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Deleted.</div>";
-        redirectHome($successMsg, "back");
+        $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Deleted.</div>";
+        redirectHome($msg, "back");
       else:
-        echo "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
+        $msg = "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
+        redirectHome($msg);
       endif;
       echo "</div>";
       // End Check if Member Exist
