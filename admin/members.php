@@ -134,33 +134,29 @@
         if (empty($member_password)) { $form_errors[] = "<div class='alert alert-danger'>Password Can't be <strong>Empty</strong>.</div>"; }
         if (empty($member_email)) { $form_errors[] = "<div class='alert alert-danger'>Email Can't be <strong>Empty</strong>.</div>"; }
         if (empty($member_fullname)) { $form_errors[] = "<div class='alert alert-danger'>Full Name Can't be <strong>Empty</strong>.</div>"; }
+        // Check If Username Exist in Database
+        if(checkItem("Username", "users", $member_username)) { $form_errors[] = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>"; }
+        // Check If Email Exist in Database
+        if(checkItem("Email", "users", $member_email)) { $form_errors[] = "<div class='alert alert-danger'>This email address is <strong>not available</strong>. choose a different address.</div>"; }
 
         // Check If There's No Error, Proceed The Insert Operation
         if (!empty($form_errors)) :
           // Loop Into Errors Array and Echo It
-          redirectHome($form_errors, "back");
+          redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
-          // Check If Username Exist in Database
-          if(checkItem("Username", "users", $member_username)) {
-            // Echo Error Message (Username Not Available)
-            $msg = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>";
-            redirectHome($msg, "back");
-          } else {
-            // Insert User Info in Database
-            $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, Date)
-            VALUES(:username, :pass, :mail, :name, now())");
-            $stmt->execute(array(
-              'username' => $member_username,
-              'pass'     => $member_hashed_password,
-              'mail'     => $member_email,
-              'name'     => $member_fullname
-            ));
+          // Insert User Info in Database
+          $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, Date)
+          VALUES(:username, :pass, :mail, :name, now())");
+          $stmt->execute(array(
+            'username' => $member_username,
+            'pass'     => $member_hashed_password,
+            'mail'     => $member_email,
+            'name'     => $member_fullname
+          ));
 
-            // Echo Success Message
-            $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
-            redirectHome($msg, "back");
-          }
-
+          // Echo Success Message
+          $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
+          redirectHome($msg, "back");
         endif;
 
       } else {
@@ -262,29 +258,26 @@
         if (empty($member_username)) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be <strong>Empty</strong>.</div>"; }
         if (empty($member_email)) { $form_errors[] = "<div class='alert alert-danger'>Email Can't be <strong>Empty</strong>.</div>"; }
         if (empty($member_fullname)) { $form_errors[] = "<div class='alert alert-danger'>Full Name Can't be <strong>Empty</strong>.</div>"; }
+        // Check If Username Exist in Database
+        if(checkItem("Username", "users", $member_username, "UserID", $member_id)) { $form_errors[] = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>"; }
+        // Check If Email Exist in Database
+        if(checkItem("Email", "users", $member_email, "UserID", $member_id)) { $form_errors[] = "<div class='alert alert-danger'>This email address is <strong>not available</strong>. choose a different address.</div>"; }
+
 
         // Check If There's No Error, Proceed The Update Operation
         if (!empty($form_errors)) :
           // Loop Into Errors Array and Echo It
-          redirectHome($form_errors, "back");
+          redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
-          // Check If Username Exist in Database
-          if(checkItem("Username", "users", $member_username, "UserID", $member_id)) {
-            // Echo Error Message (Username Not Available)
-            $msg = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>";
-            redirectHome($msg, "back");
-          } else {
-            // Update The Database with This Info
-            $stmt = $con->prepare("UPDATE users SET
-              Username = ?,Password = ?, Email = ?, FullName = ?
-              WHERE UserID = ?");
-            $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
+          // Update The Database with This Info
+          $stmt = $con->prepare("UPDATE users SET
+            Username = ?,Password = ?, Email = ?, FullName = ?
+            WHERE UserID = ?");
+          $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
-            // Echo Success Message
-            $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
-            redirectHome($msg, "back");
-          }
-
+          // Echo Success Message
+          $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+          redirectHome($msg, "back");
         endif;
 
       } else {
