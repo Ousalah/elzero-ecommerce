@@ -14,11 +14,11 @@
   /*
   ** Home Redirect Function v2.0
   ** This Function Accept Parameters
-  ** @param $msg = Echo The Message (alert, danger, success, info)
+  ** @param $msgs = Echo The Message (alert, danger, success, info)
   ** @param $url = The Link You Want To Redirect To [ Accept: null, "back", custom url]
   ** @param $seconds = Seconds Before Redirecting
   */
-  function redirectHome($msg = "", $url = null, $seconds = 3) {
+  function redirectHome($msgs = array(), $url = null, $seconds = 3) {
     if ($url === null) {
       $url = "index.php";
       $link = "Homepage";
@@ -37,9 +37,15 @@
       $link = $url;
     }
 
-    if ($msg != "") {
+    if (!empty($msgs)) {
       // Redirect To HomePage After Showing $errorMsg
-      echo $msg;
+      if (is_array($msgs)) :
+        foreach ($msgs as $msg) {
+          echo $msg;
+        }
+      else :
+        echo $msgs;
+      endif;
       echo "<div class='alert alert-info'>You will be redirected to <strong>" . $link . "</strong> after <strong>" . $seconds . "</strong> seconds</div>";
 
       header("refresh:{$seconds};url={$url}");

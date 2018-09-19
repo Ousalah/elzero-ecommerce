@@ -128,20 +128,18 @@
 
         // Validate The form
         $form_errors = array();
-        if (strlen($member_username) < 4) { $form_errors[] = "Username Can't be Less Than <strong>4 Characters</strong>."; }
-        if (strlen($member_username) > 20) { $form_errors[] = "Username Can't be More Than <strong>20 Characters</strong>."; }
-        if (empty($member_username)) { $form_errors[] = "Username Can't be <strong>Empty</strong>."; }
-        if (empty($member_password)) { $form_errors[] = "Password Can't be <strong>Empty</strong>."; }
-        if (empty($member_email)) { $form_errors[] = "Email Can't be <strong>Empty</strong>."; }
-        if (empty($member_fullname)) { $form_errors[] = "Full Name Can't be <strong>Empty</strong>."; }
-
-        // Loop Into Errors Array and Echo It
-        foreach ($form_errors as $error) {
-          echo "<div class='alert alert-danger'>" . $error . "</div>";
-        }
+        if (strlen($member_username) < 4) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be Less Than <strong>4 Characters</strong>.</div>"; }
+        if (strlen($member_username) > 20) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be More Than <strong>20 Characters</strong>.</div>"; }
+        if (empty($member_username)) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($member_password)) { $form_errors[] = "<div class='alert alert-danger'>Password Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($member_email)) { $form_errors[] = "<div class='alert alert-danger'>Email Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($member_fullname)) { $form_errors[] = "<div class='alert alert-danger'>Full Name Can't be <strong>Empty</strong>.</div>"; }
 
         // Check If There's No Error, Proceed The Insert Operation
-        if (empty($form_errors)) :
+        if (!empty($form_errors)) :
+          // Loop Into Errors Array and Echo It
+          redirectHome($form_errors, "back");
+        else:
           // Check If Username Exist in Database
           if(checkItem("Username", "users", $member_username)) {
             // Echo Error Message (Username Not Available)
@@ -259,19 +257,17 @@
 
         // Validate The form
         $form_errors = array();
-        if (strlen($member_username) < 4) { $form_errors[] = "Username Can't be Less Than <strong>4 Characters</strong>."; }
-        if (strlen($member_username) > 20) { $form_errors[] = "Username Can't be More Than <strong>20 Characters</strong>."; }
-        if (empty($member_username)) { $form_errors[] = "Username Can't be <strong>Empty</strong>."; }
-        if (empty($member_email)) { $form_errors[] = "Email Can't be <strong>Empty</strong>."; }
-        if (empty($member_fullname)) { $form_errors[] = "Full Name Can't be <strong>Empty</strong>."; }
-
-        // Loop Into Errors Array and Echo It
-        foreach ($form_errors as $error) {
-          echo "<div class='alert alert-danger'>" . $error . "</div>";
-        }
+        if (strlen($member_username) < 4) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be Less Than <strong>4 Characters</strong>.</div>"; }
+        if (strlen($member_username) > 20) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be More Than <strong>20 Characters</strong>.</div>"; }
+        if (empty($member_username)) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($member_email)) { $form_errors[] = "<div class='alert alert-danger'>Email Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($member_fullname)) { $form_errors[] = "<div class='alert alert-danger'>Full Name Can't be <strong>Empty</strong>.</div>"; }
 
         // Check If There's No Error, Proceed The Update Operation
-        if (empty($form_errors)) :
+        if (!empty($form_errors)) :
+          // Loop Into Errors Array and Echo It
+          redirectHome($form_errors, "back");
+        else:
           // Check If Username Exist in Database
           $stmt = $con->prepare("SELECT Username FROM users WHERE Username = ? AND UserID != ?");
           $stmt->execute(array($member_username, $member_id));
