@@ -269,10 +269,11 @@
           redirectHome($form_errors, "back");
         else:
           // Check If Username Exist in Database
-          $stmt = $con->prepare("SELECT Username FROM users WHERE Username = ? AND UserID != ?");
-          $stmt->execute(array($member_username, $member_id));
-          $count = $stmt->rowCount();
-          if ($count <= 0) {
+          if(checkItem("Username", "users", $member_username, "UserID", $member_id)) {
+            // Echo Error Message (Username Not Available)
+            $msg = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>";
+            redirectHome($msg, "back");
+          } else {
             // Update The Database with This Info
             $stmt = $con->prepare("UPDATE users SET
               Username = ?,Password = ?, Email = ?, FullName = ?
@@ -281,10 +282,6 @@
 
             // Echo Success Message
             $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
-            redirectHome($msg, "back");
-          } else {
-            // Echo Error Message (Username Not Available)
-            $msg = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>";
             redirectHome($msg, "back");
           }
 

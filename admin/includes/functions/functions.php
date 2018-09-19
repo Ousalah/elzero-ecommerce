@@ -65,10 +65,16 @@
   ** @param $value = The value of select [ Example: mohamed, box, electonics ]
   ** @return True if Item exist else return False
   */
-  function checkItem($select, $from, $value) {
+  function checkItem($select, $from, $value, $exceptKey = "", $exceptValue = "") {
     global $con;
-    $statement = $con->prepare("SELECT $select FROM $from WHERE $select = ?");
-    $statement->execute(array($value));
+    $sql = "SELECT $select FROM $from WHERE $select = ?";
+    $values[] = $value;
+    if (!empty($exceptKey) && !empty($exceptValue)) {
+      $sql .= " AND $exceptKey != ?";
+      $values[] = $exceptValue;
+    }
+    $statement = $con->prepare($sql);
+    $statement->execute($values);
 
     return ($statement->rowCount() >= 1) ? true : false;
   }
