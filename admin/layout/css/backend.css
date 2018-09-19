@@ -84,6 +84,24 @@ body {
 }
 /* End Bootstrap Edits */
 
+/* Start Dashboard Page */
+.home-stats .stat {
+  background-color: #eee;
+  border: 1px solid  #ccc;
+  padding: 20px;
+  font-size: 15px;
+}
+
+.home-stats .stat span {
+  display: block;
+  font-size: 50px;
+}
+
+.latest {
+  margin-top: 30px;
+}
+/* End Dashboard Page */
+
 /* Start Members Page */
 h1 {
   font-size: 55px;
