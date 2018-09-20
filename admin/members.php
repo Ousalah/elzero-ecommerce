@@ -316,6 +316,25 @@
       echo "</div>";
       // End Check if Member Exist
 
+    } elseif ($do == 'activate') { // Start Activate Page
+
+      // Check if Get Request userid is Numeric & Get The Interger Value of it
+      $userid = (isset($_GET["userid"]) && is_numeric($_GET["userid"])) ? intval($_GET["userid"]) : 0;
+
+      echo '<h1 class="text-center">Activate Member</h1>';
+      echo '<div class="container">';
+      if (checkItem("UserID", "users", $userid)) :
+        $stmt = $con->prepare("UPDATE users SET RegStatus = 1 WHERE UserID = ?");
+        $stmt->execute(array($userid));
+
+        // Echo Success Message
+        $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
+        redirectHome($msg, "back");
+      else:
+        $msg = "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
+        redirectHome($msg);
+      endif;
+      echo "</div>";
     }
 
     include $tpl . "footer.php";
