@@ -10,7 +10,10 @@
         <h1>Dashboard</h1>
         <div class="row">
           <div class="col-md-3">
-            <div class="stat">Total Members<span>200</span></div>
+            <div class="stat">
+              Total Members
+              <span><?php echo countItems("UserID", "users"); ?></span>
+            </div>
           </div>
           <div class="col-md-3">
             <div class="stat">Pending Members<span>25</span></div>

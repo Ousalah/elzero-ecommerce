@@ -78,3 +78,17 @@
 
     return ($statement->rowCount() >= 1) ? true : false;
   }
+
+  /*
+  ** Count number of items function v1.0
+  ** Function to count number of items rows
+  ** @param $item =  The item to count
+  ** @param $table =  The table to choose from
+  ** @return item count
+  */
+  function countItems($item, $table) {
+    global $con;
+    $stmt = $con->prepare("SELECT COUNT($item) FROM $table");
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
