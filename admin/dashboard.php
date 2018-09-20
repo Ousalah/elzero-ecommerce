@@ -10,19 +10,19 @@
         <h1>Dashboard</h1>
         <div class="row">
           <div class="col-md-3">
-            <div class="stat">
+            <div class="stat st-members">
               Total Members
-              <span><?php echo countItems("UserID", "users"); ?></span>
+              <span><a href="members.php"><?php echo countItems("UserID", "users"); ?></a></span>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="stat">Pending Members<span>25</span></div>
+            <div class="stat st-pending">Pending Members<span>25</span></div>
           </div>
           <div class="col-md-3">
-            <div class="stat">Total Items<span>1500</span></div>
+            <div class="stat st-items">Total Items<span>1500</span></div>
           </div>
           <div class="col-md-3">
-            <div class="stat">Total Comments<span>2504</span></div>
+            <div class="stat st-comments">Total Comments<span>2504</span></div>
           </div>
         </div>
       </div>
