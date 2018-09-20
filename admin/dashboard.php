@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="col-md-3">
-            <div class="stat st-pending">Pending Members<span>25</span></div>
+            <div class="stat st-pending">Pending Members<span><a href="members.php?do=manage&page=pending">25</a></span></div>
           </div>
           <div class="col-md-3">
             <div class="stat st-items">Total Items<span>1500</span></div>

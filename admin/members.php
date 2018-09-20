@@ -11,10 +11,14 @@
   if (isset($_SESSION['Username'])) {
     include 'init.php';
 
-    $do = (isset($_GET['do'])) ? $_GET['do'] : 'manage';
+    $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
-      $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 1");
+      $query = "";
+      if (isset($_GET["page"]) && $_GET["page"] == "pending") {
+        $query = "AND RegStatus = 0";
+      }
+      $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 1 $query");
       $stmt->execute();
       $rows = $stmt->fetchAll();
       $count = $stmt->rowCount();
@@ -43,6 +47,9 @@
                   <td>
                     <a href="?do=edit&userid=<?php echo $row["UserID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
                     <a href="?do=delete&userid=<?php echo $row["UserID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
+                    <?php if ($row["RegStatus"] == 0): ?>
+                      <a href="?do=activate&userid=<?php echo $row["UserID"]; ?>" class="btn btn-info btn-xs"><i class="fa fa-check"></i> Activate</a>
+                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -145,8 +152,8 @@
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
           // Insert User Info in Database
-          $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, Date)
-          VALUES(:username, :pass, :mail, :name, now())");
+          $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, RegStatus, Date)
+          VALUES(:username, :pass, :mail, :name, 1, now())");
           $stmt->execute(array(
             'username' => $member_username,
             'pass'     => $member_hashed_password,
