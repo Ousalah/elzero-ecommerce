@@ -5,7 +5,7 @@
     include 'init.php';
 
     // Start Latest Members Section
-    $latestUsers = 3; // Number of latest users
+    $latestUsers = 5; // Number of latest users
     $users = getLatest("*", "users", "UserID", $latestUsers); // Latest users array
     $latestUsersCount = count($users);
     $latestUsers = ($latestUsers >= $latestUsersCount) ? ($latestUsersCount > 0 ? $latestUsersCount : "") : $latestUsers;
@@ -45,15 +45,20 @@
             <div class="panel panel-default">
               <div class="panel-heading"><i class="fa fa-users"></i> Latest <?php echo $latestUsers ?> Registred Users</div>
               <div class="panel-body">
-                <?php
-                  if ($latestUsersCount <= 0):
-                    echo "No Data to Show.";
-                  else:
-                    foreach ($users as $user):
-                      echo $user["Username"] . "<br>";
-                    endforeach;
-                  endif;
-                ?>
+                <ul class="list-unstyled latest-users">
+                  <?php
+                    if ($latestUsersCount <= 0):
+                      echo "<li class='text-center'>No Data to Show.</li>";
+                    else:
+                      foreach ($users as $user):
+                        echo '<li>' . $user["Username"];
+                          echo '<a href="members.php?do=edit&userid=' . $user['UserID'] . '" class="btn btn-success btn-xs pull-right"><i class="fa fa-edit"></i> Edit</a>';
+                          if ($user["RegStatus"] == 0) echo '<a href="members.php?do=activate&userid=' . $user['UserID'] . '" class="btn btn-info btn-xs pull-right"><i class="fa fa-check"></i> Activate</a>';
+                          echo "</li>";
+                      endforeach;
+                    endif;
+                  ?>
+                </ul>
               </div>
             </div>
           </div>

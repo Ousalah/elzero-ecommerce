@@ -124,6 +124,23 @@ body {
 .latest {
   margin-top: 30px;
 }
+
+.latest .latest-users {
+  margin-bottom: 0;
+}
+
+.latest .latest-users li {
+  padding: 10px;
+  overflow: hidden;
+}
+
+.latest .latest-users li:nth-child(odd) {
+  background-color: #eee;
+}
+
+.latest .latest-users li .btn-info {
+  margin-right: 5px;
+}
 /* End Dashboard Page */
 
 /* Start Members Page */
