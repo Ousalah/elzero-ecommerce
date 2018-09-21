@@ -80,15 +80,30 @@
   }
 
   /*
-  ** Count number of items function v1.0
+  ** Count number of items function v2.0
   ** Function to count number of items rows
-  ** @param $item =  The item to count
-  ** @param $table =  The table to choose from
+  ** @param $item = The item to count
+  ** @param $table = The table to choose from
+  ** @param $conditions = array of conditions as array [ Example: array(key => value,)]
   ** @return item count
+  **
+  ** used in: [ dashboard.php => "Total Members", "Pending Memebers"]
   */
-  function countItems($item, $table) {
+  function countItems($item, $table, $conditions = array()) {
     global $con;
-    $stmt = $con->prepare("SELECT COUNT($item) FROM $table");
-    $stmt->execute();
+    $where  = "";
+    $keys   = array();
+    $values = array();
+    if (!empty($conditions) && is_array($conditions)) {
+      $where = " WHERE ";
+      foreach ($conditions as $key => $value) {
+        $keys[] = "$key = ?";
+        $values[] = $value;
+      }
+    }
+
+    $keysDB = implode(" AND ", $keys);
+    $stmt = $con->prepare("SELECT COUNT($item) FROM $table $where $keysDB");
+    $stmt->execute($values);
     return $stmt->fetchColumn();
   }
