@@ -3,6 +3,13 @@
   if (isset($_SESSION['Username'])) {
     $pageTitle = 'Dashboard';
     include 'init.php';
+
+    // Start Latest Members Section
+    $latestUsers = 3; // Number of latest users
+    $users = getLatest("*", "users", "UserID", $latestUsers); // Latest users array
+    $latestUsersCount = count($users);
+    $latestUsers = ($latestUsers >= $latestUsersCount) ? ($latestUsersCount > 0 ? $latestUsersCount : "") : $latestUsers;
+    // End Latest Members Section
 ?>
     <!-- Start Dashboard Page -->
     <div class="home-stats text-center">
@@ -36,8 +43,18 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="panel panel-default">
-              <div class="panel-heading"><i class="fa fa-users"></i> Latest Registred Users</div>
-              <div class="panel-body">Test</div>
+              <div class="panel-heading"><i class="fa fa-users"></i> Latest <?php echo $latestUsers ?> Registred Users</div>
+              <div class="panel-body">
+                <?php
+                  if ($latestUsersCount <= 0):
+                    echo "No Data to Show.";
+                  else:
+                    foreach ($users as $user):
+                      echo $user["Username"] . "<br>";
+                    endforeach;
+                  endif;
+                ?>
+              </div>
             </div>
           </div>
             <div class="col-sm-6">

@@ -107,3 +107,18 @@
     $stmt->execute($values);
     return $stmt->fetchColumn();
   }
+
+  /*
+  ** Get latest records fuction v1.0
+  ** Function to get latest items from datebase [ Users, Items, Commnents ]
+  ** $select = Field to select
+  ** $table = The table to choose from
+  ** $order = The field to order by it
+  ** $limit = Number of records to get
+  */
+  function getLatest($select, $table, $order, $limit = 5) {
+    global $con;
+    $stmt = $con->prepare("SELECT $select FROM $table ORDER BY $order DESC LIMIT $limit");
+    $stmt->execute();
+    return $stmt->fetchAll();
+  }
