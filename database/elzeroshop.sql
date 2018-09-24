@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2018 at 06:40 PM
+-- Generation Time: Sep 24, 2018 at 12:20 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -21,6 +21,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `elzeroshop`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `ID` smallint(6) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Description` text NOT NULL,
+  `Ordering` int(11) NOT NULL,
+  `Visibility` tinyint(4) NOT NULL DEFAULT '1',
+  `Allow_Comment` tinyint(4) NOT NULL DEFAULT '1',
+  `Allow_Ads` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -46,16 +62,22 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `GroupID`, `TrustStatus`, `RegStatus`, `Date`) VALUES
 (1, 'ousalah', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'mohamed@ousalah.com', 'Mohamed Ousalah', 1, 0, 1, '2018-09-07'),
-(2, 'mohamed', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'mohamed@gmail.com', 'mohamed mohamed', 0, 0, 0, '2018-09-10'),
-(4, 'abmlk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'abmlk@gmail.com', 'ayoub abmlk', 0, 0, 0, '0000-00-00'),
-(5, 'hamza', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'hamza@gmail.com', 'hamza hamza', 0, 0, 0, '0000-00-00'),
-(9, 'fgfgfgfd', '3c0fc5decc5eed3df6324d4264fa9b91d66f18e5', 'fgfg@gfg', 'fgfg', 0, 0, 0, '0000-00-00'),
-(10, 'fgfhgfhgfDD', '0ff018db3f38a357b13522beacb17aefa44cdfdd', 'fgfg@gfg', 'dfdfd', 0, 0, 0, '0000-00-00'),
-(12, 'moha', 'e54840d847d19a9beafe2faa6bf00583d2a9fee9', 'mohamed@gmail.com', 'mohamed mohamed', 0, 0, 0, '2018-09-18');
+(2, 'mohamed', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'mohamed@gmail.com', 'mohamed mohamed', 0, 0, 1, '2018-09-10'),
+(4, 'abmlk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'abmlk@gmail.com', 'ayoub abmlk', 0, 0, 1, '0000-00-00'),
+(5, 'hamza', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'hamza@gmail.com', 'hamza hamza', 0, 0, 1, '0000-00-00'),
+(12, 'moha', 'e54840d847d19a9beafe2faa6bf00583d2a9fee9', 'moha@gmail.com', 'mohamed mohamed', 0, 0, 1, '2018-09-18'),
+(13, 'gfgf', '1e99398da6cf1faa3f9a196382f1fadc7bb32fb7', 'fgfg@gfg', 'fgfgfd', 0, 0, 0, '2018-09-20');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `Name` (`Name`);
 
 --
 -- Indexes for table `users`
@@ -69,10 +91,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `ID` smallint(6) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
