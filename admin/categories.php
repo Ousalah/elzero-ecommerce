@@ -28,6 +28,10 @@
             <?php if ($count > 0): ?>
               <?php foreach ($rows as $row): ?>
                 <div class="cat">
+                  <div class="hidden-buttons">
+                    <a href="" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                    <a href="" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i> Delete</a>
+                  </div>
                   <h3><?php echo $row["Name"]; ?></h3>
                   <p><?php echo ($row["Description"] == "") ? "This category has no description." : $row["Description"]; ?></p>
                   <?php if ($row["Visibility"] == 0) echo '<span class="visibility">Hidden</span>'; ?>
