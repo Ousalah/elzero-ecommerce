@@ -180,6 +180,16 @@ h1 {
 /* End Members Page */
 
 /* Start Category Page */
+.categories .ordering a {
+  color: #888;
+  text-decoration: none;
+}
+
+.categories .ordering a.active {
+  color: #c0392b;
+  font-weight: bold;
+}
+
 .categories .panel-body {
   padding: 0;
 }

@@ -14,7 +14,13 @@
     $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
-      $stmt = $con->prepare("SELECT * FROM categories");
+      $sort = "ASC";
+      $sort_option = array("ASC", "DESC");
+      if (isset($_GET["sort"]) && in_array(strtoupper($_GET["sort"]), $sort_option)) {
+        $sort = strtoupper($_GET["sort"]);
+      }
+
+      $stmt = $con->prepare("SELECT * FROM categories ORDER BY Ordering $sort");
       $stmt->execute();
       $rows = $stmt->fetchAll();
       $count = $stmt->rowCount();
@@ -23,7 +29,14 @@
       <h1 class='text-center'>Manage Categories</h1>
       <div class="container categories">
         <div class="panel panel-default">
-          <div class="panel-heading">Manage Categories</div>
+          <div class="panel-heading">
+            Manage Categories
+            <div class="ordering pull-right">
+              Ordering:
+              <a class="<?php if ($sort == "ASC") echo "active"; ?>" href="?do=manage&sort=asc">asc</a> |
+              <a class="<?php if ($sort == "DESC") echo "active"; ?>" href="?do=manage&sort=desc">desc</a>
+            </div>
+          </div>
           <div class="panel-body">
             <?php if ($count > 0): ?>
               <?php foreach ($rows as $row): ?>
