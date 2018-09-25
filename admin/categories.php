@@ -324,9 +324,52 @@
         redirectHome($msg);
       endif;
       echo "</div>";
-      // End Check if Member Exist
+      // End Check if Category Exist
 
     } elseif($do == 'update') { // Start Update Page
+
+      echo "<h1 class='text-center'>Update Category</h1>";
+      echo "<div class='container'>";
+
+      // Check if User Access to These Page by Post Request
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        // Get Variables from the form
+        $category_id              = $_POST["catid"];
+        $category_name            = $_POST["name"];
+        $category_description     = $_POST["description"];
+        $category_ordering        = $_POST["ordering"];
+        $category_visibility      = $_POST["visibility"];
+        $category_allow_comment   = $_POST["allow_comment"];
+        $category_allow_ads       = $_POST["allow_ads"];
+
+        // Validate The form
+        $form_errors = array();
+        if (empty($category_name)) { $form_errors[] = "<div class='alert alert-danger'>Category name can't be <strong>empty</strong>.</div>"; }
+        // Check If Category Name Exist in Database
+        if(checkItem("Name", "categories", $category_name, "ID", $category_id)) { $form_errors[] = "<div class='alert alert-danger'>This category name is already <strong>exists</strong>.</div>"; }
+
+        // Check If There's No Error, Proceed The Update Operation
+        if (!empty($form_errors)) :
+          // Loop Into Errors Array and Echo It
+          redirectHome($form_errors, "back", (count($form_errors) + 2));
+        else:
+          // Update The Database with This Info
+          $stmt = $con->prepare("UPDATE categories SET
+            Name = ?, Description = ?, Ordering = ?, Visibility = ?, Allow_Comment = ?, Allow_Ads = ?
+            WHERE ID = ?");
+          $stmt->execute(array($category_name, $category_description, $category_ordering, $category_visibility, $category_allow_comment, $category_allow_ads, $category_id));
+
+          // Echo Success Message
+          $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record updated.</div>";
+          redirectHome($msg, "back");
+        endif;
+
+      } else {
+        $msg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome($msg);
+      }
+      echo "</div>";
 
     } elseif($do == 'delete') { // Start Delete Page
 

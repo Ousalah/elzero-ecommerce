@@ -270,7 +270,6 @@
         // Check If Email Exist in Database
         if(checkItem("Email", "users", $member_email, "UserID", $member_id)) { $form_errors[] = "<div class='alert alert-danger'>This email address is <strong>not available</strong>. choose a different address.</div>"; }
 
-
         // Check If There's No Error, Proceed The Update Operation
         if (!empty($form_errors)) :
           // Loop Into Errors Array and Echo It
@@ -278,7 +277,7 @@
         else:
           // Update The Database with This Info
           $stmt = $con->prepare("UPDATE users SET
-            Username = ?,Password = ?, Email = ?, FullName = ?
+            Username = ?, Password = ?, Email = ?, FullName = ?
             WHERE UserID = ?");
           $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
 
