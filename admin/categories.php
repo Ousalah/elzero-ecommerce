@@ -21,45 +21,24 @@
 ?>
 
       <h1 class='text-center'>Manage Categories</h1>
-      <div class="container">
+      <div class="container categories">
         <div class="panel panel-default">
           <div class="panel-heading">Manage Categories</div>
           <div class="panel-body">
-            <div class="table-responsive">
-              <table class="main-table text-center table table-bordered">
-                <tr>
-                  <th>#ID</th>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Ordering</th>
-                  <th>Visibility</th>
-                  <th>Allow Comments</th>
-                  <th>Allow Ads</th>
-                  <th>Control</th>
-                </tr>
-                <?php if ($count > 0): ?>
-                  <?php foreach ($rows as $row): ?>
-                    <tr>
-                      <td><?php echo $row["ID"]; ?></td>
-                      <td><?php echo $row["Name"]; ?></td>
-                      <td><?php echo $row["Description"]; ?></td>
-                      <td><?php echo $row["Ordering"]; ?></td>
-                      <td><?php echo $row["Visibility"]; ?></td>
-                      <td><?php echo $row["Allow_Comment"]; ?></td>
-                      <td><?php echo $row["Allow_Ads"]; ?></td>
-                      <td>
-                        <a href="?do=edit&catid=<?php echo $row["ID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                        <a href="?do=delete&catid=<?php echo $row["ID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
-                      </td>
-                    </tr>
-                  <?php endforeach; ?>
-                <?php else: ?>
-                  <tr>
-                    <td colspan='8'>No Data to Show.</td>
-                  </tr>
-                <?php endif; ?>
-              </table>
-            </div>
+            <?php if ($count > 0): ?>
+              <?php foreach ($rows as $row): ?>
+                <div class="cat">
+                  <h3><?php echo $row["Name"]; ?></h3>
+                  <p><?php echo ($row["Description"] == "") ? "This category has no description." : $row["Description"]; ?></p>
+                  <?php if ($row["Visibility"] == 0) echo '<span class="visibility">Hidden</span>'; ?>
+                  <?php if ($row["Allow_Comment"] == 0) echo '<span class="allow-comment">Comment Disabled</span>'; ?>
+                  <?php if ($row["Allow_Ads"] == 0) echo '<span class="allow-ads">Ads Disabled</span>'; ?>
+                </div>
+                <hr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <div class="text-center">No Data to Show.</div>
+            <?php endif; ?>
           </div>
         </div>
         <a href="?do=add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> New Category</a>
