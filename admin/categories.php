@@ -43,7 +43,7 @@
                 <div class="cat">
                   <div class="hidden-buttons">
                     <a href="?do=edit&catid=<?php echo $row["ID"]; ?>" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                    <a href="" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i> Delete</a>
+                    <a href="?do=delete&catid=<?php echo $row["ID"]; ?>" class="btn btn-xs btn-danger confirm"><i class="fa fa-remove"></i> Delete</a>
                   </div>
                   <h3><?php echo $row["Name"]; ?></h3>
                   <p><?php echo ($row["Description"] == "") ? "This category has no description." : $row["Description"]; ?></p>
@@ -58,7 +58,7 @@
             <?php endif; ?>
           </div>
         </div>
-        <a href="?do=add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> New Category</a>
+        <a href="?do=add" class="add-category btn btn-primary btn-sm"><i class="fa fa-plus"></i> New Category</a>
       </div>
 
 <?php
@@ -373,7 +373,26 @@
 
     } elseif($do == 'delete') { // Start Delete Page
 
-    } elseif ($do == 'activate') { // Start Activate Page
+      // Check if Get Request catid is Numeric & Get The Interger Value of it
+      $catid = (isset($_GET["catid"]) && is_numeric($_GET["catid"])) ? intval($_GET["catid"]) : 0;
+
+      // Start Check if Category Exist
+      echo '<h1 class="text-center">Delete Category</h1>';
+      echo '<div class="container">';
+      if (checkItem("ID", "categories", $catid)) :
+        $stmt = $con->prepare("DELETE FROM categories WHERE ID = :catid");
+        $stmt->bindParam(":catid", $catid);
+        $stmt->execute();
+
+        // Echo Success Message
+        $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record deleted.</div>";
+        redirectHome($msg, "back");
+      else:
+        $msg = "<div class='alert alert-danger'>There's no category with this <strong>ID</strong></div>";
+        redirectHome($msg);
+      endif;
+      echo "</div>";
+      // End Check if Category Exist
 
     } else { // Start 404 Page
 

@@ -250,4 +250,9 @@ h1 {
 .categories .cat .allow-ads {
   background-color: #f39c12;
 }
+
+.categories .add-category {
+  margin-top: -10px;
+  margin-bottom: 30px;
+}
 /* End Category Page */
