@@ -14,6 +14,58 @@
     $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
+      $stmt = $con->prepare("SELECT * FROM categories");
+      $stmt->execute();
+      $rows = $stmt->fetchAll();
+      $count = $stmt->rowCount();
+?>
+
+      <h1 class='text-center'>Manage Categories</h1>
+      <div class="container">
+        <div class="panel panel-default">
+          <div class="panel-heading">Manage Categories</div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="main-table text-center table table-bordered">
+                <tr>
+                  <th>#ID</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Ordering</th>
+                  <th>Visibility</th>
+                  <th>Allow Comments</th>
+                  <th>Allow Ads</th>
+                  <th>Control</th>
+                </tr>
+                <?php if ($count > 0): ?>
+                  <?php foreach ($rows as $row): ?>
+                    <tr>
+                      <td><?php echo $row["ID"]; ?></td>
+                      <td><?php echo $row["Name"]; ?></td>
+                      <td><?php echo $row["Description"]; ?></td>
+                      <td><?php echo $row["Ordering"]; ?></td>
+                      <td><?php echo $row["Visibility"]; ?></td>
+                      <td><?php echo $row["Allow_Comment"]; ?></td>
+                      <td><?php echo $row["Allow_Ads"]; ?></td>
+                      <td>
+                        <a href="?do=edit&catid=<?php echo $row["ID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                        <a href="?do=delete&catid=<?php echo $row["ID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                <?php else: ?>
+                  <tr>
+                    <td colspan='8'>No Data to Show.</td>
+                  </tr>
+                <?php endif; ?>
+              </table>
+            </div>
+          </div>
+        </div>
+        <a href="?do=add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> New Category</a>
+      </div>
+
+<?php
     } elseif($do == 'add') { // Start Add Page
 ?>
 
