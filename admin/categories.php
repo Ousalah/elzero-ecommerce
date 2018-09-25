@@ -2,7 +2,7 @@
   /*
   ===================================================
   == Manage Categories Page
-  == You Can Add | Edit | Delete Members From Here
+  == You Can Add | Edit | Delete Categories From Here
   ===================================================
   */
   session_start();
@@ -42,7 +42,7 @@
               <?php foreach ($rows as $row): ?>
                 <div class="cat">
                   <div class="hidden-buttons">
-                    <a href="" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                    <a href="?do=edit&catid=<?php echo $row["ID"]; ?>" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Edit</a>
                     <a href="" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i> Delete</a>
                   </div>
                   <h3><?php echo $row["Name"]; ?></h3>
@@ -211,6 +211,120 @@
       echo "</div>";
 
     } elseif($do == 'edit') { // Start Edit Page
+
+      // Check if Get Request catid is Numeric & Get The Interger Value of it
+      $catid = (isset($_GET["catid"]) && is_numeric($_GET["catid"])) ? intval($_GET["catid"]) : 0;
+
+      $stmt = $con->prepare("SELECT * FROM categories WHERE ID = ?");
+      $stmt->execute(array($catid));
+      $row = $stmt->fetch();
+      $count = $stmt->rowCount();
+
+      // Start Check if Category Exist
+      echo '<h1 class="text-center">Edit Category</h1>';
+      echo '<div class="container">';
+      if ($count > 0) :
+?>
+
+        <form class="form-horizontal" action="?do=update" method="post">
+          <input type="hidden" name="catid" value="<?php echo $catid; ?>">
+          <!-- Start Name -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" value="<?php echo $row["Name"] ?>" name="name" required="required" placeholder="Category Name">
+            </div>
+          </div>
+          <!-- End Name -->
+
+          <!-- Start Description -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" value="<?php echo $row["Description"] ?>" name="description" placeholder="Category Description">
+            </div>
+          </div>
+          <!-- End Description -->
+
+          <!-- Start Ordering -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Ordering</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" value="<?php echo $row["Ordering"] ?>" name="ordering" placeholder="Number to arrange the Category">
+            </div>
+          </div>
+          <!-- End Ordering -->
+
+          <!-- Start Visibility -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Visibile</label>
+            <div class="col-sm-10 col-md-8">
+              <div class="radio">
+                <label for="visibile-yes">
+                  <input id="visibile-yes" type="radio" name="visibility" value="1" <?php if ($row["Visibility"] == 1) echo "checked"; ?>> Yes
+                </label>
+              </div>
+              <div class="radio">
+                <label for="visibile-no">
+                  <input id="visibile-no" type="radio" name="visibility" value="0" <?php if ($row["Visibility"] == 0) echo "checked"; ?>> No
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- End Visibility -->
+
+          <!-- Start Allow Comment -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Allow Comment</label>
+            <div class="col-sm-10 col-md-8">
+              <div class="radio">
+                <label for="allow-comment-yes">
+                  <input id="allow-comment-yes" type="radio" name="allow_comment" value="1" <?php if ($row["Allow_Comment"] == 1) echo "checked"; ?>> Yes
+                </label>
+              </div>
+              <div class="radio">
+                <label for="allow-comment-no">
+                  <input id="allow-comment-no" type="radio" name="allow_comment" value="0" <?php if ($row["Allow_Comment"] == 0) echo "checked"; ?>> No
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- End Allow Comment -->
+
+          <!-- Start Allow Ads -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Allow Ads</label>
+            <div class="col-sm-10 col-md-8">
+              <div class="radio">
+                <label for="allow-ads-yes">
+                  <input id="allow-ads-yes" type="radio" name="allow_ads" value="1" <?php if ($row["Allow_Ads"] == 1) echo "checked"; ?>> Yes
+                </label>
+              </div>
+              <div class="radio">
+                <label for="allow-ads-no">
+                  <input id="allow-ads-no" type="radio" name="allow_ads" value="0" <?php if ($row["Allow_Ads"] == 0) echo "checked"; ?>> No
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- End Allow Ads -->
+
+          <!-- Start Submit -->
+          <div class="form-group form-group-lg">
+            <div class="col-sm-offset-2 col-sm-4">
+              <input type="submit" class="btn btn-primary btn-lg btn-block" value="Save">
+            </div>
+          </div>
+          <!-- End Submit -->
+        </form>
+
+<?php
+      else:
+        $msg = "<div class='alert alert-danger'>There's no category with this <strong>ID</strong></div>";
+        redirectHome($msg);
+      endif;
+      echo "</div>";
+      // End Check if Member Exist
 
     } elseif($do == 'update') { // Start Update Page
 
