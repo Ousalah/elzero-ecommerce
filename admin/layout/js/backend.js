@@ -1,6 +1,11 @@
 $(function () {
   "use strict";
 
+  // Trigger The SelectBoxIt
+  $("select").selectBoxIt({
+    autoWidth: false
+  });
+
   // Hide Placeholder On Form Focus
   $('[placeholder]').on('focus', function () {
 
