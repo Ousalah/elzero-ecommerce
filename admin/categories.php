@@ -30,14 +30,14 @@
       <div class="container categories">
         <div class="panel panel-default">
           <div class="panel-heading">
-            Manage Categories
+            <i class="fa fa-list-alt"></i> Manage Categories
             <div class="options pull-right">
-              <b>Ordering:</b>
+              <b><i class="fa fa-sort"></i> Ordering:</b>[
               <a class="<?php if ($sort == "ASC") echo "active"; ?>" href="?do=manage&sort=asc">asc</a> -
-              <a class="<?php if ($sort == "DESC") echo "active"; ?>" href="?do=manage&sort=desc">desc</a>
-              <b>View:</b>
+              <a class="<?php if ($sort == "DESC") echo "active"; ?>" href="?do=manage&sort=desc">desc</a> ]
+              <b><i class="fa fa-eye"></i> View:</b>[
               <span class="active" data-view="full">Full</span> -
-              <span data-view="classic">Classic</span>
+              <span data-view="classic">Classic</span> ]
             </div>
           </div>
           <div class="panel-body">
@@ -51,9 +51,9 @@
                   <h3><?php echo $row["Name"]; ?></h3>
                   <div class="full-view">
                     <p><?php echo ($row["Description"] == "") ? "This category has no description." : $row["Description"]; ?></p>
-                    <?php if ($row["Visibility"] == 0) echo '<span class="visibility">Hidden</span>'; ?>
-                    <?php if ($row["Allow_Comment"] == 0) echo '<span class="allow-comment">Comment Disabled</span>'; ?>
-                    <?php if ($row["Allow_Ads"] == 0) echo '<span class="allow-ads">Ads Disabled</span>'; ?>
+                    <?php if ($row["Visibility"] == 0) echo '<span class="visibility"><i class="fa fa-eye-slash"></i> Hidden</span>'; ?>
+                    <?php if ($row["Allow_Comment"] == 0) echo '<span class="allow-comment"><i class="fa fa-comments-o"></i> Comment Disabled</span>'; ?>
+                    <?php if ($row["Allow_Ads"] == 0) echo '<span class="allow-ads"><i class="fa fa-flag-o"></i> Ads Disabled</span>'; ?>
                   </div>
                 </div>
                 <hr>
