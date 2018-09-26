@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2018 at 12:20 PM
+-- Generation Time: Sep 26, 2018 at 02:01 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -32,10 +32,39 @@ CREATE TABLE `categories` (
   `ID` smallint(6) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` text NOT NULL,
-  `Ordering` int(11) NOT NULL,
-  `Visibility` tinyint(4) NOT NULL DEFAULT '1',
+  `Ordering` int(11) NOT NULL DEFAULT '0',
+  `Visibility` tinyint(4) NOT NULL DEFAULT '1' COMMENT '0 = hidden, 1 = visible',
   `Allow_Comment` tinyint(4) NOT NULL DEFAULT '1',
   `Allow_Ads` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`ID`, `Name`, `Description`, `Ordering`, `Visibility`, `Allow_Comment`, `Allow_Ads`) VALUES
+(1, 'Electronics', '', 1000, 0, 0, 0),
+(2, 'PC', 'Pc description', 0, 0, 1, 0),
+(3, 'Mobile', 'this is category of mobile like samsung, iphone, htc, nokia', 10, 1, 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `items`
+--
+
+CREATE TABLE `items` (
+  `ItemID` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Description` text NOT NULL,
+  `Price` varchar(255) NOT NULL,
+  `Add_Date` date NOT NULL,
+  `Country_Made` varchar(255) NOT NULL,
+  `Image` varchar(255) NOT NULL,
+  `Status` varchar(255) NOT NULL COMMENT 'New, Used, Like New, ...',
+  `Rating` smallint(6) NOT NULL,
+  `CatID` int(11) NOT NULL,
+  `MemberID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -80,6 +109,12 @@ ALTER TABLE `categories`
   ADD UNIQUE KEY `Name` (`Name`);
 
 --
+-- Indexes for table `items`
+--
+ALTER TABLE `items`
+  ADD PRIMARY KEY (`ItemID`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -94,7 +129,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `ID` smallint(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `items`
+--
+ALTER TABLE `items`
+  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
