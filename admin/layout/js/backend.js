@@ -47,4 +47,16 @@ $(function () {
     return confirm("Are you sure to so this action ?");
   });
 
+  // Category View Option
+  $(".categories .cat h3").on("click", function () { $(this).next(".full-view").fadeToggle(200); });
+
+  $(".options span").on("click", function () {
+    $(this).addClass("active").siblings("span").removeClass("active");
+    if($(this).data("view") === "full") {
+      $(".categories .cat .full-view").fadeIn(200);
+    } else {
+      $(".categories .cat .full-view").fadeOut(200);
+    }
+  });
+
 });

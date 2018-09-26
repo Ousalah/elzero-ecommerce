@@ -31,10 +31,13 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             Manage Categories
-            <div class="ordering pull-right">
-              Ordering:
-              <a class="<?php if ($sort == "ASC") echo "active"; ?>" href="?do=manage&sort=asc">asc</a> |
+            <div class="options pull-right">
+              <b>Ordering:</b>
+              <a class="<?php if ($sort == "ASC") echo "active"; ?>" href="?do=manage&sort=asc">asc</a> -
               <a class="<?php if ($sort == "DESC") echo "active"; ?>" href="?do=manage&sort=desc">desc</a>
+              <b>View:</b>
+              <span class="active" data-view="full">Full</span> -
+              <span data-view="classic">Classic</span>
             </div>
           </div>
           <div class="panel-body">
@@ -46,10 +49,12 @@
                     <a href="?do=delete&catid=<?php echo $row["ID"]; ?>" class="btn btn-xs btn-danger confirm"><i class="fa fa-remove"></i> Delete</a>
                   </div>
                   <h3><?php echo $row["Name"]; ?></h3>
-                  <p><?php echo ($row["Description"] == "") ? "This category has no description." : $row["Description"]; ?></p>
-                  <?php if ($row["Visibility"] == 0) echo '<span class="visibility">Hidden</span>'; ?>
-                  <?php if ($row["Allow_Comment"] == 0) echo '<span class="allow-comment">Comment Disabled</span>'; ?>
-                  <?php if ($row["Allow_Ads"] == 0) echo '<span class="allow-ads">Ads Disabled</span>'; ?>
+                  <div class="full-view">
+                    <p><?php echo ($row["Description"] == "") ? "This category has no description." : $row["Description"]; ?></p>
+                    <?php if ($row["Visibility"] == 0) echo '<span class="visibility">Hidden</span>'; ?>
+                    <?php if ($row["Allow_Comment"] == 0) echo '<span class="allow-comment">Comment Disabled</span>'; ?>
+                    <?php if ($row["Allow_Ads"] == 0) echo '<span class="allow-ads">Ads Disabled</span>'; ?>
+                  </div>
                 </div>
                 <hr>
               <?php endforeach; ?>
