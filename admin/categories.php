@@ -170,7 +170,7 @@
       echo "<h1 class='text-center'>Insert New Category</h1>";
       echo "<div class='container'>";
 
-      // Check if User Access to These Page by Post Request
+      // Check if Category Access to These Page by Post Request
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Get Variables from the form
@@ -336,7 +336,7 @@
       echo "<h1 class='text-center'>Update Category</h1>";
       echo "<div class='container'>";
 
-      // Check if User Access to These Page by Post Request
+      // Check if Category Access to These Page by Post Request
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Get Variables from the form

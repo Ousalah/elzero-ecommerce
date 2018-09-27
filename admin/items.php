@@ -59,7 +59,7 @@
           <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Country</label>
             <div class="col-sm-10 col-md-8">
-              <input type="text" class="form-control" name="country" placeholder="Item manufacturing country">
+              <input type="text" class="form-control" name="country" required="required" placeholder="Item manufacturing country">
             </div>
           </div>
           <!-- End Country -->
@@ -91,6 +91,54 @@
 
 <?php
     } elseif($do == 'insert') { // Start Insert Page
+
+      echo "<h1 class='text-center'>Insert New Item</h1>";
+      echo "<div class='container'>";
+
+      // Check if Item Access to These Page by Post Request
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        // Get Variables from the form
+        $item_name          = trim($_POST["name"]);
+        $item_description   = trim($_POST["description"]);
+        $item_price         = trim($_POST["price"]);
+        $item_country       = trim($_POST["country"]);
+        $item_status        = $_POST["status"];
+
+        // Validate The form
+        $form_errors = array();
+        if (empty($item_name)) { $form_errors[] = "<div class='alert alert-danger'>Item Name Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($item_description)) { $form_errors[] = "<div class='alert alert-danger'>Description Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($item_price)) { $form_errors[] = "<div class='alert alert-danger'>Price Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($item_country)) { $form_errors[] = "<div class='alert alert-danger'>Country Can't be <strong>Empty</strong>.</div>"; }
+        if ($item_status == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the status.</div>"; }
+
+        // Check If There's No Error, Proceed The Insert Operation
+        if (!empty($form_errors)) :
+          // Loop Into Errors Array and Echo It
+          redirectHome($form_errors, "back", (count($form_errors) + 2));
+        else:
+          // Insert Item Info in Database
+          $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status)
+          VALUES(:name, :description, :price, now(), :country, :status)");
+          $stmt->execute(array(
+            'name'            => $item_name,
+            'description'     => $item_description,
+            'price'           => $item_price,
+            'country'         => $item_country,
+            'status'          => $item_status
+          ));
+
+          // Echo Success Message
+          $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record inserted.</div>";
+          redirectHome($msg, "back");
+        endif;
+
+      } else {
+        $msg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome($msg);
+      }
+      echo "</div>";
 
     } elseif($do == 'edit') { // Start Edit Page
 
