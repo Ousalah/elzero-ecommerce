@@ -144,6 +144,8 @@
         $item_price         = trim($_POST["price"]);
         $item_country       = trim($_POST["country"]);
         $item_status        = $_POST["status"];
+        $item_category      = $_POST["category"];
+        $item_member        = $_POST["member"];
 
         // Validate The form
         $form_errors = array();
@@ -152,6 +154,8 @@
         if (empty($item_price)) { $form_errors[] = "<div class='alert alert-danger'>Price Can't be <strong>Empty</strong>.</div>"; }
         if (empty($item_country)) { $form_errors[] = "<div class='alert alert-danger'>Country Can't be <strong>Empty</strong>.</div>"; }
         if ($item_status == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the status.</div>"; }
+        if ($item_category == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the category.</div>"; }
+        if ($item_member == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the member.</div>"; }
 
         // Check If There's No Error, Proceed The Insert Operation
         if (!empty($form_errors)) :
@@ -159,14 +163,16 @@
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
           // Insert Item Info in Database
-          $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status)
-          VALUES(:name, :description, :price, now(), :country, :status)");
+          $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status, CatID, MemberID)
+          VALUES(:name, :description, :price, now(), :country, :status, :category, :member)");
           $stmt->execute(array(
             'name'            => $item_name,
             'description'     => $item_description,
             'price'           => $item_price,
             'country'         => $item_country,
-            'status'          => $item_status
+            'status'          => $item_status,
+            'category'        => $item_category,
+            'member'          => $item_member
           ));
 
           // Echo Success Message
