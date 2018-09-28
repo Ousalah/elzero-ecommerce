@@ -229,6 +229,127 @@
 
     } elseif($do == 'edit') { // Start Edit Page
 
+      // Check if Get Request itemid is Numeric & Get The Interger Value of it
+      $itemid = (isset($_GET["itemid"]) && is_numeric($_GET["itemid"])) ? intval($_GET["itemid"]) : 0;
+
+      $stmt = $con->prepare("SELECT * FROM items WHERE ItemID = ?");
+      $stmt->execute(array($itemid));
+      $item = $stmt->fetch();
+      $count = $stmt->rowCount();
+
+      // Start Check if Item Exist
+      echo '<h1 class="text-center">Edit Item</h1>';
+      echo '<div class="container">';
+      if ($count > 0) :
+?>
+        <form class="form-horizontal" action="?do=update" method="post">
+          <input type="hidden" name="itemid" value="<?php echo $itemid; ?>">
+          <!-- Start Name -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" name="name" value="<?php echo $item["Name"] ?>" required="required" placeholder="Item Name">
+            </div>
+          </div>
+          <!-- End Name -->
+
+          <!-- Start Description -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" name="description" value="<?php echo $item["Description"] ?>" required="required" placeholder="Item Description">
+            </div>
+          </div>
+          <!-- End Description -->
+
+          <!-- Start Price -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Price</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" name="price" value="<?php echo $item["Price"] ?>" required="required" placeholder="Item Price">
+            </div>
+          </div>
+          <!-- End Price -->
+
+          <!-- Start Country -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Country</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" name="country" value="<?php echo $item["Country_Made"] ?>" required="required" placeholder="Item manufacturing country">
+            </div>
+          </div>
+          <!-- End Country -->
+
+          <!-- Start Status -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Status</label>
+            <div class="col-sm-10 col-md-8">
+              <select name="status">
+                <option value="1" <?php if ($item["Status"] == 1) echo "selected='selected'"; ?>>New</option>
+                <option value="2" <?php if ($item["Status"] == 2) echo "selected='selected'"; ?>>Like New</option>
+                <option value="3" <?php if ($item["Status"] == 3) echo "selected='selected'"; ?>>Used</option>
+                <option value="4" <?php if ($item["Status"] == 4) echo "selected='selected'"; ?>>Very Old</option>
+              </select>
+            </div>
+          </div>
+          <!-- End Status -->
+
+          <!-- Start Member -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Member</label>
+            <div class="col-sm-10 col-md-8">
+              <select name="member">
+                <?php
+                  $stmt = $con->prepare("SELECT * FROM users");
+                  $stmt->execute();
+                  $users = $stmt->fetchAll();
+
+                  foreach ($users as $user) :
+                    $selectedUser = ($item["MemberID"] == $user["UserID"]) ? "selected='selected'" : "";
+                    echo '<option value="' . $user['UserID'] . '"' . $selectedUser . '>' . $user['Username'] . '</option>';
+                  endforeach;
+                ?>
+              </select>
+            </div>
+          </div>
+          <!-- End Member -->
+
+          <!-- Start Category -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Category</label>
+            <div class="col-sm-10 col-md-8">
+              <select name="category">
+                <?php
+                  $stmt = $con->prepare("SELECT * FROM categories");
+                  $stmt->execute();
+                  $categories = $stmt->fetchAll();
+
+                  foreach ($categories as $category) :
+                    $selectedCategory = ($item["CatID"] == $category["ID"]) ? "selected='selected'" : "";
+                    echo '<option value="' . $category['ID'] . '"' . $selectedCategory . '>' . $category['Name'] . '</option>';
+                  endforeach;
+                ?>
+              </select>
+            </div>
+          </div>
+          <!-- End Category -->
+
+          <!-- Start Submit -->
+          <div class="form-group form-group-lg">
+            <div class="col-sm-offset-2 col-sm-4">
+              <input type="submit" class="btn btn-primary btn-lg btn-block" value="Save Item">
+            </div>
+          </div>
+          <!-- End Submit -->
+        </form>
+<?php
+      else:
+        $msg = "<div class='alert alert-danger'>There's no item with this <strong>ID</strong></div>";
+        redirectHome($msg);
+      endif;
+      echo "</div>";
+      // End Check if Item Exist
+
     } elseif($do == 'update') { // Start Update Page
 
     } elseif($do == 'delete') { // Start Delete Page
