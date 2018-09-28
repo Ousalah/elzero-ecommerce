@@ -14,7 +14,9 @@
     $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
-      $stmt = $con->prepare("SELECT * FROM items");
+      $stmt = $con->prepare("SELECT items.*, categories.Name AS Category, users.Username FROM items
+                            INNER JOIN categories ON categories.ID = items.CatID
+                            INNER JOIN users ON users.UserID = items.MemberID");
       $stmt->execute();
       $items = $stmt->fetchAll();
       $count = $stmt->rowCount();
@@ -30,6 +32,8 @@
               <th>Description</th>
               <th>Price</th>
               <th>Adding Date</th>
+              <th>Category</th>
+              <th>Added By</th>
               <th>Control</th>
             </tr>
             <?php if ($count > 0): ?>
@@ -40,6 +44,8 @@
                   <td><?php echo $item["Description"]; ?></td>
                   <td><?php echo $item["Price"]; ?></td>
                   <td><?php echo $item["Add_Date"]; ?></td>
+                  <td><?php echo $item["Category"]; ?></td>
+                  <td><?php echo $item["Username"]; ?></td>
                   <td>
                     <a href="?do=edit&itemid=<?php echo $item["ItemID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
                     <a href="?do=delete&itemid=<?php echo $item["ItemID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
