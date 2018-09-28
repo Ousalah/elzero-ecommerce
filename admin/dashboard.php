@@ -29,7 +29,10 @@
             </div>
           </div>
           <div class="col-md-3">
-            <div class="stat st-items">Total Items<span>1500</span></div>
+            <div class="stat st-items">
+              Total Items
+              <span><a href="items.php"><?php echo countItems("ItemID", "items"); ?></a></span>
+            </div>
           </div>
           <div class="col-md-3">
             <div class="stat st-comments">Total Comments<span>2504</span></div>

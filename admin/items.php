@@ -14,10 +14,45 @@
     $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
+      $stmt = $con->prepare("SELECT * FROM items");
+      $stmt->execute();
+      $items = $stmt->fetchAll();
+      $count = $stmt->rowCount();
 ?>
 
       <h1 class='text-center'>Manage Items</h1>
       <div class="container">
+        <div class="table-responsive">
+          <table class="main-table text-center table table-bordered">
+            <tr>
+              <th>#ID</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Adding Date</th>
+              <th>Control</th>
+            </tr>
+            <?php if ($count > 0): ?>
+              <?php foreach ($items as $item): ?>
+                <tr>
+                  <td><?php echo $item["ItemID"]; ?></td>
+                  <td><?php echo $item["Name"]; ?></td>
+                  <td><?php echo $item["Description"]; ?></td>
+                  <td><?php echo $item["Price"]; ?></td>
+                  <td><?php echo $item["Add_Date"]; ?></td>
+                  <td>
+                    <a href="?do=edit&itemid=<?php echo $item["ItemID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                    <a href="?do=delete&itemid=<?php echo $item["ItemID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan='6'>No Data to Show.</td>
+              </tr>
+            <?php endif; ?>
+          </table>
+        </div>
         <a href="?do=add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> New Item</a>
       </div>
 
