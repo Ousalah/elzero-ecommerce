@@ -25,24 +25,39 @@
         <div class="row">
           <div class="col-md-3">
             <div class="stat st-members">
-              Total Members
-              <span><a href="members.php"><?php echo countItems("UserID", "users"); ?></a></span>
+              <i class="fa fa-users"></i>
+              <div class="info">
+                Total Members
+                <span><a href="members.php"><?php echo countItems("UserID", "users"); ?></a></span>
+              </div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="stat st-pending">
-              Pending Members
-              <span><a href="members.php?do=manage&page=pending"><?php echo countItems("UserID", "users", array('RegStatus' => 0)); ?></a></span>
+              <i class="fa fa-user-plus"></i>
+              <div class="info">
+                Pending Members
+                <span><a href="members.php?do=manage&page=pending"><?php echo countItems("UserID", "users", array('RegStatus' => 0)); ?></a></span>
+              </div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="stat st-items">
-              Total Items
-              <span><a href="items.php"><?php echo countItems("ItemID", "items"); ?></a></span>
+              <i class="fa fa-tags"></i>
+              <div class="info">
+                Total Items
+                <span><a href="items.php"><?php echo countItems("ItemID", "items"); ?></a></span>
+              </div>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="stat st-comments">Total Comments<span>2504</span></div>
+            <div class="stat st-comments">
+              <i class="fa fa-comments"></i>
+              <div class="info">
+                Total Comments
+                <span>0</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -53,7 +68,10 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="panel panel-default">
-              <div class="panel-heading"><i class="fa fa-users"></i> Latest <?php echo $latestUsers ?> Registred Users</div>
+              <div class="panel-heading">
+                <i class="fa fa-users"></i> Latest <?php echo $latestUsers ?> Registred Users
+                <span class="toggle-latest-info pull-right"><i class="fa fa-plus fa-lg"></i></span>
+              </div>
               <div class="panel-body">
                 <ul class="list-unstyled latest-users">
                   <?php
@@ -74,7 +92,10 @@
           </div>
             <div class="col-sm-6">
               <div class="panel panel-default">
-                <div class="panel-heading"><i class="fa fa-tags"></i> Latest <?php echo $latestItems ?> Items</div>
+                <div class="panel-heading">
+                  <i class="fa fa-tags"></i> Latest <?php echo $latestItems ?> Items
+                  <span class="toggle-latest-info pull-right"><i class="fa fa-plus fa-lg"></i></span>
+                </div>
                 <div class="panel-body">
                   <ul class="list-unstyled latest-items">
                     <?php

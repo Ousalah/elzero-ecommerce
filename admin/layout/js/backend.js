@@ -64,4 +64,14 @@ $(function () {
     }
   });
 
+  $(".toggle-latest-info").on("click", function () {
+    if ($(this).children("i").hasClass("fa-plus")) {
+      $(this).children("i").removeClass("fa-plus").addClass("fa-minus");
+      $(this).parent().next(".panel-body").fadeOut(100);
+    } else {
+      $(this).children("i").removeClass("fa-minus").addClass("fa-plus");
+      $(this).parent().next(".panel-body").fadeIn(100);
+    }
+  });
+
 });

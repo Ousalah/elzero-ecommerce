@@ -90,6 +90,19 @@ body {
   font-size: 15px;
   color: #fff;
   border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-stats .stat i {
+  position: absolute;
+  font-size: 80px;
+  top: 35px;
+  left: 30px;
+}
+
+.home-stats .stat .info {
+  float: right;
 }
 
 .home-stats .stat a {
@@ -123,6 +136,15 @@ body {
 
 .latest {
   margin-top: 30px;
+}
+
+.latest .toggle-latest-info {
+  color: #333;
+  cursor: pointer;
+}
+
+.latest .toggle-latest-info:hover {
+  color: #999;
 }
 
 .latest .latest-users,
