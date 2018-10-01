@@ -12,6 +12,7 @@
       'ADMIN_CATEGORIES'   => 'Categories',
       'ADMIN_ITEMS'        => 'Items',
       'ADMIN_MEMBERS'      => 'Members',
+      'ADMIN_COMMENTS'     => 'Comments',
       'ADMIN_STATISTICS'   => 'Statistics',
       'ADMIN_LOGS'         => 'Logs',
       //------------------------------------

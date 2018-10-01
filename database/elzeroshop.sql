@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2018 at 06:41 PM
+-- Generation Time: Oct 01, 2018 at 06:36 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -46,7 +46,23 @@ INSERT INTO `categories` (`ID`, `Name`, `Description`, `Ordering`, `Visibility`,
 (1, 'Electronics', '', 1000, 0, 0, 0),
 (2, 'PC', 'Pc description', 0, 0, 1, 0),
 (3, 'Mobile', 'this is category of mobile like samsung, iphone, htc, nokia', 10, 1, 0, 1),
-(7, 'PS3', 'PS3 Game', 0, 1, 1, 1);
+(7, 'PS3', 'PS3 Game', 0, 1, 1, 1),
+(8, 'PS4', 'PS4 Games', 0, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `CommentID` int(11) NOT NULL,
+  `Comment` text NOT NULL,
+  `Status` tinyint(4) NOT NULL,
+  `Comment_Date` date NOT NULL,
+  `ItemID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -64,6 +80,7 @@ CREATE TABLE `items` (
   `Image` varchar(255) NOT NULL,
   `Status` varchar(255) NOT NULL COMMENT 'New, Used, Like New, ...',
   `Rating` smallint(6) NOT NULL,
+  `Approve` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 == Not approved, 1 == approved',
   `CatID` int(11) NOT NULL,
   `MemberID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -72,8 +89,10 @@ CREATE TABLE `items` (
 -- Dumping data for table `items`
 --
 
-INSERT INTO `items` (`ItemID`, `Name`, `Description`, `Price`, `Add_Date`, `Country_Made`, `Image`, `Status`, `Rating`, `CatID`, `MemberID`) VALUES
-(4, 'qqd', 'this is category of mobile like samsung, iphone, htc, nokia', '100', '2018-09-27', 'Japan', '', '1', 0, 1, 1);
+INSERT INTO `items` (`ItemID`, `Name`, `Description`, `Price`, `Add_Date`, `Country_Made`, `Image`, `Status`, `Rating`, `Approve`, `CatID`, `MemberID`) VALUES
+(5, 'Dante\'s Inferno', 'Dante\'s Inferno PS3 Game', '20', '2018-09-28', 'Japan', '', '1', 0, 1, 7, 1),
+(6, 'Heavy Rain', 'Heavy Rain PS3 game', '30', '2018-09-28', 'Europe', '', '2', 0, 1, 7, 2),
+(7, 'Middle Earth', 'Middle Earth PS3 game', '35', '2018-09-28', 'USA', '', '3', 0, 0, 7, 2);
 
 -- --------------------------------------------------------
 
@@ -103,7 +122,7 @@ INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `Gro
 (4, 'abmlk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'abmlk@gmail.com', 'ayoub abmlk', 0, 0, 1, '0000-00-00'),
 (5, 'hamza', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'hamza@gmail.com', 'hamza hamza', 0, 0, 1, '0000-00-00'),
 (12, 'moha', 'e54840d847d19a9beafe2faa6bf00583d2a9fee9', 'moha@gmail.com', 'mohamed mohamed', 0, 0, 1, '2018-09-18'),
-(13, 'gfgf', '1e99398da6cf1faa3f9a196382f1fadc7bb32fb7', 'fgfg@gfg', 'fgfgfd', 0, 0, 0, '2018-09-20');
+(13, 'Soufiane', '1e99398da6cf1faa3f9a196382f1fadc7bb32fb7', 'Soufiane@gmail.com', 'Soufiane Soufiane', 0, 0, 1, '2018-09-20');
 
 --
 -- Indexes for dumped tables
@@ -115,6 +134,14 @@ INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `Gro
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `Name` (`Name`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`CommentID`),
+  ADD KEY `items_comment` (`ItemID`),
+  ADD KEY `users_comment` (`UserID`);
 
 --
 -- Indexes for table `items`
@@ -139,13 +166,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -156,6 +189,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `items_comment` FOREIGN KEY (`ItemID`) REFERENCES `items` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_comment` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `items`
