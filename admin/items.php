@@ -352,6 +352,54 @@
 
     } elseif($do == 'update') { // Start Update Page
 
+      echo "<h1 class='text-center'>Update Item</h1>";
+      echo "<div class='container'>";
+
+      // Check if Item Access to These Page by Post Request
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        // Get Variables from the form
+        $item_id            = trim($_POST["itemid"]);
+        $item_name          = trim($_POST["name"]);
+        $item_description   = trim($_POST["description"]);
+        $item_price         = trim($_POST["price"]);
+        $item_country       = trim($_POST["country"]);
+        $item_status        = $_POST["status"];
+        $item_category      = $_POST["category"];
+        $item_member        = $_POST["member"];
+
+        // Validate The form
+        $form_errors = array();
+        if (empty($item_name)) { $form_errors[] = "<div class='alert alert-danger'>Item Name Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($item_description)) { $form_errors[] = "<div class='alert alert-danger'>Description Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($item_price)) { $form_errors[] = "<div class='alert alert-danger'>Price Can't be <strong>Empty</strong>.</div>"; }
+        if (empty($item_country)) { $form_errors[] = "<div class='alert alert-danger'>Country Can't be <strong>Empty</strong>.</div>"; }
+        if ($item_status == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the status.</div>"; }
+        if ($item_category == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the category.</div>"; }
+        if ($item_member == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the member.</div>"; }
+        // Check If Item Exist in Database
+        if(!checkItem("itemid", "items", $item_id)) { $form_errors[] = "<div class='alert alert-danger'>There's no item with this <strong>ID</strong>.</div>"; }
+
+        // Check If There's No Error, Proceed The Insert Operation
+        if (!empty($form_errors)) :
+          // Loop Into Errors Array and Echo It
+          redirectHome($form_errors, "back", (count($form_errors) + 2));
+        else:
+          // Insert Item Info in Database
+          $stmt = $con->prepare("UPDATE items SET Name = ?, Description = ?, Price = ?, Country_Made = ?, Status = ?, CatID = ?, MemberID = ? WHERE ItemID = ?");
+          $stmt->execute(array($item_name, $item_description, $item_price, $item_country, $item_status, $item_category, $item_member, $item_id));
+
+          // Echo Success Message
+          $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record updated.</div>";
+          redirectHome($msg, "back");
+        endif;
+
+      } else {
+        $msg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
+        redirectHome($msg);
+      }
+      echo "</div>";
+
     } elseif($do == 'delete') { // Start Delete Page
 
     } elseif($do == 'approve') { // Start Approve Page
