@@ -402,6 +402,27 @@
 
     } elseif($do == 'delete') { // Start Delete Page
 
+      // Check if Get Request itemid is Numeric & Get The Interger Value of it
+      $itemid = (isset($_GET["itemid"]) && is_numeric($_GET["itemid"])) ? intval($_GET["itemid"]) : 0;
+
+      // Start Check if Item Exist
+      echo '<h1 class="text-center">Delete Item</h1>';
+      echo '<div class="container">';
+      if (checkItem("ItemID", "items", $itemid)) :
+        $stmt = $con->prepare("DELETE FROM items WHERE ItemID = :itemid");
+        $stmt->bindParam(":itemid", $itemid);
+        $stmt->execute();
+
+        // Echo Success Message
+        $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record deleted.</div>";
+        redirectHome($msg, "back");
+      else:
+        $msg = "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
+        redirectHome($msg);
+      endif;
+      echo "</div>";
+      // End Check if Item Exist
+
     } elseif($do == 'approve') { // Start Approve Page
 
     } else { // Start 404 Page
