@@ -125,20 +125,24 @@ body {
   margin-top: 30px;
 }
 
-.latest .latest-users {
+.latest .latest-users,
+.latest .latest-items {
   margin-bottom: 0;
 }
 
-.latest .latest-users li {
+.latest .latest-users li,
+.latest .latest-items li {
   padding: 10px;
   overflow: hidden;
 }
 
-.latest .latest-users li:nth-child(odd) {
+.latest .latest-users li:nth-child(odd),
+.latest .latest-items li:nth-child(odd) {
   background-color: #eee;
 }
 
-.latest .latest-users li .btn-info {
+.latest .latest-users li .btn-info,
+.latest .latest-items li .btn-info {
   margin-right: 5px;
 }
 /* End Dashboard Page */

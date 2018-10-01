@@ -10,6 +10,13 @@
     $latestUsersCount = count($users);
     $latestUsers = ($latestUsers >= $latestUsersCount) ? ($latestUsersCount > 0 ? $latestUsersCount : "") : $latestUsers;
     // End Latest Members Section
+
+    // Start Latest Items Section
+    $latestItems = 5; // Number of latest items
+    $items = getLatest("*", "items", "ItemID", $latestItems); // Latest items array
+    $latestItemsCount = count($items);
+    $latestItems = ($latestItems >= $latestItemsCount) ? ($latestItemsCount > 0 ? $latestItemsCount : "") : $latestItems;
+    // End Latest Items Section
 ?>
     <!-- Start Dashboard Page -->
     <div class="home-stats text-center">
@@ -67,8 +74,23 @@
           </div>
             <div class="col-sm-6">
               <div class="panel panel-default">
-                <div class="panel-heading"><i class="fa fa-tags"></i> Latest Items</div>
-                <div class="panel-body">Test</div>
+                <div class="panel-heading"><i class="fa fa-tags"></i> Latest <?php echo $latestItems ?> Items</div>
+                <div class="panel-body">
+                  <ul class="list-unstyled latest-items">
+                    <?php
+                      if ($latestItemsCount <= 0):
+                        echo "<li class='text-center'>No Data to Show.</li>";
+                      else:
+                        foreach ($items as $item):
+                          echo '<li>' . $item["Name"];
+                            echo '<a href="items.php?do=edit&itemid=' . $item['ItemID'] . '" class="btn btn-success btn-xs pull-right"><i class="fa fa-edit"></i> Edit</a>';
+                            if ($item["Approve"] == 0) echo '<a href="items.php?do=approve&itemid=' . $item['ItemID'] . '" class="btn btn-info btn-xs pull-right"><i class="fa fa-check"></i> Approve</a>';
+                            echo "</li>";
+                        endforeach;
+                      endif;
+                    ?>
+                  </ul>
+                </div>
               </div>
             </div>
         </div>
