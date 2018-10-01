@@ -334,6 +334,7 @@
         redirectHome($msg);
       endif;
       echo "</div>";
+
     } else { // Start 404 Page
 
       echo '<h1 class="text-center">Page Not Found! (404)</h1>';

@@ -14,9 +14,13 @@
     $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
+      $query = "";
+      if (isset($_GET["page"]) && $_GET["page"] == "approve") {
+        $query = "AND Approve = 0";
+      }
       $stmt = $con->prepare("SELECT items.*, categories.Name AS Category, users.Username FROM items
                             INNER JOIN categories ON categories.ID = items.CatID
-                            INNER JOIN users ON users.UserID = items.MemberID");
+                            INNER JOIN users ON users.UserID = items.MemberID $query");
       $stmt->execute();
       $items = $stmt->fetchAll();
       $count = $stmt->rowCount();
@@ -49,6 +53,9 @@
                   <td>
                     <a href="?do=edit&itemid=<?php echo $item["ItemID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
                     <a href="?do=delete&itemid=<?php echo $item["ItemID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
+                    <?php if ($item["Approve"] == 0): ?>
+                      <a href="?do=approve&itemid=<?php echo $item["ItemID"]; ?>" class="btn btn-info btn-xs"><i class="fa fa-check"></i> Approve</a>
+                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -417,13 +424,31 @@
         $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record deleted.</div>";
         redirectHome($msg, "back");
       else:
-        $msg = "<div class='alert alert-danger'>There's no user with this <strong>ID</strong></div>";
+        $msg = "<div class='alert alert-danger'>There's no item with this <strong>ID</strong></div>";
         redirectHome($msg);
       endif;
       echo "</div>";
       // End Check if Item Exist
 
     } elseif($do == 'approve') { // Start Approve Page
+
+      // Check if Get Request itemid is Numeric & Get The Interger Value of it
+      $itemid = (isset($_GET["itemid"]) && is_numeric($_GET["itemid"])) ? intval($_GET["itemid"]) : 0;
+
+      echo '<h1 class="text-center">Approve Item</h1>';
+      echo '<div class="container">';
+      if (checkItem("ItemID", "items", $itemid)) :
+        $stmt = $con->prepare("UPDATE items SET Approve = 1 WHERE ItemID = ?");
+        $stmt->execute(array($itemid));
+
+        // Echo Success Message
+        $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record approved.</div>";
+        redirectHome($msg, "back");
+      else:
+        $msg = "<div class='alert alert-danger'>There's no item with this <strong>ID</strong></div>";
+        redirectHome($msg);
+      endif;
+      echo "</div>";
 
     } else { // Start 404 Page
 
