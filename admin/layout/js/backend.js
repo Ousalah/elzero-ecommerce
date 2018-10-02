@@ -1,6 +1,17 @@
 $(function () {
   "use strict";
 
+  // Dashboard
+  $(".toggle-latest-info").on("click", function () {
+    if ($(this).children("i").hasClass("fa-plus")) {
+      $(this).children("i").removeClass("fa-plus").addClass("fa-minus");
+      $(this).parent().next(".panel-body").fadeOut(100);
+    } else {
+      $(this).children("i").removeClass("fa-minus").addClass("fa-plus");
+      $(this).parent().next(".panel-body").fadeIn(100);
+    }
+  });
+
   // Trigger The SelectBoxIt
   $("select").selectBoxIt({
     autoWidth: false
@@ -61,16 +72,6 @@ $(function () {
       $(".categories .cat .full-view").fadeIn(200);
     } else {
       $(".categories .cat .full-view").fadeOut(200);
-    }
-  });
-
-  $(".toggle-latest-info").on("click", function () {
-    if ($(this).children("i").hasClass("fa-plus")) {
-      $(this).children("i").removeClass("fa-plus").addClass("fa-minus");
-      $(this).parent().next(".panel-body").fadeOut(100);
-    } else {
-      $(this).children("i").removeClass("fa-minus").addClass("fa-plus");
-      $(this).parent().next(".panel-body").fadeIn(100);
     }
   });
 
