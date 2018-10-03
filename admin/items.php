@@ -20,7 +20,8 @@
       }
       $stmt = $con->prepare("SELECT items.*, categories.Name AS Category, users.Username FROM items
                             INNER JOIN categories ON categories.ID = items.CatID
-                            INNER JOIN users ON users.UserID = items.MemberID $query");
+                            INNER JOIN users ON users.UserID = items.MemberID $query
+                            ORDER BY items.ItemID DESC");
       $stmt->execute();
       $items = $stmt->fetchAll();
       $count = $stmt->rowCount();

@@ -16,7 +16,8 @@
 
       $stmt = $con->prepare("SELECT comments.*, items.Name, users.Username FROM comments
                             INNER JOIN items ON items.ItemID = comments.ItemID
-                            INNER JOIN users ON users.UserID = comments.UserID");
+                            INNER JOIN users ON users.UserID = comments.UserID
+                            ORDER BY comments.CommentID DESC");
       $stmt->execute();
       $rows = $stmt->fetchAll();
       $count = $stmt->rowCount();

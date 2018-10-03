@@ -18,7 +18,7 @@
       if (isset($_GET["page"]) && $_GET["page"] == "pending") {
         $query = "AND RegStatus = 0";
       }
-      $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 1 $query");
+      $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 1 $query ORDER BY UserID DESC");
       $stmt->execute();
       $rows = $stmt->fetchAll();
       $count = $stmt->rowCount();
