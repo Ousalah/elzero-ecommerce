@@ -349,6 +349,48 @@
           </div>
           <!-- End Submit -->
         </form>
+
+        <!-- Start Item Comments -->
+<?php
+        $stmt = $con->prepare("SELECT comments.*, users.Username FROM comments
+                              INNER JOIN users ON users.UserID = comments.UserID
+                              WHERE comments.ItemID = ?");
+        $stmt->execute(array($itemid));
+        $rows = $stmt->fetchAll();
+        $count = $stmt->rowCount();
+?>
+        <h1 class='text-center'>Manage [ <?php echo $item["Name"] ?> ] Comments</h1>
+        <div class="table-responsive">
+          <table class="main-table text-center table table-bordered">
+            <tr>
+              <th>Comments</th>
+              <th>Username</th>
+              <th>Added Date</th>
+              <th>Control</th>
+            </tr>
+            <?php if ($count > 0): ?>
+              <?php foreach ($rows as $row): ?>
+                <tr>
+                  <td><?php echo $row["Comment"]; ?></td>
+                  <td><?php echo $row["Username"]; ?></td>
+                  <td><?php echo $row["Comment_Date"]; ?></td>
+                  <td>
+                    <a href="comments.php?do=edit&commentid=<?php echo $row["CommentID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                    <a href="comments.php?do=delete&commentid=<?php echo $row["CommentID"]; ?>" class="btn btn-danger btn-xs confirm"><i class="fa fa-remove"></i> Remove</a>
+                    <?php if ($row["Status"] == 0): ?>
+                      <a href="comments.php?do=approve&commentid=<?php echo $row["CommentID"]; ?>" class="btn btn-info btn-xs"><i class="fa fa-check"></i> Approve</a>
+                    <?php endif; ?>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan='6'>No Data to Show.</td>
+              </tr>
+            <?php endif; ?>
+          </table>
+        </div>
+        <!-- End Item Comments -->
 <?php
       else:
         $msg = "<div class='alert alert-danger'>There's no item with this <strong>ID</strong></div>";
