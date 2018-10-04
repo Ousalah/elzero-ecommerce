@@ -26,26 +26,10 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="app-nav">
-          <ul class="nav navbar-nav">
-            <li><a href="categories.php"><?php lang('ADMIN_CATEGORIES') ?></a></li>
-            <li><a href="items.php"><?php lang('ADMIN_ITEMS') ?></a></li>
-            <li><a href="members.php"><?php lang('ADMIN_MEMBERS') ?></a></li>
-            <li><a href="comments.php"><?php lang('ADMIN_COMMENTS') ?></a></li>
-            <li><a href="#"><?php lang('ADMIN_STATISTICS') ?></a></li>
-            <li><a href="#"><?php lang('ADMIN_LOGS') ?></a></li>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <?php if (isset($_SESSION['Username'])) { echo $_SESSION['Username']; } ?>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="members.php?do=edit&userid=<?php echo $_SESSION['ID']; ?>"><?php lang('ADMIN_EDIT_PROFILE') ?></a></li>
-                <li><a href="#"><?php lang('ADMIN_SETTINGS') ?></a></li>
-                <li><a href="logout.php"><?php lang('ADMIN_LOGOUT') ?></a></li>
-              </ul>
-            </li>
+            <?php foreach (getCat() as $category): ?>
+              <li><a href="<?php echo 'categories.php?pageid=' . $category['ID']; ?>"><?php echo $category['Name'] ?></a></li>
+            <?php endforeach; ?>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->

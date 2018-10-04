@@ -1,4 +1,26 @@
 <?php
+  ########################################################
+  ############    Function For In Frontend    ############
+  ########################################################
+
+  /*
+  ** Get categories fuction v1.0
+  ** Function to get categories from datebase
+  ** @return categories
+  */
+  function getCat() {
+    global $con;
+    $stmt = $con->prepare("SELECT * FROM categories ORDER BY ID ASC");
+    $stmt->execute();
+    return $stmt->fetchAll();
+  }
+
+
+
+  ########################################################
+  ############    Function Used In Backend    ############
+  ########################################################
+
   /*
   ** Title Function v1.0
   ** Title Function That Echo The Page Title In Case The Page
