@@ -62,7 +62,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td colspan='6'>No Data to Show.</td>
+                <td colspan='8'>No Data to Show.</td>
               </tr>
             <?php endif; ?>
           </table>

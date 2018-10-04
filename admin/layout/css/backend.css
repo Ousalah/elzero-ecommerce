@@ -273,6 +273,10 @@ h1 {
   top: 1px;
 }
 
+.categories .panel-body .category-empty {
+  padding: 8px;
+}
+
 .categories .options b {
   margin-left: 10px;
 }

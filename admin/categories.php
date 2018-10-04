@@ -59,7 +59,7 @@
                 <hr>
               <?php endforeach; ?>
             <?php else: ?>
-              <div class="text-center">No Data to Show.</div>
+              <div class="text-center category-empty">No Data to Show.</div>
             <?php endif; ?>
           </div>
         </div>

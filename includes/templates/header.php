@@ -10,6 +10,7 @@
   </head>
   <body>
     <!-- Start Navbar -->
+    <div class="upper-bar">Upper Bar</div>
     <nav class="navbar navbar-inverse">
       <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
