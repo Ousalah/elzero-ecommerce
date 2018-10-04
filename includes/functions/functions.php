@@ -15,6 +15,18 @@
     return $stmt->fetchAll();
   }
 
+  /*
+  ** Get items fuction v1.0
+  ** Function to get items from datebase
+  ** @return items
+  */
+  function getItems($catid) {
+    global $con;
+    $stmt = $con->prepare("SELECT * FROM items WHERE CatID = ? ORDER BY ItemID DESC");
+    $stmt->execute(array($catid));
+    return $stmt->fetchAll();
+  }
+
 
 
   ########################################################

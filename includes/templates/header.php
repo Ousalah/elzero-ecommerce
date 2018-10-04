@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="<?php echo $css . 'font-awesome.min.css' ?>">
     <link rel="stylesheet" href="<?php echo $css . 'jquery-ui.css' ?>">
     <link rel="stylesheet" href="<?php echo $css . 'jquery.selectBoxIt.css' ?>">
+    <link rel="stylesheet" href="<?php echo $css . 'frontend.css' ?>">
   </head>
   <body>
     <!-- Start Navbar -->
@@ -28,7 +29,7 @@
         <div class="collapse navbar-collapse" id="app-nav">
           <ul class="nav navbar-nav navbar-right">
             <?php foreach (getCat() as $category): ?>
-              <li><a href="<?php echo 'categories.php?pageid=' . $category['ID']; ?>"><?php echo $category['Name'] ?></a></li>
+              <li><a href="<?php echo 'categories.php?pageid=' . $category['ID'] . '&pagename=' . str_replace(" ", "-", strtolower($category['Name'])); ?>"><?php echo $category['Name'] ?></a></li>
             <?php endforeach; ?>
           </ul>
         </div><!-- /.navbar-collapse -->
