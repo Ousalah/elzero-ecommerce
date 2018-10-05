@@ -27,6 +27,18 @@
     return $stmt->fetchAll();
   }
 
+  /*
+  ** check user status fuction v1.0
+  ** Function to check if user activated or not (RegStatus)
+  ** @return True if RegStatus of user = 1 (user activated) else return False (user not activated)
+  */
+  function checkUserStatus($user) {
+    global $con;
+    $stmt = $con->prepare("SELECT Username, RegStatus FROM users WHERE username = ? AND RegStatus = 1");
+    $stmt->execute(array($user));
+    return ($stmt->rowCount() >= 1) ? true : false;
+  }
+
 
 
   ########################################################
