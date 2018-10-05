@@ -4,11 +4,15 @@ body {
   font-size: 16px;
 }
 
+.input-container {
+  position: relative;
+}
+
 .asterisk {
-  font-size: 30px;
+  font-size: 25px;
   position: absolute;
-  right: 30px;
-  top: 8px;
+  right: 10px;
+  top: 5px;
   color: #d20707;
 }
 
@@ -67,8 +71,42 @@ h1 {
 /* End Bootstrap Edits */
 
 /* Start Header */
-.upper-bar {}
+.upper-bar {
+  padding: 10px;
+  background-color: #fff;
+}
 /* End Header */
+
+/* Start Login */
+.login-page h1 {
+  color: #c0c0c0;
+}
+
+.login-page span {
+  cursor: pointer;
+}
+
+.login-page span.selected[data-class="login"] {
+  color: #337ab7;
+}
+
+.login-page span.selected[data-class="singup"] {
+  color: #398439;
+}
+
+.login-page form {
+  width: 380px;
+  margin: auto;
+}
+
+.login-page form input {
+  margin-bottom: 7px;
+}
+
+.login-page .singup {
+  display: none;
+}
+/* End Login */
 
 /* Start Category Page */
 .categories .item-box {

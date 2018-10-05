@@ -12,7 +12,9 @@
   <body>
     <!-- Start Navbar -->
     <div class="upper-bar">
-      <div class="container">Upper Bar</div>
+      <div class="container">
+        <a href="login.php"><span class="pull-right">Login/Singup</span></a>
+      </div>
     </div>
     <nav class="navbar navbar-inverse">
       <div class="container">
