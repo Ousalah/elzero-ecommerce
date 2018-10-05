@@ -17,8 +17,9 @@
           <span class="pull-right">
             <?php
               echo "Welcome " . $_SESSION['user'];
-              echo (checkUserStatus($_SESSION['user'])) ? "" : " Not approved";
+              echo (checkUserStatus($_SESSION['user'])) ? "" : " Not approved ";
             ?>
+            <a href="profile.php">My Profile</a>
           </span>
         <?php else: ?>
           <a href="login.php"><span class="pull-right">Login/Singup</span></a>
