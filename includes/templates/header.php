@@ -13,7 +13,11 @@
     <!-- Start Navbar -->
     <div class="upper-bar">
       <div class="container">
-        <a href="login.php"><span class="pull-right">Login/Singup</span></a>
+        <?php if (isset($_SESSION['user'])): ?>
+          <span class="pull-right"><?php echo "Welcome " . $_SESSION['user']; ?></span>
+        <?php else: ?>
+          <a href="login.php"><span class="pull-right">Login/Singup</span></a>
+        <?php endif; ?>
       </div>
     </div>
     <nav class="navbar navbar-inverse">
