@@ -20,6 +20,7 @@
               echo (checkUserStatus($_SESSION['user'])) ? "" : " Not approved ";
             ?>
             <a href="profile.php">My Profile</a>
+            <a href="logout.php">Logout</a>
           </span>
         <?php else: ?>
           <a href="login.php"><span class="pull-right">Login/Singup</span></a>
