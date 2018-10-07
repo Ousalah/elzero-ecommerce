@@ -20,10 +20,10 @@
   ** Function to get items from datebase
   ** @return items
   */
-  function getItems($catid) {
+  function getItems($where, $value) {
     global $con;
-    $stmt = $con->prepare("SELECT * FROM items WHERE CatID = ? ORDER BY ItemID DESC");
-    $stmt->execute(array($catid));
+    $stmt = $con->prepare("SELECT * FROM items WHERE $where = ? ORDER BY ItemID DESC");
+    $stmt->execute(array($value));
     return $stmt->fetchAll();
   }
 
