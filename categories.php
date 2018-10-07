@@ -1,4 +1,9 @@
-<?php include "init.php"; ?>
+<?php
+  session_start();
+  $pageTitle = 'Categories';
+
+  include "init.php";
+?>
 
 <div class="container categories">
   <h1 class="text-center"><?php echo ucwords(str_replace("-", " ", $_GET['pagename'])); ?></h1>
