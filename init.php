@@ -1,6 +1,14 @@
 <?php
 
+  // Error reporting
+  ini_set('display_errors', 'On');
+  error_reporting('E_ALL');
+
   include 'admin/connect.php';
+
+  // Check if Session user isset
+  $sessionUser = (isset($_SESSION['user'])) ? ucwords($_SESSION['user']) : "";
+
 
   // Routes
   $lang = "includes/languages/"; // Languages Directory
