@@ -82,7 +82,7 @@ h1 {
   color: #c0c0c0;
 }
 
-.login-page span {
+.login-page h1 span {
   cursor: pointer;
 }
 
@@ -94,8 +94,9 @@ h1 {
   color: #398439;
 }
 
-.login-page form {
-  width: 380px;
+.login-page form,
+.the-errors {
+  max-width: 380px;
   margin: auto;
 }
 
@@ -106,6 +107,24 @@ h1 {
 .login-page .singup {
   display: none;
 }
+
+.the-errors .msg {
+  padding: 10px;
+  text-align: left;
+  border-left: 5px solid  #e0e0e0;
+  border-right: 1px solid  #e0e0e0;
+  border-top: 1px solid  #e0e0e0;
+  border-bottom: 1px solid  #e0e0e0;
+  background-color: #fff;
+  margin-bottom: 8px;
+  color: #919191;
+}
+
+.the-errors .error {
+  border-left: 5px solid  #cd6858;
+}}
+
+.the-errors .success {}
 /* End Login */
 
 /* Start Category Page */

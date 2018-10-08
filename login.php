@@ -33,22 +33,43 @@
 
       $formErrors = array();
 
-      if (isset($_POST["username"])) {
-        $filterUsername = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
+      $username             = trim($_POST["username"]);
+      $password             = trim($_POST["password"]);
+      $passwordConfirmation = $_POST["password-confirmation"];
+      $email                = $_POST["email"];
+
+      if (isset($username)) {
+        $filterUsername = filter_var($username, FILTER_SANITIZE_STRING);
         if (strlen($filterUsername) < 4) { $formErrors[] = "Username can't be less than 4 characters."; }
+        if(checkItem("Username", "users", $filterUsername)) { $formErrors[] = "This username is already taken."; }
       }
 
-      if (isset($_POST["password"]) && isset($_POST["password-confirmation"])) {
-        if (empty($_POST["password"])) { $formErrors[] = "Sorry password can't be empty."; }
-        $pass1 = sha1($_POST["password"]);
-        $pass2 = sha1($_POST["password-confirmation"]);
-        if ($pass1 !== $pass2) { $formErrors[] = "Sorry password is not match."; }
+      if (isset($password) && isset($passwordConfirmation)) {
+        if (empty($password)) { $formErrors[] = "Sorry password can't be empty."; }
+        if (sha1($password) !== sha1($passwordConfirmation)) { $formErrors[] = "Sorry password is not match."; }
       }
 
-      if (isset($_POST["email"])) {
-        $filterEmail = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+      if (isset($email)) {
+        $filterEmail = filter_var($email, FILTER_SANITIZE_EMAIL);
         if (filter_var($filterEmail, FILTER_VALIDATE_EMAIL) != true) { $formErrors[] = "Email not valid."; }
+        if(checkItem("Email", "users", $filterEmail)) { $formErrors[] = "This email address is not available. choose a different one."; }
       }
+
+      // Check if there's no error, proceed the user add
+      if (empty($formErrors)) :
+        // Insert user info in database
+        $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, RegStatus, Date)
+        VALUES(:username, :password, :email, 0, now())");
+        $stmt->execute(array(
+          'username' => $filterUsername,
+          'password' => sha1($password),
+          'email'    => $filterEmail
+        ));
+
+        // Echo success message
+        $successMsg = "Congrat you are now registred user.";
+
+      endif;
 
     endif;
 
@@ -95,9 +116,11 @@
     <?php
       if (!empty($formErrors)) {
         foreach ($formErrors as $error) {
-          echo $error . "<br>";
+          echo '<div class="msg error">' . $error . '</div>';
         }
       }
+
+      if (isset($successMsg)) { echo '<div class="msg success">' . $successMsg . '</div>'; }
     ?>
   </div>
   <!-- End -->

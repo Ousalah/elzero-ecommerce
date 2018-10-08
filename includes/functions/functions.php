@@ -46,6 +46,28 @@
   ########################################################
 
   /*
+  ** Check Items Exist Function v1.0
+  ** Function to check Item in Database [ This Function Accept Parameters ]
+  ** @param $select = The item to select [ Example: user, item, category ]
+  ** @param $from = The table to select from [ Example: users, items, categories ]
+  ** @param $value = The value of select [ Example: mohamed, box, electonics ]
+  ** @return True if Item exist else return False
+  */
+  function checkItem($select, $from, $value, $exceptKey = "", $exceptValue = "") {
+    global $con;
+    $sql = "SELECT $select FROM $from WHERE $select = ?";
+    $values[] = $value;
+    if (!empty($exceptKey) && !empty($exceptValue)) {
+      $sql .= " AND $exceptKey != ?";
+      $values[] = $exceptValue;
+    }
+    $statement = $con->prepare($sql);
+    $statement->execute($values);
+
+    return ($statement->rowCount() >= 1) ? true : false;
+  }
+
+  /*
   ** Title Function v1.0
   ** Title Function That Echo The Page Title In Case The Page
   ** Has The Variable $pageTitle And Echo Default Title For Other Pages
@@ -101,28 +123,6 @@
       header("Location: {$url}");
       exit();
     }
-  }
-
-  /*
-  ** Check Items Exist Function v1.0
-  ** Function to check Item in Database [ This Function Accept Parameters ]
-  ** @param $select = The item to select [ Example: user, item, category ]
-  ** @param $from = The table to select from [ Example: users, items, categories ]
-  ** @param $value = The value of select [ Example: mohamed, box, electonics ]
-  ** @return True if Item exist else return False
-  */
-  function checkItem($select, $from, $value, $exceptKey = "", $exceptValue = "") {
-    global $con;
-    $sql = "SELECT $select FROM $from WHERE $select = ?";
-    $values[] = $value;
-    if (!empty($exceptKey) && !empty($exceptValue)) {
-      $sql .= " AND $exceptKey != ?";
-      $values[] = $exceptValue;
-    }
-    $statement = $con->prepare($sql);
-    $statement->execute($values);
-
-    return ($statement->rowCount() >= 1) ? true : false;
   }
 
   /*
