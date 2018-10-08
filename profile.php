@@ -28,11 +28,28 @@
         <div class="panel panel-primary">
           <div class="panel-heading">My Information</div>
           <div class="panel-body">
-            Name: <?php echo $sessionUser ?> <br>
-            Email: <?php echo $userInfo["Email"] ?> <br>
-            FullName: <?php echo $userInfo["FullName"] ?> <br>
-            Register Date: <?php echo $userInfo["Date"] ?> <br>
-            Favourite Category:
+            <ul class="list-unstyled">
+              <li>
+                <i class="fa fa-unlock-alt fa-fw"></i>
+                <span>Login Name</span>: <?php echo $sessionUser ?>
+              </li>
+              <li>
+                <i class="fa fa-envelope-o fa-fw"></i>
+                <span>Email</span>: <?php echo $userInfo["Email"] ?>
+              </li>
+              <li>
+                <i class="fa fa-user fa-fw"></i>
+                <span>FullName</span>: <?php echo $userInfo["FullName"] ?>
+              </li>
+              <li>
+                <i class="fa fa-calendar fa-fw"></i>
+                <span>Register Date</span>: <?php echo $userInfo["Date"] ?>
+              </li>
+              <li>
+                <i class="fa fa-star fa-fw"></i>
+                <span>Fav Category</span>:
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -58,7 +75,7 @@
                 <?php endforeach; ?>
               </div>
             <?php else: ?>
-              <div class="alert alert-default">You don't have any ads yet!</div>
+              <div>You don't have any ads yet!</div>
             <?php endif; ?>
           </div>
         </div>
@@ -71,7 +88,7 @@
           <div class="panel-body">
             <?php
             if ($countUserComments <= 0):
-              echo "<p class='text-center'>You don't have any commnet yet!.</p>";
+              echo "<div>You don't have any comment yet!.</div>";
             else:
               foreach ($userComments as $comment):
                 echo '<div class="comment-box">';
