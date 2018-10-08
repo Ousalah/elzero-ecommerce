@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2018 at 06:36 PM
+-- Generation Time: Oct 08, 2018 at 06:30 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -43,11 +43,11 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`ID`, `Name`, `Description`, `Ordering`, `Visibility`, `Allow_Comment`, `Allow_Ads`) VALUES
-(1, 'Electronics', '', 1000, 0, 0, 0),
-(2, 'PC', 'Pc description', 0, 0, 1, 0),
-(3, 'Mobile', 'this is category of mobile like samsung, iphone, htc, nokia', 10, 1, 0, 1),
-(7, 'PS3', 'PS3 Game', 0, 1, 1, 1),
-(8, 'PS4', 'PS4 Games', 0, 1, 1, 1);
+(9, 'Handmade', 'Handmade items', 1, 1, 1, 1),
+(10, 'Computers', 'Computers  items', 2, 1, 1, 1),
+(11, 'Cell Phones', 'Cell Phones items', 3, 1, 1, 1),
+(12, 'Clothing', 'Clothing items', 4, 1, 1, 1),
+(13, 'Tools', 'Home Tools items', 5, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -90,9 +90,9 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`ItemID`, `Name`, `Description`, `Price`, `Add_Date`, `Country_Made`, `Image`, `Status`, `Rating`, `Approve`, `CatID`, `MemberID`) VALUES
-(5, 'Dante\'s Inferno', 'Dante\'s Inferno PS3 Game', '20', '2018-09-28', 'Japan', '', '1', 0, 1, 7, 1),
-(6, 'Heavy Rain', 'Heavy Rain PS3 game', '30', '2018-09-28', 'Europe', '', '2', 0, 1, 7, 2),
-(7, 'Middle Earth', 'Middle Earth PS3 game', '35', '2018-09-28', 'USA', '', '3', 0, 0, 7, 2);
+(8, 'Acer Aspire E 15', 'Acer Aspire E 15 E5-576-392H comes with these high level specs: 8th Generation Intel Core i3-8130U Processor 2.2GHz with Turbo Boost Technology up to 3.4GHz, Windows 10 Home, 15.6\" Full HD (1920 x 1080) widescreen LED-backlit display, Intel UHD Graphics 620, 6GB Dual Channel Memory, 1TB 5400RPM SATA Hard Drive, 8X DVD Double-Layer Drive RW (M-DISC enabled), Secure Digital (SD) card reader, Acer True Harmony, Two Built-in Stereo Speakers, 802.11ac Wi-Fi featuring MU-MIMO technology (Dual-Band 2.4GHz and 5GHz), Bluetooth 4.1, HD Webcam (1280 x 720) supporting High Dynamic Range (HDR), 1 - USB 3.1 Type C Gen 1 port (up to 5 Gbps), 2 - USB 3.0 ports (one with power-off charging), 1 - USB 2.0 port, 1 - HDMI Port with HDCP support, 6-cell Li-Ion Battery (2800 mAh), Up to 13.5-hours Battery Life, 5.27 lbs. | 2.39 kg (system unit only) (NX.GRYAA.001).', '379.99', '2018-10-04', 'Europe', '', '1', 0, 0, 10, 1),
+(9, 'Logitech G502 Proteus Spectrum RGB Tunable', 'G502 features an advanced optical sensor for maximum tracking accuracy, customizable RGB lighting, custom game profiles, from 200 up to 12,000 DPI, and repositionable weights. Troubleshooting steps- • Unplug and re-plug the USB cable to ensure a good connection. • Try the mouse USB cable in another USB port on the computer. • Use only a powered USB port. • Try rebooting the computer. • If possible, test the mouse on another computer.', '49.98', '2018-10-04', 'USA', '', '2', 0, 0, 10, 2),
+(10, 'Samsung Galaxy S8', 'U.S. limited warranty. Latest Galaxy phone with Infinity Display, Duel Pixel Camera, iris scanning and Ip68-rated water and dust resistance. The phone comes with a stunning 5.8\" Quad HD+ Super AMOLED display (2960x1440) with 570 ppi and world\'s first 10nm processor.', '499.99', '2018-10-04', 'Korea', '', '1', 0, 0, 11, 4);
 
 -- --------------------------------------------------------
 
@@ -118,11 +118,13 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `GroupID`, `TrustStatus`, `RegStatus`, `Date`) VALUES
 (1, 'ousalah', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'mohamed@ousalah.com', 'Mohamed Ousalah', 1, 0, 1, '2018-09-07'),
-(2, 'mohamed', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'mohamed@gmail.com', 'mohamed mohamed', 0, 0, 1, '2018-09-10'),
+(2, 'mohamed', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'mohamed@gmail.com', 'mohamed mohamed', 0, 0, 0, '2018-09-10'),
 (4, 'abmlk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'abmlk@gmail.com', 'ayoub abmlk', 0, 0, 1, '0000-00-00'),
 (5, 'hamza', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'hamza@gmail.com', 'hamza hamza', 0, 0, 1, '0000-00-00'),
 (12, 'moha', 'e54840d847d19a9beafe2faa6bf00583d2a9fee9', 'moha@gmail.com', 'mohamed mohamed', 0, 0, 1, '2018-09-18'),
-(13, 'Soufiane', '1e99398da6cf1faa3f9a196382f1fadc7bb32fb7', 'Soufiane@gmail.com', 'Soufiane Soufiane', 0, 0, 1, '2018-09-20');
+(13, 'Soufiane', '1e99398da6cf1faa3f9a196382f1fadc7bb32fb7', 'Soufiane@gmail.com', 'Soufiane Soufiane', 0, 0, 1, '2018-09-20'),
+(14, 'osama', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'osama@gmail.com', 'osama osama', 0, 0, 1, '2018-10-05'),
+(15, 'karim', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'karim@gmail.com', '', 0, 0, 0, '2018-10-08');
 
 --
 -- Indexes for dumped tables
@@ -166,25 +168,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
