@@ -1,0 +1,77 @@
+ADD LANG TO TITLE OF PAGE
+
+في المستقبل سنعمل
+function
+to handle errors
+
+Password advanced trick - update
+
+improve the design  (the finale design will be very awesome)
+
+fix responsive design in add members page (fa-eye) :  small screen
+
+before delete of category check if there is items on it (if true transfer items to a new category and delete this category, else this category)
+
+awesome plugin for select component
+
+add trim() function when check if empty or not
+
+on items manage page, when on click on Category or Username get all items on it
+
+create class of errors (ex: there's no ID, ...)
+
+add number of views of items in Dashboard
+
+fix table display
+
+display total item views, and author
+
+change input field of Description to textarea
+
+supper security (secret token)
+
+
+
+
+
+------------------------------------
+My Future Updates
+----------------
+prevent non approved user to add item, comment, ... until he will be approved
+
+check if plural or singular (ex: latest 1 Comments, ...)
+
+in member page and pages like that, check if id == session["ID"], ...
+
+when redirect to previous page when insert or action like that, keep type value in fields
+
+category view option (keep selected view on reload page, ---- and if all cat = fadeIn then automaticaly set full view span as active, vice versa)
+
+add  page 404 if ?do=value not exist, and if pages not found, ...  (if..., else if..., else show 404)
+
+in function homeRedirect() update it to use HTTPReferer (page which I came from) =========> DONE
+
+improve homeReirect to show array of Messages =========> DONE
+
+update checkItem() function to implement it in when item updated (modify item value) =========> DONE
+
+
+unique email of user when insert or update =========> DONE
+
+
+
+
+
+
+
+
+
+------------------------------------
+.gitignore file
+----------------
+test/
+test.*
+*.zip
+images/
+TODO
+admin/layout/fonts
