@@ -20,7 +20,6 @@
     $countUserComments = $getUserComments->rowCount();
     // End get user comments
 
-
 ?>
     <h1 class="text-center">My Profile</h1>
     <div class="information block">
@@ -75,7 +74,7 @@
                 <?php endforeach; ?>
               </div>
             <?php else: ?>
-              <div>You don't have any ads yet!</div>
+              <div>You don't have any ads yet!, Create <a href="newad.php">new ad</a>.</div>
             <?php endif; ?>
           </div>
         </div>
