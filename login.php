@@ -30,7 +30,19 @@
       endif;
 
     else:
-      header('Location: dashboard.php');
+
+      $formErrors = array();
+
+      if (isset($_POST["username"])) {
+        $filterUsername = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
+        if (strlen($filterUsername) < 4) { $formErrors[] = "Username Can't be Less Than 4 Characters."; }
+      }
+      if (isset($_POST["password"]) && isset($_POST["password-confirmation"])) {
+        $pass1 = sha1($_POST["password"]);
+        $pass2 = sha1($_POST["password-confirmation"]);
+        if ($pass1 !== $pass2) { $formErrors[] = "Sorry password is not match."; }
+      }
+
     endif;
 
   }
@@ -56,24 +68,30 @@
   <!-- Start singup form -->
   <form class="singup" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
     <div class="input-container">
-      <input type="text" class="form-control" name="username" placeholder="Username" required autocomplete="off">
+      <input type="text" class="form-control" name="username" placeholder="Username" autocomplete="off">
     </div>
     <div class="input-container">
-      <input type="password" class="form-control" name="password" placeholder="Password" required autocomplete="new-password">
+      <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="new-password">
     </div>
     <div class="input-container">
-      <input type="password" class="form-control" name="password-confirmation" placeholder="Password Confirmation" required autocomplete="new-password">
+      <input type="password" class="form-control" name="password-confirmation" placeholder="Password Confirmation" autocomplete="new-password">
     </div>
     <div class="input-container">
-      <input type="email" class="form-control" name="email" required placeholder="example@domain.com">
+      <input type="email" class="form-control" name="email" placeholder="example@domain.com">
     </div>
     <input type="submit" class="btn btn-success btn-block" name="singup" value="Singup">
   </form>
   <!-- End singup form -->
 
   <!-- Start -->
-  <div class="the-errors">
-
+  <div class="the-errors text-center">
+    <?php
+      if (!empty($formErrors)) {
+        foreach ($formErrors as $error) {
+          echo $error . "<br>";
+        }
+      }
+    ?>
   </div>
   <!-- End -->
 </div>
