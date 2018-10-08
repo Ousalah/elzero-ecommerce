@@ -35,12 +35,19 @@
 
       if (isset($_POST["username"])) {
         $filterUsername = trim(filter_var($_POST["username"], FILTER_SANITIZE_STRING));
-        if (strlen($filterUsername) < 4) { $formErrors[] = "Username Can't be Less Than 4 Characters."; }
+        if (strlen($filterUsername) < 4) { $formErrors[] = "Username can't be less than 4 characters."; }
       }
+
       if (isset($_POST["password"]) && isset($_POST["password-confirmation"])) {
+        if (empty($_POST["password"])) { $formErrors[] = "Sorry password can't be empty."; }
         $pass1 = sha1($_POST["password"]);
         $pass2 = sha1($_POST["password-confirmation"]);
         if ($pass1 !== $pass2) { $formErrors[] = "Sorry password is not match."; }
+      }
+
+      if (isset($_POST["email"])) {
+        $filterEmail = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+        if (filter_var($filterEmail, FILTER_VALIDATE_EMAIL) != true) { $formErrors[] = "Email not valid."; }
       }
 
     endif;
@@ -68,16 +75,16 @@
   <!-- Start singup form -->
   <form class="singup" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
     <div class="input-container">
-      <input type="text" class="form-control" name="username" placeholder="Username" autocomplete="off">
+      <input type="text" class="form-control" name="username" placeholder="Username" required pattern=".{4,8}" title="Username must be between 4 and 8 characters" autocomplete="off">
     </div>
     <div class="input-container">
-      <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="new-password">
+      <input type="password" class="form-control" name="password" placeholder="Password" required minlength="4" autocomplete="new-password">
     </div>
     <div class="input-container">
-      <input type="password" class="form-control" name="password-confirmation" placeholder="Password Confirmation" autocomplete="new-password">
+      <input type="password" class="form-control" name="password-confirmation" placeholder="Password Confirmation" required minlength="4" autocomplete="new-password">
     </div>
     <div class="input-container">
-      <input type="email" class="form-control" name="email" placeholder="example@domain.com">
+      <input type="email" class="form-control" name="email" placeholder="example@domain.com" required>
     </div>
     <input type="submit" class="btn btn-success btn-block" name="singup" value="Singup">
   </form>
