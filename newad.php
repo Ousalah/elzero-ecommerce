@@ -7,9 +7,23 @@
   if (isset($_SESSION['user'])) {
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') :
-      echo "<pre>";
-      print_r($_POST);
-      echo "</pre>";
+
+      $formErrors = array();
+
+      $name          = filter_var(trim($_POST["name"]), FILTER_SANITIZE_STRING);
+      $description   = filter_var(trim($_POST["description"]), FILTER_SANITIZE_STRING);
+      $price         = filter_var(trim($_POST["price"]), FILTER_SANITIZE_NUMBER_FLOAT);
+      $country       = filter_var(trim($_POST["country"]), FILTER_SANITIZE_STRING);
+      $status        = filter_var($_POST["status"], FILTER_SANITIZE_NUMBER_INT);
+      $category      = filter_var($_POST["category"], FILTER_SANITIZE_NUMBER_INT);
+
+      if (strlen($name) < 4) { $formErrors[] = "Item name can't be less than 4 characters."; }
+      if (strlen($description) < 10) { $formErrors[] = "Item description can't be less than 10 characters."; }
+      if (strlen($country) < 2) { $formErrors[] = "Country can't be less than 2 characters."; }
+      if (empty($price)) { $formErrors[] = "Price can't be empty."; }
+      if (empty($status)) { $formErrors[] = "Status can't be empty."; }
+      if (empty($category)) { $formErrors[] = "Category can't be empty."; }
+
     endif;
 ?>
     <h1 class="text-center"><?php echo $pageTitle ?></h1>
@@ -26,7 +40,7 @@
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control live" data-class=".live-title" name="name" required="required" placeholder="Item Name">
+                      <input type="text" class="form-control live" data-class=".live-title" name="name" required placeholder="Item Name">
                     </div>
                   </div>
                   <!-- End Name -->
@@ -35,7 +49,7 @@
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Description</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control live" data-class=".live-description" name="description" required="required" placeholder="Item Description">
+                      <input type="text" class="form-control live" data-class=".live-description" name="description" required placeholder="Item Description">
                     </div>
                   </div>
                   <!-- End Description -->
@@ -44,7 +58,7 @@
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Price</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control live" data-class=".live-price" name="price" required="required" placeholder="Item Price">
+                      <input type="text" class="form-control live" data-class=".live-price" name="price" required placeholder="Item Price">
                     </div>
                   </div>
                   <!-- End Price -->
@@ -53,7 +67,7 @@
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Country</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" name="country" required="required" placeholder="Item manufacturing country">
+                      <input type="text" class="form-control" name="country" required placeholder="Item manufacturing country">
                     </div>
                   </div>
                   <!-- End Country -->
@@ -63,7 +77,7 @@
                     <label class="col-sm-3 control-label">Status</label>
                     <div class="col-sm-8">
                       <select name="status">
-                        <option value="0">...</option>
+                        <option value="">...</option>
                         <option value="1">New</option>
                         <option value="2">Like New</option>
                         <option value="3">Used</option>
@@ -78,7 +92,7 @@
                     <label class="col-sm-3 control-label">Category</label>
                     <div class="col-sm-8">
                       <select name="category">
-                        <option value="0">...</option>
+                        <option value="">...</option>
                         <?php
                           $stmt = $con->prepare("SELECT * FROM categories");
                           $stmt->execute();
@@ -118,6 +132,17 @@
               </div>
               <!-- End preview creation item -->
             </div>
+            <!-- Start looping through errors -->
+            <?php
+            if (!empty($formErrors)) {
+              foreach ($formErrors as $error) {
+                echo '<div class="alert alert-danger">' . $error . '</div>';
+              }
+            }
+
+            if (isset($successMsg)) { echo '<div class="alert alert-success">' . $successMsg . '</div>'; }
+            ?>
+            <!-- End looping through errors -->
           </div>
         </div>
       </div>

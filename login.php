@@ -111,7 +111,7 @@
   </form>
   <!-- End singup form -->
 
-  <!-- Start -->
+  <!-- Start looping through errors -->
   <div class="the-errors text-center">
     <?php
       if (!empty($formErrors)) {
@@ -123,7 +123,7 @@
       if (isset($successMsg)) { echo '<div class="msg success">' . $successMsg . '</div>'; }
     ?>
   </div>
-  <!-- End -->
+  <!-- End looping through errors -->
 </div>
 
 <?php include $tpl . "footer.php"; ?>
