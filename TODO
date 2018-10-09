@@ -30,6 +30,7 @@ change input field of Description to textarea
 
 supper security (secret token)
 
+select automatically category when you go to add item page (...)
 
 
 
@@ -43,9 +44,9 @@ check if plural or singular (ex: latest 1 Comments, ...)
 
 in member page and pages like that, check if id == session["ID"], ...
 
-when redirect to previous page when insert or action like that, keep type value in fields
+when redirect to previous page when insert or action like that, keep type value in fields - (use cookies)
 
-category view option (keep selected view on reload page, ---- and if all cat = fadeIn then automaticaly set full view span as active, vice versa)
+category view option (keep selected view on reload page, ---- and if all cat = fadeIn then automatically set full view span as active, vice versa)
 
 add  page 404 if ?do=value not exist, and if pages not found, ...  (if..., else if..., else show 404)
 

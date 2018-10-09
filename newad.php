@@ -24,6 +24,25 @@
       if (empty($status)) { $formErrors[] = "Status can't be empty."; }
       if (empty($category)) { $formErrors[] = "Category can't be empty."; }
 
+      // Check if there's no error, proceed the item add
+      if (empty($formErrors)) :
+        // Insert Item Info in Database
+        $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status, CatID, MemberID)
+                                VALUES(:name, :description, :price, now(), :country, :status, :category, :member)");
+        $stmt->execute(array(
+          'name'            => $name,
+          'description'     => $description,
+          'price'           => $price,
+          'country'         => $country,
+          'status'          => $status,
+          'category'        => $category,
+          'member'          => $_SESSION['userid']
+        ));
+
+        // Echo success message
+        if ($stmt) { $successMsg = "Item addes successfully."; }
+      endif;
+
     endif;
 ?>
     <h1 class="text-center"><?php echo $pageTitle ?></h1>
