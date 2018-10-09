@@ -53,10 +53,10 @@
         </div>
       </div>
     </div>
-    <div class="latest-ads block">
+    <div class="latest-items block">
       <div class="container">
         <div class="panel panel-primary">
-          <div class="panel-heading">Latest Ads</div>
+          <div class="panel-heading">Latest Items</div>
           <div class="panel-body">
             <?php if (checkItem("MemberID", "items", $userInfo['UserID'])): ?>
               <div class="row">
@@ -74,7 +74,7 @@
                 <?php endforeach; ?>
               </div>
             <?php else: ?>
-              <div>You don't have any ads yet!, Create <a href="newad.php">new ad</a>.</div>
+              <div>You don't have any item yet!, Create <a href="newad.php">new item</a>.</div>
             <?php endif; ?>
           </div>
         </div>

@@ -20,7 +20,7 @@
               echo (checkUserStatus($sessionUser)) ? "" : " Not approved ";
             ?>
             - <a href="profile.php">My Profile</a>
-            - <a href="newad.php">New Ad</a>
+            - <a href="newad.php">New Item</a>
             - <a href="logout.php">Logout</a>
           </span>
         <?php else: ?>

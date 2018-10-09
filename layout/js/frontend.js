@@ -36,17 +36,10 @@ $(function () {
     return confirm("Are you sure to so this action ?");
   });
 
-  // Start live preview, ad (item) creation
-  // Item title
-  $(".live-name").keyup(function () { $(".live-preview .caption h3").text($(this).val()); });
-  $(".live-preview .caption h3").on("click", function () { $(".live-name").focus(); });
+  // Start live preview, item (ad) creation
+  $(".live").keyup(function () { $($(this).data("class")).text($(this).val()); });
+  $(".live-preview [class^='live-']").on("click", function () {
+    $("input[data-class='." + $(this).attr("class").match(/live-[\w-]*\b/) + "']").focus();
+  });
 
-  // Item description
-  $(".live-description").keyup(function () { $(".live-preview .caption p").text($(this).val()); });
-  $(".live-preview .caption p").on("click", function () { $(".live-description").focus(); });
-
-  // Item price
-  $(".live-price").keyup(function () { $(".live-preview .item-price").text($(this).val() + "$"); });
-  $(".live-preview .item-price").on("click", function () { $(".live-price").focus(); });
-  // End live preview, ad (item) creation
 });
