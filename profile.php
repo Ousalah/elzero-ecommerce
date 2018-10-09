@@ -66,8 +66,9 @@
                       <span class="item-price"><?php echo $item["Price"] ?></span>
                       <img class="img-responsive" src="https://via.placeholder.com/350x200" alt="">
                       <div class="caption">
-                        <h3><?php echo $item["Name"] ?></h3>
+                        <h3><a href="items.php?itemid=<?php echo $item["ItemID"] ?>"><?php echo $item["Name"] ?></a></h3>
                         <p><?php echo $item["Description"] ?></p>
+                        <div class="item-date"><?php echo $item["Add_Date"] ?></div>
                       </div>
                     </div>
                   </div>

@@ -143,6 +143,19 @@ h1 {
   font-weight: bold;
   color: #fff;
 }
+
+.categories .item-box .caption h3,
+.categories .item-box .caption p {
+  overflow: hidden;
+}
+
+.categories .item-box .caption h3 {
+  height: 26px;
+}
+
+.categories .item-box .caption p {
+  height: 70px;
+}
 /* End Category Page */
 
 /* Start Profile */
@@ -180,6 +193,28 @@ h1 {
   top: 10px;
   font-weight: bold;
   color: #fff;
+}
+
+.latest-items .item-box .caption .item-date,
+.latest-items .item-box .caption h3,
+.latest-items .item-box .caption p {
+  overflow: hidden;
+}
+
+.latest-items .item-box .caption h3 {
+  height: 26px;
+}
+
+.latest-items .item-box .caption p {
+  height: 70px;
+}
+
+.latest-items .item-box .caption .item-date {
+  text-align: right;
+  font-size: 13px;
+  color: #aaa;
+  font-weight: bold;
+  height: 18px;
 }
 /* End Profile */
 
