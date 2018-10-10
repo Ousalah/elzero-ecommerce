@@ -263,6 +263,18 @@ h1 {
   display: inline-block;
   width: 120px;
 }
+
+.add-comment {
+  padding: 10px;
+}
+
+.add-comment h3 {
+  margin: 0 0 10px;
+}
+
+.add-comment textarea {
+  margin-bottom: 10px;
+}
 /* End item */
 
 /* Start our custom */
