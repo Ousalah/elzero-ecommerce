@@ -243,3 +243,30 @@ h1 {
   cursor: pointer;
 }
 /* End Create New Ad */
+
+/* Start item */
+.item-info h2 {
+  margin: 0;
+  padding: 0 10px;
+}
+
+.item-info p,
+.item-info ul li {
+  padding: 10px;
+}
+
+.item-info ul li:nth-child(odd) {
+  background-color: #eee;
+}
+
+.item-info ul li span {
+  display: inline-block;
+  width: 120px;
+}
+/* End item */
+
+/* Start our custom */
+.custom-hr {
+  border-top-color: #c9c9c9;
+}
+/* End our custom */

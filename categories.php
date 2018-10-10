@@ -6,7 +6,7 @@
 ?>
 
 <div class="container categories">
-  <h1 class="text-center"><?php echo ucwords(str_replace("-", " ", $_GET['pagename'])); ?></h1>
+  <h1 class="text-center">Category</h1>
   <?php $pageid = (isset($_GET['pageid']) && !empty($_GET['pageid'])) ? $_GET['pageid'] : 0; ?>
   <?php if (checkItem("ID", "categories", $pageid)): ?>
     <div class="row">
@@ -16,7 +16,7 @@
             <span class="item-price"><?php echo $item["Price"] ?></span>
             <img class="img-responsive" src="https://via.placeholder.com/350x200" alt="">
             <div class="caption">
-              <h3><?php echo $item["Name"] ?></h3>
+              <h3><a href="items.php?itemid=<?php echo $item["ItemID"] ?>"><?php echo $item["Name"] ?></a></h3>
               <p><?php echo $item["Description"] ?></p>
             </div>
           </div>

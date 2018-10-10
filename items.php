@@ -23,14 +23,40 @@
         <div class="col-md-3">
           <img class="img-responsive img-thumbnail center-block" src="https://via.placeholder.com/350x200" alt="">
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9 item-info">
           <h2><?php echo $item["Name"] ?></h2>
           <p class="lead"><?php echo $item["Description"] ?></p>
-          <span><?php echo $item["Add_Date"] ?></span>
-          <div>Price $ <?php echo $item["Price"] ?></div>
-          <div>Made in <?php echo $item["Country_Made"] ?></div>
-          <div>Category: <?php echo $item["CatName"] ?></div>
-          <div>Added by: <?php echo $item["Username"] ?></div>
+          <ul class="list-unstyled">
+            <li>
+              <i class="fa fa-calendar fa-fw"></i>
+              <span>Added Date</span> : <?php echo $item["Add_Date"] ?>
+            </li>
+            <li>
+              <i class="fa fa-money fa-fw"></i>
+              <span>Price</span> : $ <?php echo $item["Price"] ?>
+            </li>
+            <li>
+              <i class="fa fa-flag fa-fw"></i>
+              <span>Made in</span> : <?php echo $item["Country_Made"] ?>
+            </li>
+            <li>
+              <i class="fa fa-tag fa-fw"></i>
+              <span>Category</span> : <a href="<?php echo 'categories.php?pageid=' . $category['ID']; ?>"><?php echo $item["CatName"] ?></a>
+            </li>
+            <li>
+              <i class="fa fa-user fa-fw"></i>
+              <span>Added by</span> : <a href="#"><?php echo $item["Username"] ?></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr class="custom-hr">
+      <div class="row">
+        <div class="col-md-3">
+          <img class="img-responsive img-thumbnail center-block" src="https://via.placeholder.com/350x200" alt="">
+        </div>
+        <div class="col-md-9">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </div>
       </div>
     </div>
