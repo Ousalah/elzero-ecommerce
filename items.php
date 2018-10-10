@@ -65,14 +65,40 @@
               </form>
               <?php
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                  echo "comment : " . $_POST["comment"] . "<br />";
-                  echo "item : " . $itemid . "<br />";
-                  echo "user : " . $_SESSION["userid"];
+                  $formErrors = array();
+                  $comment   = filter_var(trim($_POST["comment"]), FILTER_SANITIZE_STRING);
+                  if (empty($comment)) { $formErrors[] = "Comment can't be empty."; }
+
+                  if (empty($formErrors)) :
+                    // Insert comments in database
+                    $stmt = $con->prepare("INSERT INTO comments(Comment, Status, Comment_Date, ItemID, UserID)
+                                            VALUES(:comment, 0, now(), :itemid, :userid)");
+                    $stmt->execute(array(
+                      'comment'  => $_POST["comment"],
+                      'itemid'   => $itemid,
+                      'userid'   => $_SESSION["userid"]
+                    ));
+
+                    // success message
+                    if ($stmt) { $successMsg = "Comment added successfully."; }
+                  endif;
                 }
+
+                // Start looping through errors
+                if (!empty($formErrors)) {
+                  foreach ($formErrors as $error) {
+                    echo '<div class="alert alert-danger">' . $error . '</div>';
+                  }
+                }
+
+                if (isset($successMsg)) { echo '<div class="alert alert-success">' . $successMsg . '</div>'; }
+                // End looping through errors
               ?>
             </div>
           </div>
         </div>
+
+
       <?php else: ?>
         <div class="lead"><a href="login.php">Login or Register</a> to add comment.</div>
       <?php endif; ?>

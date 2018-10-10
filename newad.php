@@ -40,7 +40,7 @@
         ));
 
         // Echo success message
-        if ($stmt) { $successMsg = "Item addes successfully."; }
+        if ($stmt) { $successMsg = "Item added successfully."; }
       endif;
 
     endif;

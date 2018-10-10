@@ -272,7 +272,8 @@ h1 {
   margin: 0 0 10px;
 }
 
-.add-comment textarea {
+.add-comment textarea,
+.add-comment input[type="submit"] {
   margin-bottom: 10px;
 }
 /* End item */
