@@ -76,6 +76,11 @@ h1 {
   padding: 10px;
   background-color: #fff;
 }
+
+.upper-bar .upper-menu-logged-in img {
+  width: 35px;
+  height: 35px;
+}
 /* End Header */
 
 /* Start Login */

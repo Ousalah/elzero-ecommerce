@@ -14,15 +14,19 @@
     <div class="upper-bar">
       <div class="container">
         <?php if (isset($_SESSION['user'])): ?>
-          <span class="pull-right">
-            <?php
-              echo "Welcome " . $sessionUser;
-              echo (checkUserStatus($sessionUser)) ? "" : " Not approved ";
-            ?>
-            - <a href="profile.php">My Profile</a>
-            - <a href="newad.php">New Item</a>
-            - <a href="logout.php">Logout</a>
-          </span>
+          <div class="pull-right btn-group upper-menu-logged-in">
+            <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <img class="img-thumbnail img-circle" src="https://via.placeholder.com/200x200" alt="">
+              <?php echo $sessionUser ?>
+              <?php echo (checkUserStatus($sessionUser)) ? "" : ' <i class="fa fa-exclamation-triangle fa-fw" title="You are not approved yet." aria-hidden="true"></i>'; ?>
+              <span class="caret"></span>
+            </span>
+            <ul class="dropdown-menu">
+              <li><a href="profile.php">My Profile</a></li>
+              <li><a href="newad.php">New Item</a></li>
+              <li><a href="logout.php">Logout</a></li>
+            </ul>
+          </div>
         <?php else: ?>
           <a href="login.php"><span class="pull-right">Login/Singup</span></a>
         <?php endif; ?>
