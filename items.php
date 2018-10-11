@@ -10,7 +10,7 @@
   $stmt = $con->prepare("SELECT items.*, categories.Name AS CatName, users.Username FROM items
                         INNER JOIN categories ON categories.ID = items.CatID
                         INNER JOIN users ON users.UserID = items.MemberID
-                        WHERE ItemID = ?");
+                        WHERE ItemID = ? AND Approve = 1");
   $stmt->execute(array($itemid));
   $count = $stmt->rowCount();
 
@@ -74,7 +74,7 @@
                     $stmt = $con->prepare("INSERT INTO comments(Comment, Status, Comment_Date, ItemID, UserID)
                                             VALUES(:comment, 0, now(), :itemid, :userid)");
                     $stmt->execute(array(
-                      'comment'  => $_POST["comment"],
+                      'comment'  => $comment,
                       'itemid'   => $itemid,
                       'userid'   => $_SESSION["userid"]
                     ));
@@ -137,7 +137,7 @@
 <?php
   else:
     echo "<div class='container'>
-            <div class='alert alert-danger'>There's no item with this <strong>ID</strong></div>
+            <div class='alert alert-danger'>There's no item with this <strong>ID</strong> or this item waiting for <strong>approval</strong>.</div>
           </div>";
   endif;
 ?>

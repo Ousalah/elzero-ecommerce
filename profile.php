@@ -64,7 +64,7 @@
                   <div class="col-sm-6 col-md-3">
                     <div class="thumbnail item-box">
                       <?php if ($item["Approve"] == 0): ?>
-                        Not Approve
+                        <span class="item-approved-status">Pending</span>
                       <?php endif; ?>
                       <span class="item-price"><?php echo $item["Price"] ?></span>
                       <img class="img-responsive" src="https://via.placeholder.com/350x200" alt="">

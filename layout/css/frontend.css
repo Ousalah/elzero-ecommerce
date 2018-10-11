@@ -152,10 +152,12 @@ h1 {
 
 .categories .item-box .caption h3 {
   height: 26px;
+  max-height: 26px;
 }
 
 .categories .item-box .caption p {
   height: 70px;
+  max-height: 70px;
 }
 /* End Category Page */
 
@@ -184,16 +186,30 @@ h1 {
 
 .latest-items .item-box {
   position: relative;
+  overflow: hidden;
+}
+
+.latest-items .item-box .item-price,
+.latest-items .item-box .item-approved-status {
+  padding: 2px 10px;
+  position: absolute;
+  font-weight: bold;
+  color: #fff;
 }
 
 .latest-items .item-box .item-price {
   background-color: #b4B4B4;
-  padding: 2px 10px;
-  position: absolute;
   left: 0;
   top: 10px;
-  font-weight: bold;
-  color: #fff;
+}
+
+.latest-items .item-box .item-approved-status {
+  background-color: #eb4d4b;
+  top: 30px;
+  right: -37px;
+  transform: rotate(48deg);
+  width: 150px;
+  text-align: center;
 }
 
 .latest-items .item-box .caption .item-date,
@@ -204,10 +220,12 @@ h1 {
 
 .latest-items .item-box .caption h3 {
   height: 26px;
+  max-height: 26px;
 }
 
 .latest-items .item-box .caption p {
   height: 70px;
+  max-height: 70px;
 }
 
 .latest-items .item-box .caption .item-date {
@@ -216,6 +234,7 @@ h1 {
   color: #aaa;
   font-weight: bold;
   height: 18px;
+  max-height: 18px;
 }
 /* End Profile */
 
