@@ -97,27 +97,46 @@
             </div>
           </div>
         </div>
-
-
       <?php else: ?>
         <div class="lead"><a href="login.php">Login or Register</a> to add comment.</div>
       <?php endif; ?>
       <!-- End add comment form -->
       <hr class="custom-hr">
       <!-- Start comments list -->
-      <div class="row">
-        <div class="col-md-2">
-          <img class="img-responsive img-thumbnail center-block" src="https://via.placeholder.com/350x200" alt="">
-        </div>
-        <div class="col-md-10">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </div>
-      </div>
+      <?php
+        $stmt = $con->prepare("SELECT comments.*, users.Username FROM comments
+          INNER JOIN users ON users.UserID = comments.UserID
+          WHERE ItemID = ? AND Status = 1
+          ORDER BY comments.CommentID DESC");
+        $stmt->execute(array($itemid));
+        $rows = $stmt->fetchAll();
+        $count = $stmt->rowCount();
+
+        if ($count > 0):
+          foreach ($rows as $row):
+      ?>
+            <div class="row">
+              <div class="col-md-2">
+                <img class="img-responsive img-thumbnail center-block" src="https://via.placeholder.com/350x200" alt="">
+              </div>
+              <div class="col-md-10">
+                <strong><?php echo $row["Username"] ?></strong>
+                <div><?php echo $row["Comment"] ?></div>
+              </div>
+            </div>
+      <?php
+          endforeach;
+        else:
+      ?>
+          <div>No Comments to Show.</div>
+      <?php endif; ?>
       <!-- End comments list -->
     </div>
 <?php
   else:
-    echo "<div class='alert alert-danger'>There's no item with this <strong>ID</strong></div>";
+    echo "<div class='container'>
+            <div class='alert alert-danger'>There's no item with this <strong>ID</strong></div>
+          </div>";
   endif;
 ?>
 
