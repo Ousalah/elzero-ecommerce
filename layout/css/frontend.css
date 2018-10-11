@@ -277,6 +277,34 @@ h1 {
 .add-comment input[type="submit"] {
   margin-bottom: 10px;
 }
+
+.comment-box {
+  margin-bottom: 40px;
+}
+
+.comment-box img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+.comment-box .lead {
+  background-color: #e0e0e0;
+  position: relative;
+  padding: 10px;
+  margin-top: 25px;
+}
+
+.comment-box .lead:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-width: 15px;
+  border-style: solid;
+  border-color: transparent #e0e0e0 transparent transparent;
+  position: absolute;
+  left: -30px;
+  top: 9px;
+}
 /* End item */
 
 /* Start our custom */

@@ -115,13 +115,15 @@
         if ($count > 0):
           foreach ($rows as $row):
       ?>
-            <div class="row">
-              <div class="col-md-2">
-                <img class="img-responsive img-thumbnail center-block" src="https://via.placeholder.com/350x200" alt="">
-              </div>
-              <div class="col-md-10">
-                <strong><?php echo $row["Username"] ?></strong>
-                <div><?php echo $row["Comment"] ?></div>
+            <div class="comment-box">
+              <div class="row">
+                <div class="col-sm-2 text-center">
+                  <img class="img-responsive img-thumbnail img-circle center-block" src="https://via.placeholder.com/200x200" alt="">
+                  <strong><?php echo $row["Username"] ?></strong>
+                </div>
+                <div class="col-sm-10">
+                  <p class="lead"><?php echo $row["Comment"] ?></p>
+                </div>
               </div>
             </div>
       <?php
