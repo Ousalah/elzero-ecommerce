@@ -60,9 +60,12 @@
           <div class="panel-body">
             <?php if (checkItem("MemberID", "items", $userInfo['UserID'])): ?>
               <div class="row">
-                <?php foreach (getItems("MemberID", $userInfo['UserID']) as $item): ?>
+                <?php foreach (getItems("MemberID", $userInfo['UserID'], "all") as $item): ?>
                   <div class="col-sm-6 col-md-3">
                     <div class="thumbnail item-box">
+                      <?php if ($item["Approve"] == 0): ?>
+                        Not Approve
+                      <?php endif; ?>
                       <span class="item-price"><?php echo $item["Price"] ?></span>
                       <img class="img-responsive" src="https://via.placeholder.com/350x200" alt="">
                       <div class="caption">

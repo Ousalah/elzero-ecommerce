@@ -16,13 +16,14 @@
   }
 
   /*
-  ** Get items fuction v1.0
+  ** Get items fuction v1.1
   ** Function to get items from datebase
   ** @return items
   */
-  function getItems($where, $value) {
+  function getItems($where, $value, $approve = null) {
     global $con;
-    $stmt = $con->prepare("SELECT * FROM items WHERE $where = ? ORDER BY ItemID DESC");
+    $sql = ($approve == null) ? "AND Approve = 1" : null;
+    $stmt = $con->prepare("SELECT * FROM items WHERE $where = ? $sql ORDER BY ItemID DESC");
     $stmt->execute(array($value));
     return $stmt->fetchAll();
   }
