@@ -60,7 +60,7 @@
             <div class="add-comment">
               <h3>Add Your Comment</h3>
               <form action="<?php echo $_SERVER["PHP_SELF"] . "?itemid=" . $itemid ?>" method="post">
-                <textarea class="form-control" name="comment" cols="30" rows="10"></textarea>
+                <textarea class="form-control" name="comment" required cols="30" rows="10"></textarea>
                 <input type="submit" class="btn btn-primary" value="Add Comment">
               </form>
               <?php

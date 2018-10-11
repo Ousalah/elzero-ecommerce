@@ -59,7 +59,7 @@
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control live" data-class=".live-title" name="name" required placeholder="Item Name">
+                      <input type="text" class="form-control live" data-class=".live-title" name="name" required pattern=".{4,}" title="Item name can't be less than 4 characters." placeholder="Item Name">
                     </div>
                   </div>
                   <!-- End Name -->
@@ -68,7 +68,7 @@
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Description</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control live" data-class=".live-description" name="description" required placeholder="Item Description">
+                      <input type="text" class="form-control live" data-class=".live-description" name="description" required pattern=".{10,}" title="Item description can't be less than 10 characters." placeholder="Item Description">
                     </div>
                   </div>
                   <!-- End Description -->
@@ -95,7 +95,7 @@
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Status</label>
                     <div class="col-sm-8">
-                      <select name="status">
+                      <select name="status" required>
                         <option value="">...</option>
                         <option value="1">New</option>
                         <option value="2">Like New</option>
@@ -110,7 +110,7 @@
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Category</label>
                     <div class="col-sm-8">
-                      <select name="category">
+                      <select name="category" required>
                         <option value="">...</option>
                         <?php
                           $stmt = $con->prepare("SELECT * FROM categories");

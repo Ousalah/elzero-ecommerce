@@ -18,6 +18,7 @@
             <div class="caption">
               <h3><a href="items.php?itemid=<?php echo $item["ItemID"] ?>"><?php echo $item["Name"] ?></a></h3>
               <p><?php echo $item["Description"] ?></p>
+              <div class="item-date"><?php echo $item["Add_Date"] ?></div>
             </div>
           </div>
         </div>
