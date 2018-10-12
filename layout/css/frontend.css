@@ -154,6 +154,7 @@ h1 {
   color: #fff;
 }
 
+.homepage .item-box .caption .item-date,
 .homepage .item-box .caption h3,
 .homepage .item-box .caption p {
   overflow: hidden;
@@ -165,6 +166,15 @@ h1 {
 
 .homepage .item-box .caption p {
   height: 70px;
+}
+
+.homepage .item-box .caption .item-date {
+  text-align: right;
+  font-size: 13px;
+  color: #aaa;
+  font-weight: bold;
+  height: 18px;
+  max-height: 18px;
 }
 /* End homepage */
 

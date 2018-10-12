@@ -8,9 +8,9 @@
   ** Function to get records from any table
   ** @return records
   */
-  function getAllFrom($table, $orderBy, $orderType = "DESC") {
+  function getAllFrom($table, $orderBy, $orderType = "DESC", $where = null) {
     global $con;
-    $stmt = $con->prepare("SELECT * FROM $table ORDER BY $orderBy $orderType");
+    $stmt = $con->prepare("SELECT * FROM $table $where ORDER BY $orderBy $orderType");
     $stmt->execute();
     return $stmt->fetchAll();
   }

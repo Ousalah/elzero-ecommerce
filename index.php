@@ -8,7 +8,7 @@
 
 <div class="container homepage">
   <div class="row">
-    <?php foreach (getAllFrom("items", "", "RAND()") as $item): ?>
+    <?php foreach (getAllFrom("items", "", "RAND()", "WHERE Approve = 1") as $item): ?>
       <div class="col-sm-6 col-md-3">
         <div class="thumbnail item-box">
           <span class="item-price"><?php echo $item["Price"] ?></span>
