@@ -4,15 +4,52 @@
   ########################################################
 
   /*
-  ** Get all fuction v1.0
+  ** Get all fuction v2.0
   ** Function to get records from any table
   ** @return records
   */
-  function getAllFrom($table, $orderBy, $orderType = "DESC", $where = null) {
-    global $con;
-    $stmt = $con->prepare("SELECT * FROM $table $where ORDER BY $orderBy $orderType");
-    $stmt->execute();
-    return $stmt->fetchAll();
+  function getAllFrom($params = array(
+      "feilds"     => '',
+      "table"     => '',
+      "where"     => null,
+      "orderBy"   => "",
+      "orderType" => 'DESC',
+      "limit"     => null
+    )) {
+    if (isset($params["table"]) && !empty($params["table"])) {
+      $params['feilds'] = (isset($params['feilds'])) ? $params['feilds']: '*';
+      $params['where'] = (isset($params['where'])) ? $params['where']: null;
+      $params['orderBy'] = (isset($params['orderBy'])) ? $params['orderBy']: "";
+      $params['orderType'] = (isset($params['orderType'])) ? strtoupper($params['orderType']): 'DESC';
+      $params['limit'] = (isset($params['limit'])) ? 'LIMIT ' . $params['limit']: null;
+
+      // if orderBy = null
+      if ($params['orderBy'] === "") {
+        // if orderType = RAND() => "...", else if = DESC or ASC or "" => ""
+        $params['orderType'] = ($params['orderType'] === "RAND()") ? "ORDER BY RAND()" : "";
+      } else {
+        if ($params['orderType'] === "" || $params['orderType'] == "DESC") :
+          $params['orderBy']   = "ORDER BY " . $params['orderBy'];
+          $params['orderType'] = "DESC";
+        elseif ($params['orderType'] == "ASC") :
+          $params['orderBy']   = "ORDER BY " . $params['orderBy'];
+          $params['orderType'] = "ASC";
+        elseif ($params['orderType'] == "RAND()") :
+          $params['orderBy']   = "ORDER BY ";
+          $params['orderType'] = "RAND()";
+        else :
+          $params['orderBy']   = "";
+          $params['orderType'] = "";
+        endif;
+      }
+
+      global $con;
+      $stmt = $con->prepare("SELECT {$params['feilds']} FROM {$params['table']} {$params['where']} {$params['orderBy']} {$params['orderType']} {$params['limit']}");
+      $stmt->execute();
+      return $stmt->fetchAll();
+    } else {
+      return array();
+    }
   }
 
   /*
