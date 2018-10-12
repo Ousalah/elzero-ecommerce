@@ -49,6 +49,7 @@
                 <span>Fav Category</span>:
               </li>
             </ul>
+            <a href="#" class="btn btn-primary">Edit profile</a>
           </div>
         </div>
       </div>

@@ -135,6 +135,39 @@ h1 {
 }
 /* End Login */
 
+/* Start homepage */
+.homepage {
+  margin-top: 30px;
+}
+
+.homepage .item-box {
+  position: relative;
+}
+
+.homepage .item-box .item-price {
+  background-color: #b4B4B4;
+  padding: 2px 10px;
+  position: absolute;
+  left: 0;
+  top: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.homepage .item-box .caption h3,
+.homepage .item-box .caption p {
+  overflow: hidden;
+}
+
+.homepage .item-box .caption h3 {
+  height: 26px;
+}
+
+.homepage .item-box .caption p {
+  height: 70px;
+}
+/* End homepage */
+
 /* Start Category Page */
 .categories .item-box {
   position: relative;
@@ -199,6 +232,10 @@ h1 {
   width: 120px;
 }
 
+.information .btn {
+  margin-top: 10px;
+}
+
 .latest-items .item-box {
   position: relative;
   overflow: hidden;
@@ -253,7 +290,7 @@ h1 {
 }
 /* End Profile */
 
-/* Start Create New Ad */
+/* Start Create New item */
 .create-item form .asterisk {
   font-size: 30px;
   right: 30px;
@@ -277,7 +314,7 @@ h1 {
 .create-item .live-preview [class^='live-'] {
   cursor: pointer;
 }
-/* End Create New Ad */
+/* End Create New item */
 
 /* Start item */
 .item-info h2 {

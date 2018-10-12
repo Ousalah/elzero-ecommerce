@@ -4,6 +4,18 @@
   ########################################################
 
   /*
+  ** Get all fuction v1.0
+  ** Function to get records from any table
+  ** @return records
+  */
+  function getAllFrom($table, $orderBy, $orderType = "DESC") {
+    global $con;
+    $stmt = $con->prepare("SELECT * FROM $table ORDER BY $orderBy $orderType");
+    $stmt->execute();
+    return $stmt->fetchAll();
+  }
+
+  /*
   ** Get categories fuction v1.0
   ** Function to get categories from datebase
   ** @return categories

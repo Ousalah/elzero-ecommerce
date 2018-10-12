@@ -113,11 +113,7 @@
                       <select name="category" required>
                         <option value="">...</option>
                         <?php
-                          $stmt = $con->prepare("SELECT * FROM categories");
-                          $stmt->execute();
-                          $categories = $stmt->fetchAll();
-
-                          foreach ($categories as $category) :
+                          foreach (getAllFrom("categories", "Name", "ASC") as $category) :
                             echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
                           endforeach;
                         ?>
