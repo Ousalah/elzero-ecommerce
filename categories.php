@@ -10,7 +10,14 @@
   <?php $pageid = (isset($_GET['pageid']) && !empty($_GET['pageid'])) ? $_GET['pageid'] : 0; ?>
   <?php if (checkItem("ID", "categories", $pageid)): ?>
     <div class="row">
-      <?php foreach (getItems("CatID", $_GET['pageid']) as $item): ?>
+      <?php
+        $args = array(
+          "table"       => "items",
+          "conditions"  => array('CatID' => $_GET['pageid'], 'Approve' => 1),
+          "orderBy"     => "ItemID",
+        );
+      ?>
+      <?php foreach (getFrom($args) as $item): ?>
         <div class="col-sm-6 col-md-3">
           <div class="thumbnail item-box">
             <span class="item-price"><?php echo $item["Price"] ?></span>

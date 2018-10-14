@@ -6,18 +6,19 @@
 
   if (isset($_SESSION['user'])) {
     // Start get user information
-    $getUser = $con->prepare("SELECT * FROM users WHERE Username = ?");
-    $getUser->execute(array($sessionUser));
-    $userInfo = $getUser->fetch();
+    $args = array("table" => "users", "conditions"  => array('Username' => $sessionUser));
+    $userInfo = getFrom($args, "fetch");
     // End get user information
 
     // Start get user comments
-    $getUserComments = $con->prepare("SELECT comments.*, items.Name FROM comments
-                          INNER JOIN items ON items.ItemID = comments.ItemID
-                          WHERE comments.UserID = ?");
-    $getUserComments->execute(array($userInfo["UserID"]));
-    $userComments = $getUserComments->fetchAll();
-    $countUserComments = $getUserComments->rowCount();
+    $args = array(
+      "fields"      => array("comments.*", "items.Name"),
+      "table"       => "comments",
+      "joins"       => array("table" => "items", "primary" => "ItemID", "foreign" => "ItemID"),
+      "conditions"  => array('comments.UserID' => $userInfo["UserID"]),
+      "orderBy"     => "comments.CommentID"
+    );
+    $userComments = getFrom($args);
     // End get user comments
 
 ?>
@@ -61,7 +62,8 @@
           <div class="panel-body">
             <?php if (checkItem("MemberID", "items", $userInfo['UserID'])): ?>
               <div class="row">
-                <?php foreach (getItems("MemberID", $userInfo['UserID'], "all") as $item): ?>
+                <?php $args = array("table" => "items", "conditions" => array('MemberID' => $userInfo['UserID']), "orderBy" => "ItemID"); ?>
+                <?php foreach (getFrom($args) as $item): ?>
                   <div class="col-sm-6 col-md-3">
                     <div class="thumbnail item-box">
                       <?php if ($item["Approve"] == 0): ?>
@@ -91,7 +93,7 @@
           <div class="panel-heading">Latest Comments</div>
           <div class="panel-body">
             <?php
-            if ($countUserComments <= 0):
+            if (empty($userComments)):
               echo "<div>You don't have any comment yet!.</div>";
             else:
               foreach ($userComments as $comment):

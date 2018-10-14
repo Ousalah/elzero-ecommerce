@@ -18,13 +18,15 @@
       $hashedPass = sha1($password);
 
       // Check if The User Exist in Database
-      $stmt = $con->prepare("SELECT UserID, Username, Password FROM users WHERE username = ? AND password = ?");
-      $stmt->execute(array($username, $hashedPass));
-      $row = $stmt->fetch();
-      $count = $stmt->rowCount();
+      $args = array(
+        "fields"      => array("UserID", "Username", "Password"),
+        "table"       => "users",
+        "conditions"  => array('username' => $username, 'password' => $hashedPass),
+      );
+      $row = getFrom($args,"fetch");
 
-      // If Count > 0 This Mean The Database Contain Record About This Username
-      if ($count > 0):
+      // If not empty row This Mean The Database Contain Record About This Username
+      if (!empty($row)) :
         $_SESSION['user']     = $username; // Register Session user
         $_SESSION['userid']   = $row["UserID"]; // Register Session userid
         header('Location: index.php'); // Redirect To Home Page

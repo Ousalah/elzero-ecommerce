@@ -18,6 +18,7 @@
   ** @param $params["orderBy"]    = field to use it in the ordering - (optional) (default = "")
   ** @param $params["orderType"]  = type of ordering - (optional) (default = "DESC") {options = "DESC", "ASC", "RAND()"}
   ** @param $params["limit"]      = number of records to get - (optional) (default = "")
+  ** @param $fetch                = type of fetch (optional) (default = "fetchAll") {options = "fetchAll", "fetch"}
   ** @return records
   */
   function getFrom($params = array(
@@ -28,7 +29,7 @@
       "orderBy"     => "",
       "orderType"   => 'DESC',
       "limit"       => null
-    )) {
+    ), $fetch = "fetchAll") {
 
     // check if isset table name, else return empty array
     if (isset($params["table"]) && !empty($params["table"])) {
@@ -108,35 +109,15 @@
       global $con;
       $stmt = $con->prepare("SELECT {$params['fields']} FROM {$params['table']} {$joins} {$where} {$params['orderBy']} {$params['orderType']} {$params['limit']}");
       $stmt->execute($values);
-      return $stmt->fetchAll();
+      if ($fetch === "fetch") {
+        return $stmt->fetch();
+      } else {
+        return $stmt->fetchAll();
+      }
+
     } else {
       return array();
     }
-  }
-
-  /*
-  ** Get categories fuction v1.0
-  ** Function to get categories from datebase
-  ** @return categories
-  */
-  function getCat() {
-    global $con;
-    $stmt = $con->prepare("SELECT * FROM categories ORDER BY ID ASC");
-    $stmt->execute();
-    return $stmt->fetchAll();
-  }
-
-  /*
-  ** Get items fuction v1.1
-  ** Function to get items from datebase
-  ** @return items
-  */
-  function getItems($where, $value, $approve = null) {
-    global $con;
-    $sql = ($approve == null) ? "AND Approve = 1" : null;
-    $stmt = $con->prepare("SELECT * FROM items WHERE $where = ? $sql ORDER BY ItemID DESC");
-    $stmt->execute(array($value));
-    return $stmt->fetchAll();
   }
 
   /*

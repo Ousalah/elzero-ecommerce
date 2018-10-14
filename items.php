@@ -7,15 +7,18 @@
   // Check if Get Request itemid is Numeric & Get The Interger Value of it
   $itemid = (isset($_GET["itemid"]) && is_numeric($_GET["itemid"])) ? intval($_GET["itemid"]) : 0;
 
-  $stmt = $con->prepare("SELECT items.*, categories.Name AS CatName, users.Username FROM items
-                        INNER JOIN categories ON categories.ID = items.CatID
-                        INNER JOIN users ON users.UserID = items.MemberID
-                        WHERE ItemID = ? AND Approve = 1");
-  $stmt->execute(array($itemid));
-  $count = $stmt->rowCount();
+  $args = array(
+    "fields"      => array("items.*", "categories.Name AS CatName", "users.Username"),
+    "table"       => "items",
+    "joins"       => array(
+                      array("table" => "categories", "primary" => "ID", "foreign" => "CatID"),
+                      array("table" => "users", "primary" => "UserID", "foreign" => "MemberID")
+                    ),
+    "conditions"  => array('ItemID' => $itemid, 'Approve' => 1),
+  );
+  $item = getFrom($args,"fetch");
 
-  if ($count > 0) :
-    $item = $stmt->fetch();
+  if (!empty($item)) :
 ?>
     <h1 class="text-center"><?php echo $item["Name"] ?></h1>
     <div class="container">
@@ -104,15 +107,16 @@
       <hr class="custom-hr">
       <!-- Start comments list -->
       <?php
-        $stmt = $con->prepare("SELECT comments.*, users.Username FROM comments
-          INNER JOIN users ON users.UserID = comments.UserID
-          WHERE ItemID = ? AND Status = 1
-          ORDER BY comments.CommentID DESC");
-        $stmt->execute(array($itemid));
-        $rows = $stmt->fetchAll();
-        $count = $stmt->rowCount();
+        $args = array(
+          "fields"      => array("comments.*", "users.Username"),
+          "table"       => "comments",
+          "joins"       => array("table" => "users", "primary" => "UserID", "foreign" => "UserID"),
+          "conditions"  => array('ItemID' => $itemid, 'Status' => 1),
+          "orderBy"     => "comments.CommentID",
+        );
+        $rows = getFrom($args);
 
-        if ($count > 0):
+        if (!empty($rows)):
           foreach ($rows as $row):
       ?>
             <div class="comment-box">

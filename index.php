@@ -8,13 +8,7 @@
 
 <div class="container homepage">
   <div class="row">
-    <?php
-      $args = array(
-        "table"       => "items",
-        "conditions"  => array('Approve' => 1),
-        "orderType"   => "RAND()",
-      );
-    ?>
+    <?php $args = array("table" => "items", "conditions"  => array('Approve' => 1), "orderType" => "RAND()"); ?>
     <?php foreach (getFrom($args) as $item): ?>
       <div class="col-sm-6 col-md-3">
         <div class="thumbnail item-box">

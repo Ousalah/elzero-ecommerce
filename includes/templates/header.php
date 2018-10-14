@@ -48,7 +48,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="app-nav">
           <ul class="nav navbar-nav navbar-right">
-            <?php foreach (getCat() as $category): ?>
+            <?php $args = array("table" => "categories", "orderBy" => "ID", "orderType" => "ASC"); ?>
+            <?php foreach (getFrom($args) as $category): ?>
               <li><a href="<?php echo 'categories.php?pageid=' . $category['ID']; ?>"><?php echo $category['Name'] ?></a></li>
             <?php endforeach; ?>
           </ul>

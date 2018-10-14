@@ -113,11 +113,7 @@
                       <select name="category" required>
                         <option value="">...</option>
                         <?php
-                          $args = array(
-                            "table"     => "categories",
-                            "orderBy"   => "Name",
-                            "orderType" => "ASC",
-                          );
+                          $args = array("table" => "categories", "orderBy" => "Name", "orderType" => "ASC");
                           foreach (getFrom($args) as $category) :
                             echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
                           endforeach;
