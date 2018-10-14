@@ -10,12 +10,12 @@
   <div class="row">
     <?php
       $args = array(
-        "table"     => "items",
-        "where"     => "WHERE Approve = 1",
-        "orderType" => "RAND()",
+        "table"       => "items",
+        "conditions"  => array('Approve' => 1),
+        "orderType"   => "RAND()",
       );
     ?>
-    <?php foreach (getAllFrom($args) as $item): ?>
+    <?php foreach (getFrom($args) as $item): ?>
       <div class="col-sm-6 col-md-3">
         <div class="thumbnail item-box">
           <span class="item-price"><?php echo $item["Price"] ?></span>

@@ -1,3 +1,16 @@
 ########################################################
 ############     Function Documentation     ############
 ########################################################
+INNER JOIN items ON items.ItemID = comments.ItemID
+"join" => array(
+              array( "type" => "INNER", "table" => "items", "primary" => "ItemID", "foreign" => "ItemID" ),
+              array( "type" => "INNER", "table" => "items", "primary" => "ItemID", "foreign" => "ItemID" )
+            );
+
+
+- 3/4 fields isset && ! empty
+- type accept only : inner, right, left, full + join else = inner (if in_array and not impty)
+
+$params["join"]["type"] . "JOIN" . $params["join"]["table"]
+. "ON" . $params["join"]["table"] . "." . $params["join"]["primary"] . " = "
+. $params["table"] . "." . $params["join"]["foreign"] . " "

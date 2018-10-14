@@ -6,23 +6,84 @@
   /*
   ** Get all fuction v2.0
   ** Function to get records from any table
+  ** @param $params["fields"]     = array of fields to be selected - (optional) (default = "*")
+  ** @param $params["table"]      = table name to select from it - (required)
+  ** @param $params["joins"]      = array of joins, has 4 params, if you will use multi join put each one in array
+                                    the table and primary and foreign params are (required)
+                                    the type param is (optional) and (default = "INNER") {options = "INNER", "RIGHT", "LEFT", "FULL"}
+                                    [ex single: array("table" => "tablename", "primary" => "ID", "foreign" => "ID")]
+                                    [ex multi: array(array("table" => "tablename", "primary" => "ID", "foreign" => "ID"))]
+                                    - (optional) (default = "")
+  ** @param $params["conditions"] = array of conditions [ex: array("key" => "value")] - (optional) (default = "")
+  ** @param $params["orderBy"]    = field to use it in the ordering - (optional) (default = "")
+  ** @param $params["orderType"]  = type of ordering - (optional) (default = "DESC") {options = "DESC", "ASC", "RAND()"}
+  ** @param $params["limit"]      = number of records to get - (optional) (default = "")
   ** @return records
   */
-  function getAllFrom($params = array(
-      "feilds"     => '',
-      "table"     => '',
-      "where"     => null,
-      "orderBy"   => "",
-      "orderType" => 'DESC',
-      "limit"     => null
+  function getFrom($params = array(
+      "fields"      => array(),
+      "table"       => '',
+      "joins"        => array(array("type" => "INNER", "table" => "", "primary" => "", "foreign" => "")),
+      "conditions"  => array(),
+      "orderBy"     => "",
+      "orderType"   => 'DESC',
+      "limit"       => null
     )) {
-    if (isset($params["table"]) && !empty($params["table"])) {
-      $params['feilds'] = (isset($params['feilds'])) ? $params['feilds']: '*';
-      $params['where'] = (isset($params['where'])) ? $params['where']: null;
-      $params['orderBy'] = (isset($params['orderBy'])) ? $params['orderBy']: "";
-      $params['orderType'] = (isset($params['orderType'])) ? strtoupper($params['orderType']): 'DESC';
-      $params['limit'] = (isset($params['limit'])) ? 'LIMIT ' . $params['limit']: null;
 
+    // check if isset table name, else return empty array
+    if (isset($params["table"]) && !empty($params["table"])) {
+      $params['fields']      = (isset($params['fields'])) ? $params['fields']: array('*');
+      $params['conditions']  = (isset($params['conditions'])) ? $params['conditions']: array();
+      $params['joins']       = (isset($params['joins'])) ? $params['joins']: "";
+      $params['orderBy']     = (isset($params['orderBy'])) ? $params['orderBy']: "";
+      $params['orderType']   = (isset($params['orderType'])) ? strtoupper($params['orderType']): 'DESC';
+      $params['limit']       = (isset($params['limit'])) ? 'LIMIT ' . $params['limit']: null;
+
+      // Start fields part
+      $params['fields'] = (!empty($params['fields']) && is_array($params['fields'])) ? implode(", ", $params['fields']) : '*';
+      // End fields part
+
+      // Start joins part
+      $joins = "";
+      if (!empty($params['joins']) && is_array($params['joins'])) :
+        $joinsOptions = array("INNER", "RIGHT", "LEFT", "FULL");
+        // check if has only one join
+        if (isset($params["joins"]["table"]) && !empty($params["joins"]["table"]) && isset($params["joins"]["primary"]) && !empty($params["joins"]["primary"]) && isset($params["joins"]["foreign"]) && !empty($params["joins"]["foreign"])) {
+          $params["joins"]["type"] = (isset($params["joins"]["type"]) && in_array(strtoupper($params["joins"]["type"]), $joinsOptions)) ? strtoupper($params["joins"]["type"]) : "INNER";
+
+          $joins .= $params["joins"]["type"] . " JOIN " . $params["joins"]["table"]
+                  . " ON " . $params["joins"]["table"] . "." . $params["joins"]["primary"] . " = "
+                  . $params["table"] . "." . $params["joins"]["foreign"];
+        } else {
+          // check if has more than one join
+          foreach ($params['joins'] as $key => $value) :
+            if (isset($params["joins"][$key]["table"]) && !empty($params["joins"][$key]["table"]) && isset($params["joins"][$key]["primary"]) && !empty($params["joins"][$key]["primary"]) && isset($params["joins"][$key]["foreign"]) && !empty($params["joins"][$key]["foreign"])) {
+              $params["joins"][$key]["type"] = (isset($params["joins"][$key]["type"]) && in_array(strtoupper($params["joins"][$key]["type"]), $joinsOptions)) ? strtoupper($params["joins"][$key]["type"]) : "INNER";
+
+              $joins .= $params["joins"][$key]["type"] . " JOIN " . $params["joins"][$key]["table"]
+                      . " ON " . $params["joins"][$key]["table"] . "." . $params["joins"][$key]["primary"] . " = "
+                      . $params["table"] . "." . $params["joins"][$key]["foreign"] . " ";
+            }
+          endforeach;
+        }
+      endif;
+      // End joins part
+
+      // Start where part
+      $where  = "";
+      $keys   = array();
+      $values = array();
+      if (!empty($params['conditions']) && is_array($params['conditions'])) {
+        $where = "WHERE";
+        foreach ($params['conditions'] as $key => $value) {
+          $keys[] = "$key = ?";
+          $values[] = $value;
+        }
+        $where = $where . " " . implode(" AND ", $keys);
+      }
+      // End where part
+
+      // Start order by part
       // if orderBy = null
       if ($params['orderBy'] === "") {
         // if orderType = RAND() => "...", else if = DESC or ASC or "" => ""
@@ -42,10 +103,11 @@
           $params['orderType'] = "";
         endif;
       }
+      // End order by part
 
       global $con;
-      $stmt = $con->prepare("SELECT {$params['feilds']} FROM {$params['table']} {$params['where']} {$params['orderBy']} {$params['orderType']} {$params['limit']}");
-      $stmt->execute();
+      $stmt = $con->prepare("SELECT {$params['fields']} FROM {$params['table']} {$joins} {$where} {$params['orderBy']} {$params['orderType']} {$params['limit']}");
+      $stmt->execute($values);
       return $stmt->fetchAll();
     } else {
       return array();

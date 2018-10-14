@@ -34,12 +34,21 @@ select automatically category when you go to add item page (...)
 
 fix item box with jQuery by adding div to each box
 
+fct ... for all website
+every thing will be dynamic in the end of the cours
+one fct for all stmt
+comment edit approved
+notification
+show excerpt of descriptin, and title, ... (max len string)
+
 
 
 
 ------------------------------------
 My Future Updates
 ----------------
+a problem i profile page, if user has all item not approved the msg that show he has not item does not appears
+
 prevent non approved user to add item, comment, ... until he will be approved
 
 check if plural or singular (ex: latest 1 Comments, ...)

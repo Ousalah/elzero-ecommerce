@@ -118,7 +118,7 @@
                             "orderBy"   => "Name",
                             "orderType" => "ASC",
                           );
-                          foreach (getAllFrom($args) as $category) :
+                          foreach (getFrom($args) as $category) :
                             echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
                           endforeach;
                         ?>
