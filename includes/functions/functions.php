@@ -22,14 +22,14 @@
   ** @return records
   */
   function getFrom($params = array(
-      "fields"      => array(),
-      "table"       => '',
-      "joins"        => array(array("type" => "INNER", "table" => "", "primary" => "", "foreign" => "")),
-      "conditions"  => array(),
-      "orderBy"     => "",
-      "orderType"   => 'DESC',
-      "limit"       => null
-    ), $fetch = "fetchAll") {
+    "fields"      => array(),
+    "table"       => '',
+    "joins"       => array(array("type" => "INNER", "table" => "", "primary" => "", "foreign" => "")),
+    "conditions"  => array(),
+    "orderBy"     => "",
+    "orderType"   => 'DESC',
+    "limit"       => null
+  ), $fetch = "fetchAll") {
 
     // check if isset table name, else return empty array
     if (isset($params["table"]) && !empty($params["table"])) {
@@ -109,11 +109,9 @@
       global $con;
       $stmt = $con->prepare("SELECT {$params['fields']} FROM {$params['table']} {$joins} {$where} {$params['orderBy']} {$params['orderType']} {$params['limit']}");
       $stmt->execute($values);
-      if ($fetch === "fetch") {
-        return $stmt->fetch();
-      } else {
-        return $stmt->fetchAll();
-      }
+      if ($fetch === "fetch") { return $stmt->fetch(); }
+      elseif ($fetch === "fetchColumn") { return $stmt->fetchColumn(); }
+      else { return $stmt->fetchAll(); }
 
     } else {
       return array();
@@ -216,48 +214,4 @@
       header("Location: {$url}");
       exit();
     }
-  }
-
-  /*
-  ** Count number of items function v2.0
-  ** Function to count number of items rows
-  ** @param $item = The item to count
-  ** @param $table = The table to choose from
-  ** @param $conditions = array of conditions as array [ Example: array(key => value,)]
-  ** @return item count
-  **
-  ** used in: [ dashboard.php => "Total Members", "Pending Memebers"]
-  */
-  function countItems($item, $table, $conditions = array()) {
-    global $con;
-    $where  = "";
-    $keys   = array();
-    $values = array();
-    if (!empty($conditions) && is_array($conditions)) {
-      $where = " WHERE ";
-      foreach ($conditions as $key => $value) {
-        $keys[] = "$key = ?";
-        $values[] = $value;
-      }
-    }
-
-    $keysDB = implode(" AND ", $keys);
-    $stmt = $con->prepare("SELECT COUNT($item) FROM $table $where $keysDB");
-    $stmt->execute($values);
-    return $stmt->fetchColumn();
-  }
-
-  /*
-  ** Get latest records fuction v1.0
-  ** Function to get latest items from datebase [ Users, Items, Commnents ]
-  ** $select = Field to select
-  ** $table = The table to choose from
-  ** $order = The field to order by it
-  ** $limit = Number of records to get
-  */
-  function getLatest($select, $table, $order, $limit = 5) {
-    global $con;
-    $stmt = $con->prepare("SELECT $select FROM $table ORDER BY $order DESC LIMIT $limit");
-    $stmt->execute();
-    return $stmt->fetchAll();
   }

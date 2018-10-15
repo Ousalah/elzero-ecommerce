@@ -79,46 +79,122 @@
     return ($statement->rowCount() >= 1) ? true : false;
   }
 
+
+  ########################################################
+  ############    Function For In Frontend    ############
+  ########################################################
+
   /*
-  ** Count number of items function v2.0
-  ** Function to count number of items rows
-  ** @param $item = The item to count
-  ** @param $table = The table to choose from
-  ** @param $conditions = array of conditions as array [ Example: array(key => value,)]
-  ** @return item count
-  **
-  ** used in: [ dashboard.php => "Total Members", "Pending Memebers"]
+  ** Get all fuction v2.0
+  ** Function to get records from any table
+  ** @param $params["fields"]     = array of fields to be selected - (optional) (default = "*")
+  ** @param $params["table"]      = table name to select from it - (required)
+  ** @param $params["joins"]      = array of joins, has 4 params, if you will use multi join put each one in array
+                                    the table and primary and foreign params are (required)
+                                    the type param is (optional) and (default = "INNER") {options = "INNER", "RIGHT", "LEFT", "FULL"}
+                                    [ex single: array("table" => "tablename", "primary" => "ID", "foreign" => "ID")]
+                                    [ex multi: array(array("table" => "tablename", "primary" => "ID", "foreign" => "ID"))]
+                                    - (optional) (default = "")
+  ** @param $params["conditions"] = array of conditions [ex: array("key" => "value")] - (optional) (default = "")
+  ** @param $params["orderBy"]    = field to use it in the ordering - (optional) (default = "")
+  ** @param $params["orderType"]  = type of ordering - (optional) (default = "DESC") {options = "DESC", "ASC", "RAND()"}
+  ** @param $params["limit"]      = number of records to get - (optional) (default = "")
+  ** @param $fetch                = type of fetch (optional) (default = "fetchAll") {options = "fetchAll", "fetch"}
+  ** @return records
   */
-  function countItems($item, $table, $conditions = array()) {
-    global $con;
-    $where  = "";
-    $keys   = array();
-    $values = array();
-    if (!empty($conditions) && is_array($conditions)) {
-      $where = " WHERE ";
-      foreach ($conditions as $key => $value) {
-        $keys[] = "$key = ?";
-        $values[] = $value;
+  function getFrom($params = array(
+    "fields"      => array(),
+    "table"       => '',
+    "joins"       => array(array("type" => "INNER", "table" => "", "primary" => "", "foreign" => "")),
+    "conditions"  => array(),
+    "orderBy"     => "",
+    "orderType"   => 'DESC',
+    "limit"       => null
+  ), $fetch = "fetchAll") {
+
+    // check if isset table name, else return empty array
+    if (isset($params["table"]) && !empty($params["table"])) {
+      $params['fields']      = (isset($params['fields'])) ? $params['fields']: array('*');
+      $params['conditions']  = (isset($params['conditions'])) ? $params['conditions']: array();
+      $params['joins']       = (isset($params['joins'])) ? $params['joins']: "";
+      $params['orderBy']     = (isset($params['orderBy'])) ? $params['orderBy']: "";
+      $params['orderType']   = (isset($params['orderType'])) ? strtoupper($params['orderType']): 'DESC';
+      $params['limit']       = (isset($params['limit'])) ? 'LIMIT ' . $params['limit']: null;
+
+      // Start fields part
+      $params['fields'] = (!empty($params['fields']) && is_array($params['fields'])) ? implode(", ", $params['fields']) : '*';
+      // End fields part
+
+      // Start joins part
+      $joins = "";
+      if (!empty($params['joins']) && is_array($params['joins'])) :
+        $joinsOptions = array("INNER", "RIGHT", "LEFT", "FULL");
+        // check if has only one join
+        if (isset($params["joins"]["table"]) && !empty($params["joins"]["table"]) && isset($params["joins"]["primary"]) && !empty($params["joins"]["primary"]) && isset($params["joins"]["foreign"]) && !empty($params["joins"]["foreign"])) {
+          $params["joins"]["type"] = (isset($params["joins"]["type"]) && in_array(strtoupper($params["joins"]["type"]), $joinsOptions)) ? strtoupper($params["joins"]["type"]) : "INNER";
+
+          $joins .= $params["joins"]["type"] . " JOIN " . $params["joins"]["table"]
+                  . " ON " . $params["joins"]["table"] . "." . $params["joins"]["primary"] . " = "
+                  . $params["table"] . "." . $params["joins"]["foreign"];
+        } else {
+          // check if has more than one join
+          foreach ($params['joins'] as $key => $value) :
+            if (isset($params["joins"][$key]["table"]) && !empty($params["joins"][$key]["table"]) && isset($params["joins"][$key]["primary"]) && !empty($params["joins"][$key]["primary"]) && isset($params["joins"][$key]["foreign"]) && !empty($params["joins"][$key]["foreign"])) {
+              $params["joins"][$key]["type"] = (isset($params["joins"][$key]["type"]) && in_array(strtoupper($params["joins"][$key]["type"]), $joinsOptions)) ? strtoupper($params["joins"][$key]["type"]) : "INNER";
+
+              $joins .= $params["joins"][$key]["type"] . " JOIN " . $params["joins"][$key]["table"]
+                      . " ON " . $params["joins"][$key]["table"] . "." . $params["joins"][$key]["primary"] . " = "
+                      . $params["table"] . "." . $params["joins"][$key]["foreign"] . " ";
+            }
+          endforeach;
+        }
+      endif;
+      // End joins part
+
+      // Start where part
+      $where  = "";
+      $keys   = array();
+      $values = array();
+      if (!empty($params['conditions']) && is_array($params['conditions'])) {
+        $where = "WHERE";
+        foreach ($params['conditions'] as $key => $value) {
+          $keys[] = "$key = ?";
+          $values[] = $value;
+        }
+        $where = $where . " " . implode(" AND ", $keys);
       }
+      // End where part
+
+      // Start order by part
+      // if orderBy = null
+      if ($params['orderBy'] === "") {
+        // if orderType = RAND() => "...", else if = DESC or ASC or "" => ""
+        $params['orderType'] = ($params['orderType'] === "RAND()") ? "ORDER BY RAND()" : "";
+      } else {
+        if ($params['orderType'] === "" || $params['orderType'] == "DESC") :
+          $params['orderBy']   = "ORDER BY " . $params['orderBy'];
+          $params['orderType'] = "DESC";
+        elseif ($params['orderType'] == "ASC") :
+          $params['orderBy']   = "ORDER BY " . $params['orderBy'];
+          $params['orderType'] = "ASC";
+        elseif ($params['orderType'] == "RAND()") :
+          $params['orderBy']   = "ORDER BY ";
+          $params['orderType'] = "RAND()";
+        else :
+          $params['orderBy']   = "";
+          $params['orderType'] = "";
+        endif;
+      }
+      // End order by part
+
+      global $con;
+      $stmt = $con->prepare("SELECT {$params['fields']} FROM {$params['table']} {$joins} {$where} {$params['orderBy']} {$params['orderType']} {$params['limit']}");
+      $stmt->execute($values);
+      if ($fetch === "fetch") { return $stmt->fetch(); }
+      elseif ($fetch === "fetchColumn") { return $stmt->fetchColumn(); }
+      else { return $stmt->fetchAll(); }
+
+    } else {
+      return array();
     }
-
-    $keysDB = implode(" AND ", $keys);
-    $stmt = $con->prepare("SELECT COUNT($item) FROM $table $where $keysDB");
-    $stmt->execute($values);
-    return $stmt->fetchColumn();
-  }
-
-  /*
-  ** Get latest records fuction v1.0
-  ** Function to get latest items from datebase [ Users, Items, Commnents ]
-  ** $select = Field to select
-  ** $table = The table to choose from
-  ** $order = The field to order by it
-  ** $limit = Number of records to get
-  */
-  function getLatest($select, $table, $order, $limit = 5) {
-    global $con;
-    $stmt = $con->prepare("SELECT $select FROM $table ORDER BY $order DESC LIMIT $limit");
-    $stmt->execute();
-    return $stmt->fetchAll();
   }

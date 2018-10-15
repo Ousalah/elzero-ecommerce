@@ -6,26 +6,41 @@
 
     // Start Latest Members Section
     $latestUsers = 5; // Number of latest users
-    $users = getLatest("*", "users", "UserID", $latestUsers); // Latest users array
+    $args = array(
+      "fields"      => array("UserID", "Username", "RegStatus"),
+      "table"       => "users",
+      "orderBy"     => "UserID",
+      "limit"       => $latestUsers
+    );
+    $users = getFrom($args); // Latest users array
     $latestUsersCount = count($users);
     $latestUsers = ($latestUsers >= $latestUsersCount) ? ($latestUsersCount > 0 ? $latestUsersCount : "") : $latestUsers;
     // End Latest Members Section
 
     // Start Latest Items Section
     $latestItems = 5; // Number of latest items
-    $items = getLatest("*", "items", "ItemID", $latestItems); // Latest items array
+    $args = array(
+      "fields"      => array("ItemID", "Name", "Approve"),
+      "table"       => "items",
+      "orderBy"     => "ItemID",
+      "limit"       => $latestItems
+    );
+    $items = getFrom($args); // Latest items array
     $latestItemsCount = count($items);
     $latestItems = ($latestItems >= $latestItemsCount) ? ($latestItemsCount > 0 ? $latestItemsCount : "") : $latestItems;
     // End Latest Items Section
 
     // Start Latest Comments Section
     $latestComments = 5; // Number of latest comments
-    $stmt = $con->prepare("SELECT comments.*, users.Username FROM comments
-                          INNER JOIN users ON users.UserID = comments.UserID
-                          ORDER BY comments.CommentID DESC LIMIT $latestComments");
-    $stmt->execute();
-    $comments = $stmt->fetchAll(); // Latest comments array
-    $latestCommentsCount = $stmt->rowCount();
+    $args = array(
+      "fields"      => array("comments.*", "users.Username"),
+      "table"       => "comments",
+      "joins"       => array("table" => "users", "primary" => "UserID", "foreign" => "UserID"),
+      "orderBy"     => "comments.CommentID",
+      "limit"       => $latestComments
+    );
+    $comments = getFrom($args); // Latest comments array
+    $latestCommentsCount = count($comments);
     $latestComments = ($latestComments >= $latestCommentsCount) ? ($latestCommentsCount > 0 ? $latestCommentsCount : "") : $latestComments;
     // End Latest Comments Section
 ?>
@@ -39,7 +54,8 @@
               <i class="fa fa-users"></i>
               <div class="info">
                 Total Members
-                <span><a href="members.php"><?php echo countItems("UserID", "users"); ?></a></span>
+                <?php $args = array("fields" => array("COUNT(UserID)"), "table" => "users"); ?>
+                <span><a href="members.php"><?php echo getFrom($args, "fetchColumn"); ?></a></span>
               </div>
             </div>
           </div>
@@ -48,7 +64,8 @@
               <i class="fa fa-user-plus"></i>
               <div class="info">
                 Pending Members
-                <span><a href="members.php?do=manage&page=pending"><?php echo countItems("UserID", "users", array('RegStatus' => 0)); ?></a></span>
+                <?php $args = array("fields" => array("COUNT(UserID)"), "table" => "users", "conditions" => array('RegStatus' => 0)); ?>
+                <span><a href="members.php?do=manage&page=pending"><?php echo getFrom($args, "fetchColumn"); ?></a></span>
               </div>
             </div>
           </div>
@@ -57,7 +74,8 @@
               <i class="fa fa-tags"></i>
               <div class="info">
                 Total Items
-                <span><a href="items.php"><?php echo countItems("ItemID", "items"); ?></a></span>
+                <?php $args = array("fields" => array("COUNT(ItemID)"), "table" => "items"); ?>
+                <span><a href="items.php"><?php echo getFrom($args, "fetchColumn"); ?></a></span>
               </div>
             </div>
           </div>
@@ -66,7 +84,8 @@
               <i class="fa fa-comments"></i>
               <div class="info">
                 Total Comments
-                <span><a href="comments.php"><?php echo countItems("CommentID", "comments"); ?></a></span>
+                <?php $args = array("fields" => array("COUNT(CommentID)"), "table" => "comments"); ?>
+                <span><a href="comments.php"><?php echo getFrom($args, "fetchColumn"); ?></a></span>
               </div>
             </div>
           </div>

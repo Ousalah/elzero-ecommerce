@@ -14,17 +14,22 @@
     $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
-      $query = "";
+      $conditions = array();
       if (isset($_GET["page"]) && $_GET["page"] == "approve") {
-        $query = "AND Approve = 0";
+        $conditions = array("Approve" => 0);
       }
-      $stmt = $con->prepare("SELECT items.*, categories.Name AS Category, users.Username FROM items
-                            INNER JOIN categories ON categories.ID = items.CatID
-                            INNER JOIN users ON users.UserID = items.MemberID $query
-                            ORDER BY items.ItemID DESC");
-      $stmt->execute();
-      $items = $stmt->fetchAll();
-      $count = $stmt->rowCount();
+      $args = array(
+        "fields"      => array("items.*", "categories.Name AS Category", "users.Username"),
+        "table"       => "items",
+        "joins"       => array(
+                          array("table" => "categories", "primary" => "ID", "foreign" => "CatID"),
+                          array("table" => "users", "primary" => "UserID", "foreign" => "MemberID")
+                        ),
+        "conditions"  => $conditions,
+        "orderBy"     => "items.ItemID"
+      );
+      $items = getFrom($args);
+      $count = count($items);
 ?>
 
       <h1 class='text-center'>Manage Items</h1>
@@ -135,9 +140,8 @@
               <select name="member">
                 <option value="0">...</option>
                 <?php
-                  $stmt = $con->prepare("SELECT * FROM users");
-                  $stmt->execute();
-                  $users = $stmt->fetchAll();
+                  $args = array("table" => "users", "orderBy" => "Username", "orderType" => "ASC");
+                  $users = getFrom($args);
 
                   foreach ($users as $user) :
                     echo '<option value="' . $user['UserID'] . '">' . $user['Username'] . '</option>';
@@ -155,9 +159,8 @@
               <select name="category">
                 <option value="0">...</option>
                 <?php
-                  $stmt = $con->prepare("SELECT * FROM categories");
-                  $stmt->execute();
-                  $categories = $stmt->fetchAll();
+                  $args = array("table" => "categories", "orderBy" => "Name", "orderType" => "ASC");
+                  $categories = getFrom($args);
 
                   foreach ($categories as $category) :
                     echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
@@ -240,15 +243,13 @@
       // Check if Get Request itemid is Numeric & Get The Interger Value of it
       $itemid = (isset($_GET["itemid"]) && is_numeric($_GET["itemid"])) ? intval($_GET["itemid"]) : 0;
 
-      $stmt = $con->prepare("SELECT * FROM items WHERE ItemID = ?");
-      $stmt->execute(array($itemid));
-      $item = $stmt->fetch();
-      $count = $stmt->rowCount();
+      $args = array("table" => "items", "conditions" => array("ItemID" => $itemid));
+      $item = getFrom($args, "fetch");
 
       // Start Check if Item Exist
       echo '<h1 class="text-center">Edit Item</h1>';
       echo '<div class="container">';
-      if ($count > 0) :
+      if (!empty($item)) :
 ?>
         <form class="form-horizontal" action="?do=update" method="post">
           <input type="hidden" name="itemid" value="<?php echo $itemid; ?>">
@@ -308,9 +309,8 @@
             <div class="col-sm-10 col-md-8">
               <select name="member">
                 <?php
-                  $stmt = $con->prepare("SELECT * FROM users");
-                  $stmt->execute();
-                  $users = $stmt->fetchAll();
+                  $args = array("table" => "users", "orderBy" => "Username", "orderType" => "ASC");
+                  $users = getFrom($args);
 
                   foreach ($users as $user) :
                     $selectedUser = ($item["MemberID"] == $user["UserID"]) ? "selected='selected'" : "";
@@ -328,9 +328,8 @@
             <div class="col-sm-10 col-md-8">
               <select name="category">
                 <?php
-                  $stmt = $con->prepare("SELECT * FROM categories");
-                  $stmt->execute();
-                  $categories = $stmt->fetchAll();
+                  $args = array("table" => "categories", "orderBy" => "Name", "orderType" => "ASC");
+                  $categories = getFrom($args);
 
                   foreach ($categories as $category) :
                     $selectedCategory = ($item["CatID"] == $category["ID"]) ? "selected='selected'" : "";
@@ -353,12 +352,15 @@
 
         <!-- Start Item Comments -->
 <?php
-        $stmt = $con->prepare("SELECT comments.*, users.Username FROM comments
-                              INNER JOIN users ON users.UserID = comments.UserID
-                              WHERE comments.ItemID = ?");
-        $stmt->execute(array($itemid));
-        $rows = $stmt->fetchAll();
-        $count = $stmt->rowCount();
+        $args = array(
+          "fields"      => array("comments.*", "users.Username"),
+          "table"       => "comments",
+          "joins"       => array("table" => "users", "primary" => "UserID", "foreign" => "UserID"),
+          "conditions"  => array('comments.ItemID' => $itemid),
+          "orderBy"     => "CommentID"
+        );
+        $rows = getFrom($args);
+        $count = count($rows);
 ?>
         <h1 class='text-center'>Manage [ <?php echo $item["Name"] ?> ] Comments</h1>
         <div class="table-responsive">

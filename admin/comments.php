@@ -14,13 +14,17 @@
     $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
-      $stmt = $con->prepare("SELECT comments.*, items.Name, users.Username FROM comments
-                            INNER JOIN items ON items.ItemID = comments.ItemID
-                            INNER JOIN users ON users.UserID = comments.UserID
-                            ORDER BY comments.CommentID DESC");
-      $stmt->execute();
-      $rows = $stmt->fetchAll();
-      $count = $stmt->rowCount();
+      $args = array(
+        "fields"      => array("comments.*", "items.Name", "users.Username"),
+        "table"       => "comments",
+        "joins"       => array(
+                          array("table" => "items", "primary" => "ItemID", "foreign" => "ItemID"),
+                          array("table" => "users", "primary" => "UserID", "foreign" => "UserID")
+                        ),
+        "orderBy"     => "comments.CommentID"
+      );
+      $rows = getFrom($args);
+      $count = count($rows);
 ?>
 
       <h1 class='text-center'>Manage Comments</h1>
@@ -67,15 +71,13 @@
       // Check if Get Request commentid is Numeric & Get The Interger Value of it
       $commentid = (isset($_GET["commentid"]) && is_numeric($_GET["commentid"])) ? intval($_GET["commentid"]) : 0;
 
-      $stmt = $con->prepare("SELECT * FROM comments WHERE CommentID = ?");
-      $stmt->execute(array($commentid));
-      $row = $stmt->fetch();
-      $count = $stmt->rowCount();
+      $args = array("table" => "comments", "conditions" => array("CommentID" => $commentid));
+      $row = getFrom($args, "fetch");
 
       // Start Check if Comment Exist
       echo '<h1 class="text-center">Edit Comment</h1>';
       echo '<div class="container">';
-      if ($count > 0) :
+      if (!empty($row)) :
 ?>
         <form class="form-horizontal" action="?do=update" method="post">
           <input type="hidden" name="commentid" value="<?php echo $commentid; ?>">

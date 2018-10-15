@@ -55,6 +55,8 @@ show excerpt of descriptin, and title, ... (max len string)
 ------------------------------------
 My Future Updates
 ----------------
+in admin dashboard fix position of btn (del, edit, approve)
+
 in profile add marker of comment not approved yet
 
 a problem i profile page, if user has all item not approved the msg that show he has not item does not appears

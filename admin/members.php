@@ -177,15 +177,17 @@
       // Check if Get Request userid is Numeric & Get The Interger Value of it
       $userid = (isset($_GET["userid"]) && is_numeric($_GET["userid"])) ? intval($_GET["userid"]) : 0;
 
-      $stmt = $con->prepare("SELECT * FROM users WHERE UserID = ? LIMIT 1");
-      $stmt->execute(array($userid));
-      $row = $stmt->fetch();
-      $count = $stmt->rowCount();
+      $args = array(
+        "table"       => "users",
+        "conditions"  => array('UserID' => $userid),
+        "limit"       => 1
+      );
+      $row = getFrom($args, "fetch");
 
       // Start Check if Member Exist
       echo '<h1 class="text-center">Edit Member</h1>';
       echo '<div class="container">';
-      if ($count > 0) :
+      if (!empty($row)) :
 ?>
         <form class="form-horizontal" action="?do=update" method="post">
           <input type="hidden" name="userid" value="<?php echo $userid; ?>">

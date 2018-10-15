@@ -16,15 +16,16 @@
     $hashedPass = sha1($password);
 
     // Check if The User Exist in Database
-    $stmt = $con->prepare("SELECT UserID, Username, Password
-                          FROM users
-                          WHERE username = ? AND password = ? AND GroupID = 1 LIMIT 1");
-    $stmt->execute(array($username, $hashedPass));
-    $row = $stmt->fetch();
-    $count = $stmt->rowCount();
+    $args = array(
+      "fields"      => array("UserID", "Username", "Password"),
+      "table"       => "users",
+      "conditions"  => array('username' => $username, "password" => $hashedPass, "GroupID" => 1),
+      "limit"       => 1
+    );
+    $row = getFrom($args, "fetch");
 
     // If Count > 0 This Mean The Database Contain Record About This Username
-    if ($count > 0) {
+    if (!empty($row)) {
       $_SESSION['Username'] = $username; // Register Session Name
       $_SESSION['ID']       = $row['UserID']; // Register Session ID
       header('Location: dashboard.php'); // Redirect To Dashboard Page

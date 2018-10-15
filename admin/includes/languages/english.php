@@ -16,7 +16,7 @@
       'ADMIN_STATISTICS'   => 'Statistics',
       'ADMIN_LOGS'         => 'Logs',
       //------------------------------------
-      'ADMIN_VISIT_SHOP'   => 'visit Shop',
+      'ADMIN_VISIT_SHOP'   => 'Visit Shop',
       'ADMIN_EDIT_PROFILE' => 'Edit Profile',
       'ADMIN_SETTINGS'     => 'Settings',
       'ADMIN_LOGOUT'       => 'Logout',

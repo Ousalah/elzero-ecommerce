@@ -20,10 +20,9 @@
         $sort = strtoupper($_GET["sort"]);
       }
 
-      $stmt = $con->prepare("SELECT * FROM categories ORDER BY Ordering $sort");
-      $stmt->execute();
-      $rows = $stmt->fetchAll();
-      $count = $stmt->rowCount();
+      $args = array("table" => "categories", "orderBy" => "Ordering", "orderType" => $sort);
+      $rows = getFrom($args);
+      $count = count($rows);
 ?>
 
       <h1 class='text-center'>Manage Categories</h1>
@@ -220,15 +219,13 @@
       // Check if Get Request catid is Numeric & Get The Interger Value of it
       $catid = (isset($_GET["catid"]) && is_numeric($_GET["catid"])) ? intval($_GET["catid"]) : 0;
 
-      $stmt = $con->prepare("SELECT * FROM categories WHERE ID = ?");
-      $stmt->execute(array($catid));
-      $row = $stmt->fetch();
-      $count = $stmt->rowCount();
+      $args = array("table" => "categories", "conditions"  => array("ID" => $catid));
+      $row = getFrom($args, "fetch");
 
       // Start Check if Category Exist
       echo '<h1 class="text-center">Edit Category</h1>';
       echo '<div class="container">';
-      if ($count > 0) :
+      if (!empty($row)) :
 ?>
 
         <form class="form-horizontal" action="?do=update" method="post">
