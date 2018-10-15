@@ -14,14 +14,17 @@
     $do = (isset($_GET['do']) && !empty($_GET['do'])) ? $_GET['do'] : 'manage';
     if ($do == 'manage') { // Start Manage Page
 
-      $query = "";
+      $conditions = array(array('key' => "GroupID", "operator" => "!=", "value" => 1));
       if (isset($_GET["page"]) && $_GET["page"] == "pending") {
-        $query = "AND RegStatus = 0";
+        $conditions["RegStatus"] = 0;
       }
-      $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 1 $query ORDER BY UserID DESC");
-      $stmt->execute();
-      $rows = $stmt->fetchAll();
-      $count = $stmt->rowCount();
+      $args = array(
+        "table"       => "users",
+        "conditions"  => $conditions,
+        "orderBy"     => "UserID"
+      );
+      $rows = getFrom($args);
+      $count = count($rows);
 ?>
 
       <h1 class='text-center'>Manage Members</h1>

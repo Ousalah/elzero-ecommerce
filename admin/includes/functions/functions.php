@@ -85,7 +85,7 @@
   ########################################################
 
   /*
-  ** Get all fuction v2.0
+  ** Get all fuction v2.1
   ** Function to get records from any table
   ** @param $params["fields"]     = array of fields to be selected - (optional) (default = "*")
   ** @param $params["table"]      = table name to select from it - (required)
@@ -95,7 +95,14 @@
                                     [ex single: array("table" => "tablename", "primary" => "ID", "foreign" => "ID")]
                                     [ex multi: array(array("table" => "tablename", "primary" => "ID", "foreign" => "ID"))]
                                     - (optional) (default = "")
-  ** @param $params["conditions"] = array of conditions [ex: array("key" => "value")] - (optional) (default = "")
+  ** @param $params["conditions"] = array of conditions, you have tow format of condition to pass it:
+                                    if you will only use equal sign (eq: =) pass the condition like that [ex 1: array("key" => "value")]
+                                    else if you will use different operators (=, <, >, ...) pass the condition like that
+                                    [ex 2: array(array('key' => "", "operator" => "=", "value" => "")]
+                                    in this case the key and value params are (required)
+                                    and the operator param is (optional) and (default = "=")
+                                    you can also use a mixe of 'ex 1' and 'ex 2'
+                                    [ex 3: array("key" => "value"), array('key' => "", "operator" => "=", "value" => "")] - (optional) (default = "")
   ** @param $params["orderBy"]    = field to use it in the ordering - (optional) (default = "")
   ** @param $params["orderType"]  = type of ordering - (optional) (default = "DESC") {options = "DESC", "ASC", "RAND()"}
   ** @param $params["limit"]      = number of records to get - (optional) (default = "")
@@ -106,7 +113,7 @@
     "fields"      => array(),
     "table"       => '',
     "joins"       => array(array("type" => "INNER", "table" => "", "primary" => "", "foreign" => "")),
-    "conditions"  => array(),
+    "conditions"  => array(array('key' => "", "operator" => "=", "value" => "")),
     "orderBy"     => "",
     "orderType"   => 'DESC',
     "limit"       => null
@@ -158,8 +165,14 @@
       if (!empty($params['conditions']) && is_array($params['conditions'])) {
         $where = "WHERE";
         foreach ($params['conditions'] as $key => $value) {
-          $keys[] = "$key = ?";
-          $values[] = $value;
+          if (!empty($value) && is_array($value)) :
+            $value["operator"] = (isset($value["operator"]) && !empty($value["operator"])) ? $value["operator"] : "=";
+            $keys[] = "{$value["key"]} {$value["operator"]} ?";
+            $values[] = $value["value"];
+          else :
+            $keys[] = "$key = ?";
+            $values[] = $value;
+          endif;
         }
         $where = $where . " " . implode(" AND ", $keys);
       }

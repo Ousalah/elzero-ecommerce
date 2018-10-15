@@ -4,8 +4,10 @@ ADD LANG TO TITLE OF PAGE
 if ($count > 0) { echo "<br /> records not empty - count"; } else { echo "<br /> records empty - count"; }
 if (!empty($item)) { echo "<br /> records not empty - !empty"; } else { echo "<br /> records empty - !empty"; }
 
+
+echo "<br /> SELECT {$params['fields']} FROM {$params['table']} {$joins} {$where} {$params['orderBy']} {$params['orderType']} {$params['limit']}";
 echo "<pre>";
-print_r($item);
+print_r($params);
 echo "</pre>";
 
 في المستقبل سنعمل
@@ -55,6 +57,10 @@ show excerpt of descriptin, and title, ... (max len string)
 ------------------------------------
 My Future Updates
 ----------------
+multi currency feature, with auto converter
+
+in the ultimate getFrom function add possibility to choose the Logical Operators (AND, OR, ...) in WHERE part
+
 in admin dashboard fix position of btn (del, edit, approve)
 
 in profile add marker of comment not approved yet
