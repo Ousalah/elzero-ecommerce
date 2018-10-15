@@ -4,7 +4,7 @@
   ########################################################
 
   /*
-  ** Get all fuction v2.1
+  ** Get all fuction v2.2
   ** Function to get records from any table
   ** @param $params["fields"]     = array of fields to be selected - (optional) (default = "*")
   ** @param $params["table"]      = table name to select from it - (required)
@@ -83,15 +83,23 @@
       $values = array();
       if (!empty($params['conditions']) && is_array($params['conditions'])) {
         $where = "WHERE";
-        foreach ($params['conditions'] as $key => $value) {
-          if (!empty($value) && is_array($value)) :
-            $value["operator"] = (isset($value["operator"]) && !empty($value["operator"])) ? $value["operator"] : "=";
-            $keys[] = "{$value["key"]} {$value["operator"]} ?";
-            $values[] = $value["value"];
-          else :
-            $keys[] = "$key = ?";
-            $values[] = $value;
-          endif;
+        // if single condition [ex 2]
+        if (isset($params['conditions']["key"]) && isset($params['conditions']["value"])) {
+          $params['conditions']["operator"] = (isset($params['conditions']["operator"]) && !empty($params['conditions']["operator"])) ? $params['conditions']["operator"] : "=";
+          $keys[] = "{$params['conditions']["key"]} {$params['conditions']["operator"]} ?";
+          $values[] = $params['conditions']["value"];
+        } else {
+          // if single condition [ex 1] or multi condition [ex 3]
+          foreach ($params['conditions'] as $key => $value) {
+            if (!empty($value) && is_array($value)) :
+              $value["operator"] = (isset($value["operator"]) && !empty($value["operator"])) ? $value["operator"] : "=";
+              $keys[] = "{$value["key"]} {$value["operator"]} ?";
+              $values[] = $value["value"];
+            else :
+              $keys[] = "$key = ?";
+              $values[] = $value;
+            endif;
+          }
         }
         $where = $where . " " . implode(" AND ", $keys);
       }

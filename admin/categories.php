@@ -99,6 +99,31 @@
           </div>
           <!-- End Ordering -->
 
+          <!-- Start Parent Category -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Parent</label>
+            <div class="col-sm-10 col-md-8">
+              <select name="parent">
+                <option value="0">None</option>
+                <?php
+                  $args = array(
+                    "fields"     => array("ID", "Name"),
+                    "table"      => "categories",
+                    "conditions" => array("key" => "parent", "value" => 0),
+                    "orderBy"    => "Name",
+                    "orderType"  => "ASC"
+                  );
+                  $categories = getFrom($args);
+
+                  foreach ($categories as $category) :
+                    echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
+                  endforeach;
+                ?>
+              </select>
+            </div>
+          </div>
+          <!-- End Parent Category -->
+
           <!-- Start Visibility -->
           <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Visibile</label>
@@ -176,6 +201,7 @@
         $category_name            = $_POST["name"];
         $category_description     = $_POST["description"];
         $category_ordering        = $_POST["ordering"];
+        $category_parent          = $_POST["parent"];
         $category_visibility      = $_POST["visibility"];
         $category_allow_comment   = $_POST["allow_comment"];
         $category_allow_ads       = $_POST["allow_ads"];
@@ -192,12 +218,13 @@
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
           // Insert Category Info in Database
-          $stmt = $con->prepare("INSERT INTO categories(Name, Description, Ordering, Visibility, Allow_Comment, Allow_Ads)
-          VALUES(:name, :description, :ordering, :visibility, :allow_comment, :allow_ads)");
+          $stmt = $con->prepare("INSERT INTO categories(Name, Description, Ordering, parent, Visibility, Allow_Comment, Allow_Ads)
+          VALUES(:name, :description, :ordering, :parent, :visibility, :allow_comment, :allow_ads)");
           $stmt->execute(array(
             'name'           => $category_name,
             'description'    => $category_description,
             'ordering'       => $category_ordering,
+            'parent'         => $category_parent,
             'visibility'     => $category_visibility,
             'allow_comment'  => $category_allow_comment,
             'allow_ads'      => $category_allow_ads

@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2018 at 06:30 PM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.4
+-- Generation Time: Oct 16, 2018 at 12:22 AM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -32,6 +30,7 @@ CREATE TABLE `categories` (
   `ID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` text NOT NULL,
+  `parent` int(11) NOT NULL,
   `Ordering` int(11) NOT NULL DEFAULT '0',
   `Visibility` tinyint(4) NOT NULL DEFAULT '1' COMMENT '0 = hidden, 1 = visible',
   `Allow_Comment` tinyint(4) NOT NULL DEFAULT '1',
@@ -42,12 +41,16 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`ID`, `Name`, `Description`, `Ordering`, `Visibility`, `Allow_Comment`, `Allow_Ads`) VALUES
-(9, 'Handmade', 'Handmade items', 1, 1, 1, 1),
-(10, 'Computers', 'Computers  items', 2, 1, 1, 1),
-(11, 'Cell Phones', 'Cell Phones items', 3, 1, 1, 1),
-(12, 'Clothing', 'Clothing items', 4, 1, 1, 1),
-(13, 'Tools', 'Home Tools items', 5, 1, 1, 1);
+INSERT INTO `categories` (`ID`, `Name`, `Description`, `parent`, `Ordering`, `Visibility`, `Allow_Comment`, `Allow_Ads`) VALUES
+(9, 'Handmade', 'Handmade items', 0, 1, 1, 1, 1),
+(10, 'Computers', 'Computers  items', 0, 2, 1, 1, 1),
+(11, 'Cell Phones', 'Cell Phones items', 0, 3, 1, 1, 1),
+(12, 'Clothing', 'Clothing items', 0, 4, 1, 1, 1),
+(13, 'Tools', 'Home Tools items', 0, 5, 1, 1, 1),
+(14, 'Nokia', 'Nokia mobile phone', 11, 2, 1, 1, 1),
+(15, 'Samsung', '', 11, 0, 1, 1, 1),
+(16, 'LG', '', 11, 0, 1, 1, 1),
+(17, 'Boxes', '', 0, 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -63,6 +66,17 @@ CREATE TABLE `comments` (
   `ItemID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`CommentID`, `Comment`, `Status`, `Comment_Date`, `ItemID`, `UserID`) VALUES
+(1, 'very good item', 1, '2018-10-08', 8, 1),
+(2, 'good item', 1, '2018-10-11', 10, 15),
+(5, 'this is a big heading changing the code', 1, '2018-10-11', 8, 1),
+(6, 'Hi friends', 1, '2018-10-11', 8, 5),
+(7, 'nice', 0, '2018-10-14', 8, 1);
 
 -- --------------------------------------------------------
 
@@ -90,9 +104,10 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`ItemID`, `Name`, `Description`, `Price`, `Add_Date`, `Country_Made`, `Image`, `Status`, `Rating`, `Approve`, `CatID`, `MemberID`) VALUES
-(8, 'Acer Aspire E 15', 'Acer Aspire E 15 E5-576-392H comes with these high level specs: 8th Generation Intel Core i3-8130U Processor 2.2GHz with Turbo Boost Technology up to 3.4GHz, Windows 10 Home, 15.6\" Full HD (1920 x 1080) widescreen LED-backlit display, Intel UHD Graphics 620, 6GB Dual Channel Memory, 1TB 5400RPM SATA Hard Drive, 8X DVD Double-Layer Drive RW (M-DISC enabled), Secure Digital (SD) card reader, Acer True Harmony, Two Built-in Stereo Speakers, 802.11ac Wi-Fi featuring MU-MIMO technology (Dual-Band 2.4GHz and 5GHz), Bluetooth 4.1, HD Webcam (1280 x 720) supporting High Dynamic Range (HDR), 1 - USB 3.1 Type C Gen 1 port (up to 5 Gbps), 2 - USB 3.0 ports (one with power-off charging), 1 - USB 2.0 port, 1 - HDMI Port with HDCP support, 6-cell Li-Ion Battery (2800 mAh), Up to 13.5-hours Battery Life, 5.27 lbs. | 2.39 kg (system unit only) (NX.GRYAA.001).', '379.99', '2018-10-04', 'Europe', '', '1', 0, 0, 10, 1),
-(9, 'Logitech G502 Proteus Spectrum RGB Tunable', 'G502 features an advanced optical sensor for maximum tracking accuracy, customizable RGB lighting, custom game profiles, from 200 up to 12,000 DPI, and repositionable weights. Troubleshooting steps- • Unplug and re-plug the USB cable to ensure a good connection. • Try the mouse USB cable in another USB port on the computer. • Use only a powered USB port. • Try rebooting the computer. • If possible, test the mouse on another computer.', '49.98', '2018-10-04', 'USA', '', '2', 0, 0, 10, 2),
-(10, 'Samsung Galaxy S8', 'U.S. limited warranty. Latest Galaxy phone with Infinity Display, Duel Pixel Camera, iris scanning and Ip68-rated water and dust resistance. The phone comes with a stunning 5.8\" Quad HD+ Super AMOLED display (2960x1440) with 570 ppi and world\'s first 10nm processor.', '499.99', '2018-10-04', 'Korea', '', '1', 0, 0, 11, 4);
+(8, 'Acer Aspire E 15', 'Acer Aspire E 15 E5-576-392H comes with these high level specs: 8th Generation Intel Core i3-8130U Processor 2.2GHz with Turbo Boost Technology up to 3.4GHz, Windows 10 Home, 15.6\" Full HD (1920 x 1080) widescreen LED-backlit display, Intel UHD Graphics 620, 6GB Dual Channel Memory, 1TB 5400RPM SATA Hard Drive, 8X DVD Double-Layer Drive RW (M-DISC enabled), Secure Digital (SD) card reader, Acer True Harmony, Two Built-in Stereo Speakers, 802.11ac Wi-Fi featuring MU-MIMO technology (Dual-Band 2.4GHz and 5GHz), Bluetooth 4.1, HD Webcam (1280 x 720) supporting High Dynamic Range (HDR), 1 - USB 3.1 Type C Gen 1 port (up to 5 Gbps), 2 - USB 3.0 ports (one with power-off charging), 1 - USB 2.0 port, 1 - HDMI Port with HDCP support, 6-cell Li-Ion Battery (2800 mAh), Up to 13.5-hours Battery Life, 5.27 lbs. | 2.39 kg (system unit only) (NX.GRYAA.001).', '379.99', '2018-10-04', 'Europe', '', '1', 0, 1, 10, 1),
+(9, 'Logitech G502 Proteus Spectrum RGB Tunable', 'G502 features an advanced optical sensor for maximum tracking accuracy, customizable RGB lighting, custom game profiles, from 200 up to 12,000 DPI, and repositionable weights. Troubleshooting steps- • Unplug and re-plug the USB cable to ensure a good connection. • Try the mouse USB cable in another USB port on the computer. • Use only a powered USB port. • Try rebooting the computer. • If possible, test the mouse on another computer.', '49.98', '2018-10-04', 'USA', '', '2', 0, 1, 10, 2),
+(10, 'Samsung Galaxy S8', 'U.S. limited warranty. Latest Galaxy phone with Infinity Display, Duel Pixel Camera, iris scanning and Ip68-rated water and dust resistance. The phone comes with a stunning 5.8\" Quad HD+ Super AMOLED display (2960x1440) with 570 ppi and world\'s first 10nm processor.', '499.99', '2018-10-04', 'Korea', '', '1', 0, 1, 11, 4),
+(11, 'Keyboard Logitech', 'this is a good keyboard for the professional person', '80', '2018-10-11', 'USA', '', '1', 0, 0, 10, 1);
 
 -- --------------------------------------------------------
 
@@ -168,26 +183,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
+  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
 --
 -- Constraints for dumped tables
 --
@@ -205,7 +216,6 @@ ALTER TABLE `comments`
 ALTER TABLE `items`
   ADD CONSTRAINT `cat_1` FOREIGN KEY (`CatID`) REFERENCES `categories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `member_1` FOREIGN KEY (`MemberID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
