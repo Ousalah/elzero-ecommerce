@@ -75,4 +75,11 @@ $(function () {
     }
   });
 
+  // Show edit and delete buttons in child category
+  $(".categories .cat .child-cat li").hover(function () {
+    $(this).addClass("hovered", {duration:100}).children("a").show();
+  }, function () {
+    $(this).removeClass("hovered", {duration:100}).children("a").hide(100);
+  });
+
 });

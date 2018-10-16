@@ -54,18 +54,22 @@
                     <?php if ($row["Allow_Comment"] == 0) echo '<span class="allow-comment"><i class="fa fa-comments-o"></i> Comment Disabled</span>'; ?>
                     <?php if ($row["Allow_Ads"] == 0) echo '<span class="allow-ads"><i class="fa fa-flag-o"></i> Ads Disabled</span>'; ?>
                   </div>
+                  <!-- Start get child categories -->
+                  <?php $args = array("table" => "categories", "conditions" => array("parent" => $row["ID"]), "orderBy" => "ID", "orderType" => $sort); ?>
+                  <?php if (!empty($childCategories = getFrom($args))): ?>
+                    <h4 class="child-cat-head">Child Categories</h4>
+                    <ul class="list-unstyled child-cat">
+                      <?php foreach ($childCategories as $childCategory): ?>
+                        <li>
+                          <span><?php echo $childCategory['Name'] ?></span>
+                          <a href="<?php echo '?do=delete&catid=' . $childCategory['ID']; ?>" class="btn btn-danger btn-xs pull-right confirm" title="Delete"><i class="fa fa-remove"></i></a>
+                          <a href="<?php echo '?do=edit&catid=' . $childCategory['ID']; ?>" class="btn btn-success btn-xs pull-right" title="Edit"><i class="fa fa-edit"></i></a>
+                        </li>
+                      <?php endforeach; ?>
+                    </ul>
+                  <?php endif; ?>
+                  <!-- End get child categories -->
                 </div>
-                <!-- Start get child categories -->
-                <?php $args = array("table" => "categories", "conditions" => array("parent" => $row["ID"]), "orderBy" => "ID", "orderType" => "ASC"); ?>
-                <?php if (!empty($childCategories = getFrom($args))): ?>
-                  <h4 class="child-cat-head">child Categories</h4>
-                  <ul class="list-unstyled child-cat">
-                    <?php foreach ($childCategories as $childCategory): ?>
-                      <li><a href="<?php echo '?do=edit&catid=' . $childCategory['ID']; ?>"><?php echo $childCategory['Name'] ?></a></li>
-                    <?php endforeach; ?>
-                  </ul>
-                <?php endif; ?>
-                <!-- End get child categories -->
                 <hr>
               <?php endforeach; ?>
             <?php else: ?>
