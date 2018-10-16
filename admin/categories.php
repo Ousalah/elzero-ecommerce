@@ -20,7 +20,7 @@
         $sort = strtoupper($_GET["sort"]);
       }
 
-      $args = array("table" => "categories", "orderBy" => "Ordering", "orderType" => $sort);
+      $args = array("table" => "categories", "conditions" => array("parent" => 0), "orderBy" => "Ordering", "orderType" => $sort);
       $rows = getFrom($args);
       $count = count($rows);
 ?>
@@ -55,6 +55,17 @@
                     <?php if ($row["Allow_Ads"] == 0) echo '<span class="allow-ads"><i class="fa fa-flag-o"></i> Ads Disabled</span>'; ?>
                   </div>
                 </div>
+                <!-- Start get child categories -->
+                <?php $args = array("table" => "categories", "conditions" => array("parent" => $row["ID"]), "orderBy" => "ID", "orderType" => "ASC"); ?>
+                <?php if (!empty($childCategories = getFrom($args))): ?>
+                  <h4 class="child-cat-head">child Categories</h4>
+                  <ul class="list-unstyled child-cat">
+                    <?php foreach ($childCategories as $childCategory): ?>
+                      <li><a href="<?php echo '?do=edit&catid=' . $childCategory['ID']; ?>"><?php echo $childCategory['Name'] ?></a></li>
+                    <?php endforeach; ?>
+                  </ul>
+                <?php endif; ?>
+                <!-- End get child categories -->
                 <hr>
               <?php endforeach; ?>
             <?php else: ?>

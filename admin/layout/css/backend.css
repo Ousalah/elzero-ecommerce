@@ -364,6 +364,24 @@ h1 {
   background-color: #f39c12;
 }
 
+.categories .child-cat-head {
+  margin: 10px 0 10px 15px;
+  font-weight: bold;
+  color: #22ab79;
+}
+
+.categories .child-cat {
+  margin: 10px 0 10px 15px;
+}
+
+.categories .child-cat li {
+  margin-left: 20px;
+}
+
+.categories .child-cat li:before {
+  content: "- ";
+}
+
 .categories .add-category {
   margin-top: -10px;
   margin-bottom: 30px;
