@@ -48,6 +48,10 @@
               <span>Category</span> : <a href="<?php echo 'categories.php?pageid=' . $category['ID']; ?>"><?php echo $item["CatName"] ?></a>
             </li>
             <li>
+              <i class="fa fa-tags fa-fw"></i>
+              <span>Tags</span> : <?php echo $item["Tags"] ?>
+            </li>
+            <li>
               <i class="fa fa-user fa-fw"></i>
               <span>Added by</span> : <a href="#"><?php echo $item["Username"] ?></a>
             </li>

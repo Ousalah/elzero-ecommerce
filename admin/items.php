@@ -43,6 +43,7 @@
               <th>Price</th>
               <th>Adding Date</th>
               <th>Category</th>
+              <th>Tags</th>
               <th>Added By</th>
               <th>Control</th>
             </tr>
@@ -55,6 +56,7 @@
                   <td><?php echo $item["Price"]; ?></td>
                   <td><?php echo $item["Add_Date"]; ?></td>
                   <td><?php echo $item["Category"]; ?></td>
+                  <td><?php echo $item["Tags"]; ?></td>
                   <td><?php echo $item["Username"]; ?></td>
                   <td>
                     <a href="?do=edit&itemid=<?php echo $item["ItemID"]; ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a>
@@ -159,17 +161,30 @@
               <select name="category">
                 <option value="0">...</option>
                 <?php
-                  $args = array("table" => "categories", "orderBy" => "Name", "orderType" => "ASC");
+                  $args = array("table" => "categories", "conditions" => array("parent" => 0), "orderBy" => "Name", "orderType" => "ASC");
                   $categories = getFrom($args);
 
                   foreach ($categories as $category) :
                     echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
+                    $childCatArgs = array("table" => "categories", "conditions" => array("parent" => $category['ID']), "orderBy" => "Name", "orderType" => "ASC");
+                    foreach (getFrom($childCatArgs) as $childCat) {
+                      echo '<option value="' . $childCat['ID'] . '">&nbsp&nbsp;&nbsp;' . $childCat['Name'] . '</option>';
+                    }
                   endforeach;
                 ?>
               </select>
             </div>
           </div>
           <!-- End Category -->
+
+          <!-- Start Tags -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Tags</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" name="tags" placeholder="Separate tags with comma (,)">
+            </div>
+          </div>
+          <!-- End Tags -->
 
           <!-- Start Submit -->
           <div class="form-group form-group-lg">
@@ -198,6 +213,7 @@
         $item_status        = $_POST["status"];
         $item_category      = $_POST["category"];
         $item_member        = $_POST["member"];
+        $item_tags          = trim($_POST["tags"]);
 
         // Validate The form
         $form_errors = array();
@@ -215,8 +231,8 @@
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
           // Insert Item Info in Database
-          $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status, CatID, MemberID)
-          VALUES(:name, :description, :price, now(), :country, :status, :category, :member)");
+          $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status, CatID, MemberID, Tags)
+          VALUES(:name, :description, :price, now(), :country, :status, :category, :member, :tags)");
           $stmt->execute(array(
             'name'            => $item_name,
             'description'     => $item_description,
@@ -224,7 +240,8 @@
             'country'         => $item_country,
             'status'          => $item_status,
             'category'        => $item_category,
-            'member'          => $item_member
+            'member'          => $item_member,
+            'tags'            => $item_tags
           ));
 
           // Echo Success Message
@@ -341,6 +358,15 @@
           </div>
           <!-- End Category -->
 
+          <!-- Start Tags -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Tags</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="text" class="form-control" name="tags" value="<?php echo $item["Tags"] ?>" placeholder="Separate tags with comma (,)">
+            </div>
+          </div>
+          <!-- End Tags -->
+
           <!-- Start Submit -->
           <div class="form-group form-group-lg">
             <div class="col-sm-offset-2 col-sm-4">
@@ -419,6 +445,7 @@
         $item_status        = $_POST["status"];
         $item_category      = $_POST["category"];
         $item_member        = $_POST["member"];
+        $item_tags          = trim($_POST["tags"]);
 
         // Validate The form
         $form_errors = array();
@@ -438,8 +465,8 @@
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
           // Insert Item Info in Database
-          $stmt = $con->prepare("UPDATE items SET Name = ?, Description = ?, Price = ?, Country_Made = ?, Status = ?, CatID = ?, MemberID = ? WHERE ItemID = ?");
-          $stmt->execute(array($item_name, $item_description, $item_price, $item_country, $item_status, $item_category, $item_member, $item_id));
+          $stmt = $con->prepare("UPDATE items SET Name = ?, Description = ?, Price = ?, Country_Made = ?, Status = ?, CatID = ?, MemberID = ?, Tags = ? WHERE ItemID = ?");
+          $stmt->execute(array($item_name, $item_description, $item_price, $item_country, $item_status, $item_category, $item_member, $item_tags, $item_id));
 
           // Echo Success Message
           $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record updated.</div>";

@@ -114,7 +114,7 @@
           </div>
           <!-- End Ordering -->
 
-          <!-- Start Parent Category -->
+          <!-- Start Parent Parent -->
           <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Parent</label>
             <div class="col-sm-10 col-md-8">
@@ -137,7 +137,7 @@
               </select>
             </div>
           </div>
-          <!-- End Parent Category -->
+          <!-- End Parent Parent -->
 
           <!-- Start Visibility -->
           <div class="form-group form-group-lg">

@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2018 at 12:22 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Generation Time: Oct 16, 2018 at 06:13 PM
+-- Server version: 10.1.31-MariaDB
+-- PHP Version: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -42,15 +44,15 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`ID`, `Name`, `Description`, `parent`, `Ordering`, `Visibility`, `Allow_Comment`, `Allow_Ads`) VALUES
-(9, 'Handmade', 'Handmade items', 0, 1, 1, 1, 1),
+(9, 'Handmade', 'Handmade items', 0, 1, 0, 0, 0),
 (10, 'Computers', 'Computers  items', 0, 2, 1, 1, 1),
 (11, 'Cell Phones', 'Cell Phones items', 0, 3, 1, 1, 1),
 (12, 'Clothing', 'Clothing items', 0, 4, 1, 1, 1),
 (13, 'Tools', 'Home Tools items', 0, 5, 1, 1, 1),
-(14, 'Nokia', 'Nokia mobile phone', 11, 2, 1, 1, 1),
-(15, 'Samsung', '', 11, 0, 1, 1, 1),
+(14, 'Nokia', 'nokia phone', 11, 0, 1, 1, 1),
 (16, 'LG', '', 11, 0, 1, 1, 1),
-(17, 'Boxes', '', 0, 0, 1, 1, 1);
+(18, 'Boxes', '', 9, 0, 1, 1, 1),
+(19, 'Hammers', '', 9, 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -72,11 +74,14 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`CommentID`, `Comment`, `Status`, `Comment_Date`, `ItemID`, `UserID`) VALUES
-(1, 'very good item', 1, '2018-10-08', 8, 1),
-(2, 'good item', 1, '2018-10-11', 10, 15),
-(5, 'this is a big heading changing the code', 1, '2018-10-11', 8, 1),
-(6, 'Hi friends', 1, '2018-10-11', 8, 5),
-(7, 'nice', 0, '2018-10-14', 8, 1);
+(1, 'very good product', 1, '2018-10-10', 8, 1),
+(2, 'good item, I like it and I recommand you to buy it.', 0, '2018-10-10', 11, 5),
+(3, 'a new  comment by hamza in lenovo item', 0, '2018-10-10', 11, 1),
+(4, 'thank you very much for your comment', 1, '2018-10-10', 11, 1),
+(5, 'thank you very much for your comment', 1, '2018-10-10', 11, 1),
+(6, 'adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute', 1, '2018-10-10', 11, 1),
+(7, 'very good friends', 1, '2018-10-11', 11, 4),
+(8, 'new comment', 1, '2018-10-15', 11, 1);
 
 -- --------------------------------------------------------
 
@@ -96,18 +101,24 @@ CREATE TABLE `items` (
   `Rating` smallint(6) NOT NULL,
   `Approve` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 == Not approved, 1 == approved',
   `CatID` int(11) NOT NULL,
-  `MemberID` int(11) NOT NULL
+  `MemberID` int(11) NOT NULL,
+  `Tags` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `items`
 --
 
-INSERT INTO `items` (`ItemID`, `Name`, `Description`, `Price`, `Add_Date`, `Country_Made`, `Image`, `Status`, `Rating`, `Approve`, `CatID`, `MemberID`) VALUES
-(8, 'Acer Aspire E 15', 'Acer Aspire E 15 E5-576-392H comes with these high level specs: 8th Generation Intel Core i3-8130U Processor 2.2GHz with Turbo Boost Technology up to 3.4GHz, Windows 10 Home, 15.6\" Full HD (1920 x 1080) widescreen LED-backlit display, Intel UHD Graphics 620, 6GB Dual Channel Memory, 1TB 5400RPM SATA Hard Drive, 8X DVD Double-Layer Drive RW (M-DISC enabled), Secure Digital (SD) card reader, Acer True Harmony, Two Built-in Stereo Speakers, 802.11ac Wi-Fi featuring MU-MIMO technology (Dual-Band 2.4GHz and 5GHz), Bluetooth 4.1, HD Webcam (1280 x 720) supporting High Dynamic Range (HDR), 1 - USB 3.1 Type C Gen 1 port (up to 5 Gbps), 2 - USB 3.0 ports (one with power-off charging), 1 - USB 2.0 port, 1 - HDMI Port with HDCP support, 6-cell Li-Ion Battery (2800 mAh), Up to 13.5-hours Battery Life, 5.27 lbs. | 2.39 kg (system unit only) (NX.GRYAA.001).', '379.99', '2018-10-04', 'Europe', '', '1', 0, 1, 10, 1),
-(9, 'Logitech G502 Proteus Spectrum RGB Tunable', 'G502 features an advanced optical sensor for maximum tracking accuracy, customizable RGB lighting, custom game profiles, from 200 up to 12,000 DPI, and repositionable weights. Troubleshooting steps- • Unplug and re-plug the USB cable to ensure a good connection. • Try the mouse USB cable in another USB port on the computer. • Use only a powered USB port. • Try rebooting the computer. • If possible, test the mouse on another computer.', '49.98', '2018-10-04', 'USA', '', '2', 0, 1, 10, 2),
-(10, 'Samsung Galaxy S8', 'U.S. limited warranty. Latest Galaxy phone with Infinity Display, Duel Pixel Camera, iris scanning and Ip68-rated water and dust resistance. The phone comes with a stunning 5.8\" Quad HD+ Super AMOLED display (2960x1440) with 570 ppi and world\'s first 10nm processor.', '499.99', '2018-10-04', 'Korea', '', '1', 0, 1, 11, 4),
-(11, 'Keyboard Logitech', 'this is a good keyboard for the professional person', '80', '2018-10-11', 'USA', '', '1', 0, 0, 10, 1);
+INSERT INTO `items` (`ItemID`, `Name`, `Description`, `Price`, `Add_Date`, `Country_Made`, `Image`, `Status`, `Rating`, `Approve`, `CatID`, `MemberID`, `Tags`) VALUES
+(8, 'Acer Aspire E 15', 'Acer Aspire E 15 E5-576-392H comes with these high level specs: 8th Generation Intel Core i3-8130U Processor 2.2GHz with Turbo Boost Technology up to 3.4GHz,', '379.99', '2018-10-04', 'Europe', '', '1', 0, 1, 10, 1, ''),
+(9, 'Logitech G502 Proteus Spectrum RGB Tunable', 'G502 features an advanced optical sensor for maximum tracking accuracy, customizable RGB lighting, custom game profiles, from 200 up to 12,000 DPI, and repositionable weights. Troubleshooting steps- • Unplug and re-plug the USB cable to ensure a good connection. • Try the mouse USB cable in another USB port on the computer. • Use only a powered USB port. • Try rebooting the computer. • If possible, test the mouse on another computer.', '49.98', '2018-10-04', 'USA', '', '2', 0, 1, 10, 2, ''),
+(10, 'Samsung Galaxy S8', 'U.S. limited warranty. Latest Galaxy phone with Infinity Display.', '499.99', '2018-10-04', 'Korea', '', '1', 0, 0, 11, 4, ''),
+(11, 'Lenovo', 'a very good laptop for who want to work on it without any problem', '499', '2018-10-09', 'Japan', '', '1', 0, 1, 10, 1, ''),
+(12, 'Hammer', 'Hammer original,  good quality and very interisted price, jist try it,', '30', '2018-10-10', 'Europe', '', '1', 0, 1, 13, 1, ''),
+(13, 'DELL', 'Acer Aspire E 15 E5-576-392H comes with these high level specs: 8th Generation Intel Core i3-8130U Processor 2.2GHz with Turbo Boost Technology up to 3.4GHz, Windows 10 Home, 15.6', '200', '2018-10-04', 'Europe', '', '1', 0, 1, 10, 1, ''),
+(14, 'Toshiba', 'Toshiba laptobe good for easy task', '250', '2018-10-11', 'Japan', '', '2', 0, 1, 10, 13, ''),
+(15, 'Headset', 'nice headsit for sport, walking. watherproof', '20', '2018-10-11', 'Japan', '', '1', 0, 0, 11, 1, 'Free'),
+(16, 'Toshiba', 'new toshiba laptope', '200', '2018-10-16', 'Japan', '', '2', 0, 1, 10, 14, 'new, guarante');
 
 -- --------------------------------------------------------
 
@@ -139,7 +150,8 @@ INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `Gro
 (12, 'moha', 'e54840d847d19a9beafe2faa6bf00583d2a9fee9', 'moha@gmail.com', 'mohamed mohamed', 0, 0, 1, '2018-09-18'),
 (13, 'Soufiane', '1e99398da6cf1faa3f9a196382f1fadc7bb32fb7', 'Soufiane@gmail.com', 'Soufiane Soufiane', 0, 0, 1, '2018-09-20'),
 (14, 'osama', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'osama@gmail.com', 'osama osama', 0, 0, 1, '2018-10-05'),
-(15, 'karim', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'karim@gmail.com', '', 0, 0, 0, '2018-10-08');
+(15, 'karim', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'karim@gmail.com', '', 0, 0, 0, '2018-10-08'),
+(16, 'hassan', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'hassan@gmail.com', '', 0, 0, 0, '2018-10-09');
 
 --
 -- Indexes for dumped tables
@@ -183,22 +195,26 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
 --
 -- Constraints for dumped tables
 --
@@ -216,6 +232,7 @@ ALTER TABLE `comments`
 ALTER TABLE `items`
   ADD CONSTRAINT `cat_1` FOREIGN KEY (`CatID`) REFERENCES `categories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `member_1` FOREIGN KEY (`MemberID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

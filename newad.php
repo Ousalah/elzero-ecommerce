@@ -16,6 +16,7 @@
       $country       = filter_var(trim($_POST["country"]), FILTER_SANITIZE_STRING);
       $status        = filter_var($_POST["status"], FILTER_SANITIZE_NUMBER_INT);
       $category      = filter_var($_POST["category"], FILTER_SANITIZE_NUMBER_INT);
+      $tags          = filter_var(trim($_POST["tags"]), FILTER_SANITIZE_STRING);
 
       if (strlen($name) < 4) { $formErrors[] = "Item name can't be less than 4 characters."; }
       if (strlen($description) < 10) { $formErrors[] = "Item description can't be less than 10 characters."; }
@@ -27,8 +28,8 @@
       // Check if there's no error, proceed the item add
       if (empty($formErrors)) :
         // Insert Item Info in Database
-        $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status, CatID, MemberID)
-                                VALUES(:name, :description, :price, now(), :country, :status, :category, :member)");
+        $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status, CatID, MemberID, Tags)
+                                VALUES(:name, :description, :price, now(), :country, :status, :category, :member, :tags)");
         $stmt->execute(array(
           'name'            => $name,
           'description'     => $description,
@@ -36,7 +37,8 @@
           'country'         => $country,
           'status'          => $status,
           'category'        => $category,
-          'member'          => $_SESSION['userid']
+          'member'          => $_SESSION['userid'],
+          'tags'            => $tags
         ));
 
         // Echo success message
@@ -113,15 +115,28 @@
                       <select name="category" required>
                         <option value="">...</option>
                         <?php
-                          $args = array("table" => "categories", "orderBy" => "Name", "orderType" => "ASC");
+                          $args = array("table" => "categories", "conditions" => array("parent" => 0), "orderBy" => "Name", "orderType" => "ASC");
                           foreach (getFrom($args) as $category) :
                             echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
+                            $childCatArgs = array("table" => "categories", "conditions" => array("parent" => $category['ID']), "orderBy" => "Name", "orderType" => "ASC");
+                            foreach (getFrom($childCatArgs) as $childCat) {
+                              echo '<option value="' . $childCat['ID'] . '">&nbsp&nbsp;&nbsp;' . $childCat['Name'] . '</option>';
+                            }
                           endforeach;
                         ?>
                       </select>
                     </div>
                   </div>
                   <!-- End Category -->
+
+                  <!-- Start Tags -->
+                  <div class="form-group form-group-lg">
+                    <label class="col-sm-3 control-label">Tags</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" name="tags" placeholder="Separate tags with comma (,)">
+                    </div>
+                  </div>
+                  <!-- End Tags -->
 
                   <!-- Start Submit -->
                   <div class="form-group form-group-lg">
