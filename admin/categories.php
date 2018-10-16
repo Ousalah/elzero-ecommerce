@@ -299,6 +299,33 @@
           </div>
           <!-- End Ordering -->
 
+          <!-- Start Parent Category -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Parent</label>
+            <div class="col-sm-10 col-md-8">
+              <select name="parent">
+                <option value="0">None</option>
+                <?php
+                  $args = array(
+                    "fields"     => array("ID", "Name"),
+                    "table"      => "categories",
+                    "conditions" => array("key" => "parent", "value" => 0),
+                    "orderBy"    => "Name",
+                    "orderType"  => "ASC"
+                  );
+                  $categories = getFrom($args);
+
+                  foreach ($categories as $category) :
+                    echo '<option value="' . $category['ID'] . '" ';
+                    echo ($row['parent'] === $category['ID']) ? "selected='selected'" : "";
+                    echo '>' . $category['Name'] . '</option>';
+                  endforeach;
+                ?>
+              </select>
+            </div>
+          </div>
+          <!-- End Parent Category -->
+
           <!-- Start Visibility -->
           <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Visibile</label>
@@ -383,6 +410,7 @@
         $category_name            = $_POST["name"];
         $category_description     = $_POST["description"];
         $category_ordering        = $_POST["ordering"];
+        $category_parent          = $_POST["parent"];
         $category_visibility      = $_POST["visibility"];
         $category_allow_comment   = $_POST["allow_comment"];
         $category_allow_ads       = $_POST["allow_ads"];
@@ -400,9 +428,9 @@
         else:
           // Update The Database with This Info
           $stmt = $con->prepare("UPDATE categories SET
-            Name = ?, Description = ?, Ordering = ?, Visibility = ?, Allow_Comment = ?, Allow_Ads = ?
+            Name = ?, Description = ?, Ordering = ?, parent = ?, Visibility = ?, Allow_Comment = ?, Allow_Ads = ?
             WHERE ID = ?");
-          $stmt->execute(array($category_name, $category_description, $category_ordering, $category_visibility, $category_allow_comment, $category_allow_ads, $category_id));
+          $stmt->execute(array($category_name, $category_description, $category_ordering, $category_parent, $category_visibility, $category_allow_comment, $category_allow_ads, $category_id));
 
           // Echo Success Message
           $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record updated.</div>";
