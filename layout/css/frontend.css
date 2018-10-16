@@ -219,6 +219,47 @@ h1 {
 }
 /* End Category Page */
 
+/* Start Tags Page */
+.tags .item-box {
+  position: relative;
+}
+
+.tags .item-box .item-price {
+  background-color: #b4B4B4;
+  padding: 2px 10px;
+  position: absolute;
+  left: 0;
+  top: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.tags .item-box .caption .item-date,
+.tags .item-box .caption h3,
+.tags .item-box .caption p {
+  overflow: hidden;
+}
+
+.tags .item-box .caption h3 {
+  height: 26px;
+  max-height: 26px;
+}
+
+.tags .item-box .caption p {
+  height: 70px;
+  max-height: 70px;
+}
+
+.tags .item-box .caption .item-date {
+  text-align: right;
+  font-size: 13px;
+  color: #aaa;
+  font-weight: bold;
+  height: 18px;
+  max-height: 18px;
+}
+/* End Tags Page */
+
 /* Start Profile */
 .information {
   margin-top: 20px;
@@ -344,6 +385,10 @@ h1 {
 .item-info ul li span {
   display: inline-block;
   width: 120px;
+}
+
+.item-info ul li .fa-tags ~ a {
+  margin-right: 5px;
 }
 
 .add-comment {

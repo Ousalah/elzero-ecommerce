@@ -49,7 +49,14 @@
             </li>
             <li>
               <i class="fa fa-tags fa-fw"></i>
-              <span>Tags</span> : <?php echo $item["Tags"] ?>
+              <span>Tags</span> :
+              <?php
+                $tags = explode(",", $item["Tags"]);
+                foreach ($tags as $tag) {
+                  $tag = str_replace(" ", "", strtolower($tag));
+                  echo '<a href="tags.php?tagname=' . $tag . '" class="label label-success">' . $tag . '</a>';
+                }
+              ?>
             </li>
             <li>
               <i class="fa fa-user fa-fw"></i>
