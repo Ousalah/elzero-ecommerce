@@ -59,6 +59,8 @@ show item approved and not approved to user if he is connected
 ------------------------------------
 My Future Updates
 ----------------
+apply jQuery tag library
+
 multi currency feature, with auto converter
 
 in the ultimate getFrom function add possibility to choose the Logical Operators (AND, OR, ...) in WHERE part

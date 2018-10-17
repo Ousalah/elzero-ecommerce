@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2018 at 06:13 PM
+-- Generation Time: Oct 17, 2018 at 12:02 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -118,7 +118,8 @@ INSERT INTO `items` (`ItemID`, `Name`, `Description`, `Price`, `Add_Date`, `Coun
 (13, 'DELL', 'Acer Aspire E 15 E5-576-392H comes with these high level specs: 8th Generation Intel Core i3-8130U Processor 2.2GHz with Turbo Boost Technology up to 3.4GHz, Windows 10 Home, 15.6', '200', '2018-10-04', 'Europe', '', '1', 0, 1, 10, 1, ''),
 (14, 'Toshiba', 'Toshiba laptobe good for easy task', '250', '2018-10-11', 'Japan', '', '2', 0, 1, 10, 13, ''),
 (15, 'Headset', 'nice headsit for sport, walking. watherproof', '20', '2018-10-11', 'Japan', '', '1', 0, 0, 11, 1, 'Free'),
-(16, 'Toshiba', 'new toshiba laptope', '200', '2018-10-16', 'Japan', '', '2', 0, 1, 10, 14, 'new, guarante');
+(16, 'Toshiba', 'new toshiba laptope', '200', '2018-10-16', 'Japan', '', '2', 0, 1, 10, 14, 'new, guarante'),
+(17, 'T-Shirt', 'Good T-Shirt', '20', '2018-10-16', 'China', '', '1', 0, 1, 12, 1, 'new, summer');
 
 -- --------------------------------------------------------
 
@@ -135,23 +136,24 @@ CREATE TABLE `users` (
   `GroupID` int(11) NOT NULL DEFAULT '0',
   `TrustStatus` int(11) NOT NULL DEFAULT '0',
   `RegStatus` int(11) NOT NULL DEFAULT '0' COMMENT 'Registration Approval',
-  `Date` date NOT NULL
+  `Date` date NOT NULL,
+  `avatar` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `GroupID`, `TrustStatus`, `RegStatus`, `Date`) VALUES
-(1, 'ousalah', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'mohamed@ousalah.com', 'Mohamed Ousalah', 1, 0, 1, '2018-09-07'),
-(2, 'mohamed', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'mohamed@gmail.com', 'mohamed mohamed', 0, 0, 0, '2018-09-10'),
-(4, 'abmlk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'abmlk@gmail.com', 'ayoub abmlk', 0, 0, 1, '0000-00-00'),
-(5, 'hamza', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'hamza@gmail.com', 'hamza hamza', 0, 0, 1, '0000-00-00'),
-(12, 'moha', 'e54840d847d19a9beafe2faa6bf00583d2a9fee9', 'moha@gmail.com', 'mohamed mohamed', 0, 0, 1, '2018-09-18'),
-(13, 'Soufiane', '1e99398da6cf1faa3f9a196382f1fadc7bb32fb7', 'Soufiane@gmail.com', 'Soufiane Soufiane', 0, 0, 1, '2018-09-20'),
-(14, 'osama', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'osama@gmail.com', 'osama osama', 0, 0, 1, '2018-10-05'),
-(15, 'karim', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'karim@gmail.com', '', 0, 0, 0, '2018-10-08'),
-(16, 'hassan', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'hassan@gmail.com', '', 0, 0, 0, '2018-10-09');
+INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `GroupID`, `TrustStatus`, `RegStatus`, `Date`, `avatar`) VALUES
+(1, 'ousalah', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'mohamed@ousalah.com', 'Mohamed Ousalah', 1, 0, 1, '2018-09-07', ''),
+(2, 'mohamed', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'mohamed@gmail.com', 'mohamed mohamed', 0, 0, 0, '2018-09-10', ''),
+(4, 'abmlk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'abmlk@gmail.com', 'ayoub abmlk', 0, 0, 1, '0000-00-00', ''),
+(5, 'hamza', '6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2', 'hamza@gmail.com', 'hamza hamza', 0, 0, 1, '0000-00-00', ''),
+(12, 'moha', 'e54840d847d19a9beafe2faa6bf00583d2a9fee9', 'moha@gmail.com', 'mohamed mohamed', 0, 0, 1, '2018-09-18', ''),
+(13, 'Soufiane', '1e99398da6cf1faa3f9a196382f1fadc7bb32fb7', 'Soufiane@gmail.com', 'Soufiane Soufiane', 0, 0, 1, '2018-09-20', ''),
+(14, 'osama', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'osama@gmail.com', 'osama osama', 0, 0, 1, '2018-10-05', ''),
+(15, 'karim', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'karim@gmail.com', '', 0, 0, 0, '2018-10-08', ''),
+(16, 'hassan', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'hassan@gmail.com', '', 0, 0, 0, '2018-10-09', '');
 
 --
 -- Indexes for dumped tables
@@ -207,7 +209,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -72,7 +72,7 @@
 
       <h1 class="text-center">Add New Member</h1>
       <div class="container">
-        <form class="form-horizontal" action="?do=insert" method="post">
+        <form class="form-horizontal" action="?do=insert" method="post" enctype="multipart/form-data">
           <!-- Start Username -->
           <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Username</label>
@@ -109,6 +109,15 @@
             </div>
           </div>
           <!-- End Full Name -->
+
+          <!-- Start User Avatar -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">User Avatar</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="file" class="form-control" name="avatar" required="required">
+            </div>
+          </div>
+          <!-- End User Avatar -->
 
           <!-- Start Submit -->
           <div class="form-group form-group-lg">
