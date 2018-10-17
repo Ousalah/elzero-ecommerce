@@ -138,6 +138,14 @@
       // Check if User Access to These Page by Post Request
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+        // Upload varialbles
+        $avatarName = $_FILES["avatar"]["name"];
+        $avatarType = $_FILES["avatar"]["type"];
+        $avatarTmp  = $_FILES["avatar"]["tmp_name"];
+        $avatarSize = $_FILES["avatar"]["size"];
+        // Allower extensions
+        $allowerExtensions = array("jpeg", "jpg", "png", "gif");
+
         // Get Variables from the form
         $member_username        = $_POST["username"];
         $member_password        = $_POST["password"];
@@ -157,7 +165,7 @@
         if(checkItem("Username", "users", $member_username)) { $form_errors[] = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>"; }
         // Check If Email Exist in Database
         if(checkItem("Email", "users", $member_email)) { $form_errors[] = "<div class='alert alert-danger'>This email address is <strong>not available</strong>. choose a different address.</div>"; }
-
+/*
         // Check If There's No Error, Proceed The Insert Operation
         if (!empty($form_errors)) :
           // Loop Into Errors Array and Echo It
@@ -177,6 +185,7 @@
           $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Inserted.</div>";
           redirectHome($msg, "back");
         endif;
+        */
 
       } else {
         $msg = "<div class='alert alert-danger'>Your can not browse to this page <strong>directly</strong>.</div>";
