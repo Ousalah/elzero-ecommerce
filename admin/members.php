@@ -33,6 +33,7 @@
           <table class="main-table text-center table table-bordered">
             <tr>
               <th>#ID</th>
+              <th>Avatar</th>
               <th>Username</th>
               <th>Email</th>
               <th>Full Name</th>
@@ -43,6 +44,9 @@
               <?php foreach ($rows as $row): ?>
                 <tr>
                   <td><?php echo $row["UserID"]; ?></td>
+                  <td>
+                    <img class="img-responsive center-block" src="<?php echo (!empty($row["avatar"])) ? "uploads/avatars/" . $row["avatar"] : "uploads/avatars/default-avatar.png"; ?>" alt="<?php echo $row["Username"]; ?>">
+                  </td>
                   <td><?php echo $row["Username"]; ?></td>
                   <td><?php echo $row["Email"]; ?></td>
                   <td><?php echo $row["FullName"]; ?></td>

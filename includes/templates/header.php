@@ -16,7 +16,7 @@
         <?php if (isset($_SESSION['user'])): ?>
           <div class="pull-right btn-group upper-menu-logged-in">
             <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              <img class="img-thumbnail img-circle" src="https://via.placeholder.com/200x200" alt="">
+              <img class="img-thumbnail img-circle" src="<?php echo (!empty($_SESSION["avatar"])) ? "admin/uploads/avatars/" . $_SESSION["avatar"] : "admin/uploads/avatars/default-avatar.png"; ?>">
               <?php echo $sessionUser ?>
               <?php echo (checkUserStatus($sessionUser)) ? "" : ' <i class="fa fa-exclamation-triangle fa-fw" title="You are not approved yet." aria-hidden="true"></i>'; ?>
               <span class="caret"></span>

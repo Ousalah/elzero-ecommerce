@@ -19,7 +19,7 @@
 
       // Check if The User Exist in Database
       $args = array(
-        "fields"      => array("UserID", "Username", "Password"),
+        "fields"      => array("UserID", "Username", "Password, avatar"),
         "table"       => "users",
         "conditions"  => array('username' => $username, 'password' => $hashedPass),
       );
@@ -29,6 +29,7 @@
       if (!empty($row)) :
         $_SESSION['user']     = $username; // Register Session user
         $_SESSION['userid']   = $row["UserID"]; // Register Session userid
+        $_SESSION['avatar']   = $row["avatar"]; // Register Session avatar
         header('Location: index.php'); // Redirect To Home Page
         exit();
       endif;

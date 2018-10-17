@@ -260,6 +260,11 @@ h1 {
   background-color: #fff;
   vertical-align: middle !important;
 }
+
+.main-table td img {
+  width: 40px;
+  height: 40px;
+}
 /* End Members Page */
 
 /* Start Category Page */
