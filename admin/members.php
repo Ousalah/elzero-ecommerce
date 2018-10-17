@@ -229,7 +229,7 @@
       echo '<div class="container">';
       if (!empty($row)) :
 ?>
-        <form class="form-horizontal" action="?do=update" method="post">
+        <form class="form-horizontal" action="?do=update" method="post" enctype="multipart/form-data">
           <input type="hidden" name="userid" value="<?php echo $userid; ?>">
           <!-- Start Username -->
           <div class="form-group form-group-lg">
@@ -268,6 +268,16 @@
           </div>
           <!-- End Full Name -->
 
+          <!-- Start User Avatar -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">User Avatar</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="hidden" class="form-control" name="oldavatar" value="<?php echo $row["avatar"] ?>">
+              <input type="file" class="form-control" name="avatar">
+            </div>
+          </div>
+          <!-- End User Avatar -->
+
           <!-- Start Submit -->
           <div class="form-group form-group-lg">
             <div class="col-sm-offset-2 col-sm-4">
@@ -292,6 +302,18 @@
       // Check if User Access to These Page by Post Request
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+        // Upload varialbles
+        $oldAvatar  = $_POST["oldavatar"];
+        $avatarName = $_FILES["avatar"]["name"];
+        $avatarType = $_FILES["avatar"]["type"];
+        $avatarTmp  = $_FILES["avatar"]["tmp_name"];
+        $avatarSize = $_FILES["avatar"]["size"];
+        // Allower extensions
+        $allowedExtensions = array("jpeg", "jpg", "png", "gif");
+        // Get avatar extension
+        $avatarExtension = explode('.', $avatarName);
+        $avatarExtension = strtolower(end($avatarExtension));
+
         // Get Variables from the form
         $member_id       = $_POST["userid"];
         $member_username = $_POST["username"];
@@ -302,26 +324,48 @@
 
         // Validate The form
         $form_errors = array();
-        if (strlen($member_username) < 4) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be Less Than <strong>4 Characters</strong>.</div>"; }
-        if (strlen($member_username) > 20) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be More Than <strong>20 Characters</strong>.</div>"; }
         if (empty($member_username)) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be <strong>Empty</strong>.</div>"; }
+        else if (strlen($member_username) < 4) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be Less Than <strong>4 Characters</strong>.</div>"; }
+        else if (strlen($member_username) > 20) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be More Than <strong>20 Characters</strong>.</div>"; }
         if (empty($member_email)) { $form_errors[] = "<div class='alert alert-danger'>Email Can't be <strong>Empty</strong>.</div>"; }
         if (empty($member_fullname)) { $form_errors[] = "<div class='alert alert-danger'>Full Name Can't be <strong>Empty</strong>.</div>"; }
         // Check If Username Exist in Database
         if(checkItem("Username", "users", $member_username, "UserID", $member_id)) { $form_errors[] = "<div class='alert alert-danger'>This username is already <strong>taken</strong>.</div>"; }
         // Check If Email Exist in Database
         if(checkItem("Email", "users", $member_email, "UserID", $member_id)) { $form_errors[] = "<div class='alert alert-danger'>This email address is <strong>not available</strong>. choose a different address.</div>"; }
+        // if the new and the old avatar are empty
+        if (empty($avatarName) && empty($oldAvatar)) { $form_errors[] = "<div class='alert alert-danger'>Avatar is <strong>required</strong>.</div>"; }
+        // if user try to change manually the old avatar
+        else if (empty($avatarName) && !empty($oldAvatar) && !checkItem("avatar", "users", $oldAvatar)) { $form_errors[] = "<div class='alert alert-danger'>Avatar is <strong>required</strong>.</div>"; }
+        else if (!empty($avatarName) && !in_array($avatarExtension, $allowedExtensions)) { $form_errors[] = "<div class='alert alert-danger'>This extension is not <strong>Allowed</strong>.</div>"; }
+        else if (!empty($avatarName) && $avatarSize > 4194304) { $form_errors[] = "<div class='alert alert-danger'>Avatar can't be more than <strong>4MB</strong>.</div>"; }
+
 
         // Check If There's No Error, Proceed The Update Operation
         if (!empty($form_errors)) :
           // Loop Into Errors Array and Echo It
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
+          // if update avatar
+          if (!empty($avatarName)) {
+            $avatar = md5(date('ymdHsiu') . $avatarName . rand(0, 1000000));
+            // check if another user has the same avatar name, if yes regenerate different name
+            while (checkItem("avatar", "users", $avatar)) {
+              $avatar = md5(date('ymdHsiu') . $avatarName . rand(0, 1000000));
+            }
+            move_uploaded_file($avatarTmp, __DIR__ . "\\uploads\\avatars\\" . $avatar . "." . $avatarExtension);
+            // add extension to avatar
+            $avatar = $avatar . "." . $avatarExtension;
+          } else {
+            // else keep the old avatar
+            $avatar = $oldAvatar;
+          }
+
           // Update The Database with This Info
           $stmt = $con->prepare("UPDATE users SET
-            Username = ?, Password = ?, Email = ?, FullName = ?
+            Username = ?, Password = ?, Email = ?, FullName = ?, avatar = ?
             WHERE UserID = ?");
-          $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $member_id));
+          $stmt->execute(array($member_username, $member_password, $member_email, $member_fullname, $avatar, $member_id));
 
           // Echo Success Message
           $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record Updated.</div>";
