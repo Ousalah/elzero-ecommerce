@@ -170,20 +170,31 @@
         if(checkItem("Email", "users", $member_email)) { $form_errors[] = "<div class='alert alert-danger'>This email address is <strong>not available</strong>. choose a different address.</div>"; }
         if (empty($avatarName)) { $form_errors[] = "<div class='alert alert-danger'>Avatar is <strong>required</strong>.</div>"; }
         if (!empty($avatarName) && !in_array($avatarExtension, $allowedExtensions)) { $form_errors[] = "<div class='alert alert-danger'>This extension is not <strong>Allowed</strong>.</div>"; }
+        if ($avatarSize > 4194304) { $form_errors[] = "<div class='alert alert-danger'>Avatar can't be more than <strong>4MB</strong>.</div>"; }
 
         // Check If There's No Error, Proceed The Insert Operation
         if (!empty($form_errors)) :
           // Loop Into Errors Array and Echo It
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
+          $avatar = md5(date('ymdHsiu') . $avatarName . rand(0, 1000000));
+          // check if another user has the same avatar name, if yes regenerate different name
+          while (checkItem("avatar", "users", $avatar)) {
+            $avatar = md5(date('ymdHsiu') . $avatarName . rand(0, 1000000));
+          }
+          move_uploaded_file($avatarTmp, __DIR__ . "\\uploads\\avatars\\" . $avatar . "." . $avatarExtension);
+          // add extension to avatar
+          $avatar = $avatar . "." . $avatarExtension;
+
           // Insert User Info in Database
-          $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, RegStatus, Date)
-          VALUES(:username, :pass, :mail, :name, 1, now())");
+          $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, RegStatus, Date, avatar)
+                              VALUES(:username, :pass, :mail, :name, 1, now(), :avatar)");
           $stmt->execute(array(
             'username' => $member_username,
             'pass'     => $member_hashed_password,
             'mail'     => $member_email,
-            'name'     => $member_fullname
+            'name'     => $member_fullname,
+            'avatar'   => $avatar
           ));
 
           // Echo Success Message
