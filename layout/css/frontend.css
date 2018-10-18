@@ -154,6 +154,10 @@ h1 {
   color: #fff;
 }
 
+.homepage .item-box img {
+  height: 200px;
+}
+
 .homepage .item-box .caption .item-date,
 .homepage .item-box .caption h3,
 .homepage .item-box .caption p {
@@ -162,10 +166,12 @@ h1 {
 
 .homepage .item-box .caption h3 {
   height: 26px;
+  max-height: 26px;
 }
 
 .homepage .item-box .caption p {
   height: 70px;
+  max-height: 70px;
 }
 
 .homepage .item-box .caption .item-date {
@@ -191,6 +197,10 @@ h1 {
   top: 10px;
   font-weight: bold;
   color: #fff;
+}
+
+.categories .item-box img {
+  height: 200px;
 }
 
 .categories .item-box .caption .item-date,
@@ -232,6 +242,10 @@ h1 {
   top: 10px;
   font-weight: bold;
   color: #fff;
+}
+
+.tags .item-box img {
+  height: 200px;
 }
 
 .tags .item-box .caption .item-date,
@@ -306,6 +320,10 @@ h1 {
   top: 10px;
 }
 
+.latest-items .item-box img {
+  height: 150px;
+}
+
 .latest-items .item-box .item-approved-status {
   background-color: #eb4d4b;
   top: 30px;
@@ -368,6 +386,10 @@ h1 {
 /* End Create New item */
 
 /* Start item */
+.item-image img {
+  height: 100%;
+  width: 100%;
+}
 .item-info h2 {
   margin: 0;
   padding: 0 10px;

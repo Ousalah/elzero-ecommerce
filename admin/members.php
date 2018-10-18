@@ -162,9 +162,9 @@
 
         // Validate The form
         $form_errors = array();
-        if (strlen($member_username) < 4) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be Less Than <strong>4 Characters</strong>.</div>"; }
-        if (strlen($member_username) > 20) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be More Than <strong>20 Characters</strong>.</div>"; }
         if (empty($member_username)) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be <strong>Empty</strong>.</div>"; }
+        else if (strlen($member_username) < 4) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be Less Than <strong>4 Characters</strong>.</div>"; }
+        else if (strlen($member_username) > 20) { $form_errors[] = "<div class='alert alert-danger'>Username Can't be More Than <strong>20 Characters</strong>.</div>"; }
         if (empty($member_password)) { $form_errors[] = "<div class='alert alert-danger'>Password Can't be <strong>Empty</strong>.</div>"; }
         if (empty($member_email)) { $form_errors[] = "<div class='alert alert-danger'>Email Can't be <strong>Empty</strong>.</div>"; }
         if (empty($member_fullname)) { $form_errors[] = "<div class='alert alert-danger'>Full Name Can't be <strong>Empty</strong>.</div>"; }
@@ -173,8 +173,8 @@
         // Check If Email Exist in Database
         if(checkItem("Email", "users", $member_email)) { $form_errors[] = "<div class='alert alert-danger'>This email address is <strong>not available</strong>. choose a different address.</div>"; }
         if (empty($avatarName)) { $form_errors[] = "<div class='alert alert-danger'>Avatar is <strong>required</strong>.</div>"; }
-        if (!empty($avatarName) && !in_array($avatarExtension, $allowedExtensions)) { $form_errors[] = "<div class='alert alert-danger'>This extension is not <strong>Allowed</strong>.</div>"; }
-        if ($avatarSize > 4194304) { $form_errors[] = "<div class='alert alert-danger'>Avatar can't be more than <strong>4MB</strong>.</div>"; }
+        else if (!empty($avatarName) && !in_array($avatarExtension, $allowedExtensions)) { $form_errors[] = "<div class='alert alert-danger'>This extension is not <strong>Allowed</strong>.</div>"; }
+        else if ($avatarSize > 4194304) { $form_errors[] = "<div class='alert alert-danger'>Avatar can't be more than <strong>4MB</strong>.</div>"; }
 
         // Check If There's No Error, Proceed The Insert Operation
         if (!empty($form_errors)) :

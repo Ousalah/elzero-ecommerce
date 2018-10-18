@@ -8,6 +8,17 @@
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') :
 
+      // Upload varialbles
+      $imageName = $_FILES["image"]["name"];
+      $imageType = $_FILES["image"]["type"];
+      $imageTmp  = $_FILES["image"]["tmp_name"];
+      $imageSize = $_FILES["image"]["size"];
+      // Allower extensions
+      $allowedExtensions = array("jpeg", "jpg", "png", "gif");
+      // Get image extension
+      $imageExtension = explode('.', $imageName);
+      $imageExtension = strtolower(end($imageExtension));
+
       $formErrors = array();
 
       $name          = filter_var(trim($_POST["name"]), FILTER_SANITIZE_STRING);
@@ -24,18 +35,32 @@
       if (empty($price)) { $formErrors[] = "Price can't be empty."; }
       if (empty($status)) { $formErrors[] = "Status can't be empty."; }
       if (empty($category)) { $formErrors[] = "Category can't be empty."; }
+      if (empty($imageName)) { $formErrors[] = "Image is required."; }
+      else if (!empty($imageName) && !in_array($imageExtension, $allowedExtensions)) { $formErrors[] = "This extension is not Allowed."; }
+      else if ($imageSize > 4194304) { $formErrors[] = "Image can't be more than 4MB."; }
+
 
       // Check if there's no error, proceed the item add
       if (empty($formErrors)) :
+        $image = md5(date('ymdHsiu') . $imageName . rand(0, 1000000));
+        // check if another user has the same items name, if yes regenerate different name
+        while (checkItem("image", "items", $image)) {
+          $image = md5(date('ymdHsiu') . $imageName . rand(0, 1000000));
+        }
+        move_uploaded_file($imageTmp, __DIR__ . "\\uploads\\items\\" . $image . "." . $imageExtension);
+        // add extension to items
+        $image = $image . "." . $imageExtension;
+
         // Insert Item Info in Database
-        $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status, CatID, MemberID, Tags)
-                                VALUES(:name, :description, :price, now(), :country, :status, :category, :member, :tags)");
+        $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Image, Status, CatID, MemberID, Tags)
+                                VALUES(:name, :description, :price, now(), :country, :image, :status, :category, :member, :tags)");
         $stmt->execute(array(
           'name'            => $name,
           'description'     => $description,
           'price'           => $price,
           'country'         => $country,
           'status'          => $status,
+          'image'           => $image,
           'category'        => $category,
           'member'          => $_SESSION['userid'],
           'tags'            => $tags
@@ -56,7 +81,7 @@
             <div class="row">
               <!-- Start creation form item -->
               <div class="col-md-8">
-                <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
                   <!-- Start Name -->
                   <div class="form-group form-group-lg">
                     <label class="col-sm-3 control-label">Name</label>
@@ -137,6 +162,15 @@
                     </div>
                   </div>
                   <!-- End Tags -->
+
+                  <!-- Start Image -->
+                  <div class="form-group form-group-lg">
+                    <label class="col-sm-3 control-label">Image</label>
+                    <div class="col-md-8">
+                      <input type="file" class="form-control" name="image" required="required">
+                    </div>
+                  </div>
+                  <!-- End Image -->
 
                   <!-- Start Submit -->
                   <div class="form-group form-group-lg">

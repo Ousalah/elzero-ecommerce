@@ -24,8 +24,8 @@
     <div class="container">
       <!-- Start item details -->
       <div class="row">
-        <div class="col-md-3">
-          <img class="img-responsive img-thumbnail center-block" src="https://via.placeholder.com/350x200" alt="">
+        <div class="col-md-3 item-image">
+          <img class="img-responsive img-thumbnail center-block" src="<?php echo (!empty($item["Image"])) ? "admin/uploads/items/" . $item["Image"] : "admin/uploads/items/default-item.png"; ?>">
         </div>
         <div class="col-md-9 item-info">
           <h2><?php echo $item["Name"] ?></h2>
@@ -133,7 +133,7 @@
             <div class="comment-box">
               <div class="row">
                 <div class="col-sm-2 text-center">
-                  <img class="img-responsive img-thumbnail img-circle center-block" src="https://via.placeholder.com/200x200" alt="">
+                  <img class="img-responsive img-thumbnail img-circle center-block" src="<?php echo (!empty($row["avatar"])) ? "admin/uploads/avatars/" . $row["avatar"] : "admin/uploads/avatars/default-avatar.png"; ?>" alt="<?php echo $row["Username"]; ?>">
                   <strong><?php echo $row["Username"] ?></strong>
                 </div>
                 <div class="col-sm-10">

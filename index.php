@@ -13,7 +13,7 @@
       <div class="col-sm-6 col-md-3">
         <div class="thumbnail item-box">
           <span class="item-price"><?php echo $item["Price"] ?></span>
-          <img class="img-responsive" src="https://via.placeholder.com/350x200" alt="">
+          <img class="img-responsive" src="<?php echo (!empty($item["Image"])) ? "admin/uploads/items/" . $item["Image"] : "admin/uploads/items/default-item.png"; ?>">
           <div class="caption">
             <h3><a href="items.php?itemid=<?php echo $item["ItemID"] ?>"><?php echo $item["Name"] ?></a></h3>
             <p><?php echo $item["Description"] ?></p>

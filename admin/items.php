@@ -38,6 +38,7 @@
           <table class="main-table text-center table table-bordered">
             <tr>
               <th>#ID</th>
+              <th>Image</th>
               <th>Name</th>
               <th>Description</th>
               <th>Price</th>
@@ -51,6 +52,9 @@
               <?php foreach ($items as $item): ?>
                 <tr>
                   <td><?php echo $item["ItemID"]; ?></td>
+                  <td>
+                    <img class="img-responsive center-block" src="<?php echo (!empty($item["Image"])) ? "uploads/items/" . $item["Image"] : "uploads/items/default-item.png"; ?>">
+                  </td>
                   <td><?php echo $item["Name"]; ?></td>
                   <td><?php echo $item["Description"]; ?></td>
                   <td><?php echo $item["Price"]; ?></td>
@@ -83,7 +87,7 @@
 
       <h1 class="text-center">Add New Item</h1>
       <div class="container">
-        <form class="form-horizontal" action="?do=insert" method="post">
+        <form class="form-horizontal" action="?do=insert" method="post" enctype="multipart/form-data">
           <!-- Start Name -->
           <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Name</label>
@@ -186,6 +190,15 @@
           </div>
           <!-- End Tags -->
 
+          <!-- Start Image -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Image</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="file" class="form-control" name="image" required="required">
+            </div>
+          </div>
+          <!-- End Image -->
+
           <!-- Start Submit -->
           <div class="form-group form-group-lg">
             <div class="col-sm-offset-2 col-sm-4">
@@ -204,6 +217,17 @@
 
       // Check if Item Access to These Page by Post Request
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        // Upload varialbles
+        $imageName = $_FILES["image"]["name"];
+        $imageType = $_FILES["image"]["type"];
+        $imageTmp  = $_FILES["image"]["tmp_name"];
+        $imageSize = $_FILES["image"]["size"];
+        // Allower extensions
+        $allowedExtensions = array("jpeg", "jpg", "png", "gif");
+        // Get image extension
+        $imageExtension = explode('.', $imageName);
+        $imageExtension = strtolower(end($imageExtension));
 
         // Get Variables from the form
         $item_name          = trim($_POST["name"]);
@@ -224,20 +248,34 @@
         if ($item_status == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the status.</div>"; }
         if ($item_category == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the category.</div>"; }
         if ($item_member == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the member.</div>"; }
+        if (empty($imageName)) { $form_errors[] = "<div class='alert alert-danger'>Image is <strong>required</strong>.</div>"; }
+        else if (!empty($imageName) && !in_array($imageExtension, $allowedExtensions)) { $form_errors[] = "<div class='alert alert-danger'>This extension is not <strong>Allowed</strong>.</div>"; }
+        else if ($imageSize > 4194304) { $form_errors[] = "<div class='alert alert-danger'>Image can't be more than <strong>4MB</strong>.</div>"; }
+
 
         // Check If There's No Error, Proceed The Insert Operation
         if (!empty($form_errors)) :
           // Loop Into Errors Array and Echo It
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
+          $item_image = md5(date('ymdHsiu') . $imageName . rand(0, 1000000));
+          // check if another user has the same items name, if yes regenerate different name
+          while (checkItem("image", "items", $item_image)) {
+            $item_image = md5(date('ymdHsiu') . $imageName . rand(0, 1000000));
+          }
+          move_uploaded_file($imageTmp, __DIR__ . "\\uploads\\items\\" . $item_image . "." . $imageExtension);
+          // add extension to items
+          $item_image = $item_image . "." . $imageExtension;
+
           // Insert Item Info in Database
-          $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Status, CatID, MemberID, Tags)
-          VALUES(:name, :description, :price, now(), :country, :status, :category, :member, :tags)");
+          $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Add_Date, Country_Made, Image, Status, CatID, MemberID, Tags)
+          VALUES(:name, :description, :price, now(), :country, :image, :status, :category, :member, :tags)");
           $stmt->execute(array(
             'name'            => $item_name,
             'description'     => $item_description,
             'price'           => $item_price,
             'country'         => $item_country,
+            'image'           => $item_image,
             'status'          => $item_status,
             'category'        => $item_category,
             'member'          => $item_member,
@@ -268,7 +306,7 @@
       echo '<div class="container">';
       if (!empty($item)) :
 ?>
-        <form class="form-horizontal" action="?do=update" method="post">
+        <form class="form-horizontal" action="?do=update" method="post" enctype="multipart/form-data">
           <input type="hidden" name="itemid" value="<?php echo $itemid; ?>">
           <!-- Start Name -->
           <div class="form-group form-group-lg">
@@ -367,6 +405,16 @@
           </div>
           <!-- End Tags -->
 
+          <!-- Start Image -->
+          <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Image</label>
+            <div class="col-sm-10 col-md-8">
+              <input type="hidden" class="form-control" name="oldimage" value="<?php echo $item["Image"] ?>">
+              <input type="file" class="form-control" name="image">
+            </div>
+          </div>
+          <!-- End Image -->
+
           <!-- Start Submit -->
           <div class="form-group form-group-lg">
             <div class="col-sm-offset-2 col-sm-4">
@@ -436,6 +484,18 @@
       // Check if Item Access to These Page by Post Request
       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+        // Upload varialbles
+        $oldImage   = $_POST["oldimage"];
+        $imageName = $_FILES["image"]["name"];
+        $imageType = $_FILES["image"]["type"];
+        $imageTmp  = $_FILES["image"]["tmp_name"];
+        $imageSize = $_FILES["image"]["size"];
+        // Allower extensions
+        $allowedExtensions = array("jpeg", "jpg", "png", "gif");
+        // Get image extension
+        $imageExtension = explode('.', $imageName);
+        $imageExtension = strtolower(end($imageExtension));
+
         // Get Variables from the form
         $item_id            = trim($_POST["itemid"]);
         $item_name          = trim($_POST["name"]);
@@ -458,15 +518,37 @@
         if ($item_member == 0) { $form_errors[] = "<div class='alert alert-danger'>You must <strong>choose</strong> the member.</div>"; }
         // Check If Item Exist in Database
         if(!checkItem("itemid", "items", $item_id)) { $form_errors[] = "<div class='alert alert-danger'>There's no item with this <strong>ID</strong>.</div>"; }
+        // if the new and the old image are empty
+        if (empty($imageName) && empty($oldImage)) { $form_errors[] = "<div class='alert alert-danger'>Image is <strong>required</strong>.</div>"; }
+        // if user try to change manually the old image
+        else if (empty($imageName) && !empty($oldImage) && !checkItem("Image", "items", $oldImage)) { $form_errors[] = "<div class='alert alert-danger'>Image is <strong>required</strong>.</div>"; }
+        else if (!empty($imageName) && !in_array($imageExtension, $allowedExtensions)) { $form_errors[] = "<div class='alert alert-danger'>This extension is not <strong>Allowed</strong>.</div>"; }
+        else if (!empty($imageName) && $imageSize > 4194304) { $form_errors[] = "<div class='alert alert-danger'>Image can't be more than <strong>4MB</strong>.</div>"; }
+
 
         // Check If There's No Error, Proceed The Insert Operation
         if (!empty($form_errors)) :
           // Loop Into Errors Array and Echo It
           redirectHome($form_errors, "back", (count($form_errors) + 2));
         else:
+          // if update item
+          if (!empty($imageName)) {
+            $item_image = md5(date('ymdHsiu') . $imageName . rand(0, 1000000));
+            // check if another user has the same item name, if yes regenerate different name
+            while (checkItem("Image", "items", $item_image)) {
+              $item_image = md5(date('ymdHsiu') . $imageName . rand(0, 1000000));
+            }
+            move_uploaded_file($imageTmp, __DIR__ . "\\uploads\\items\\" . $item_image . "." . $imageExtension);
+            // add extension to item
+            $item_image = $item_image . "." . $imageExtension;
+          } else {
+            // else keep the old item
+            $item_image = $oldImage;
+          }
+
           // Insert Item Info in Database
-          $stmt = $con->prepare("UPDATE items SET Name = ?, Description = ?, Price = ?, Country_Made = ?, Status = ?, CatID = ?, MemberID = ?, Tags = ? WHERE ItemID = ?");
-          $stmt->execute(array($item_name, $item_description, $item_price, $item_country, $item_status, $item_category, $item_member, $item_tags, $item_id));
+          $stmt = $con->prepare("UPDATE items SET Name = ?, Description = ?, Price = ?, Country_Made = ?, Image = ?, Status = ?, CatID = ?, MemberID = ?, Tags = ? WHERE ItemID = ?");
+          $stmt->execute(array($item_name, $item_description, $item_price, $item_country, $item_image, $item_status, $item_category, $item_member, $item_tags, $item_id));
 
           // Echo Success Message
           $msg = "<div class='alert alert-success'><strong>" . $stmt->rowCount() . "</strong> Record updated.</div>";
