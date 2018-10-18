@@ -383,6 +383,11 @@ h1 {
 .create-item .live-preview [class^='live-'] {
   cursor: pointer;
 }
+
+.create-item .live-preview img {
+  width: 100%;
+  height: 200px;
+}
 /* End Create New item */
 
 /* Start item */

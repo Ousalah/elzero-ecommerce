@@ -41,5 +41,10 @@ $(function () {
   $(".live-preview [class^='live-']").on("click", function () {
     $("input[data-class='." + $(this).attr("class").match(/live-[\w-]*\b/) + "']").focus();
   });
+  // live preview for image
+  $(".live-preview img").on("click", function() { $("input[name='image']").click(); });
+  $("input[name='image']").change(function() {
+    $(".live-preview img").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+  });
 
 });

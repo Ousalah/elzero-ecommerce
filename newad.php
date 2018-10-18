@@ -188,7 +188,7 @@
                   <span class="item-price">
                     <span class="live-price">0</span>$
                   </span>
-                  <img class="img-responsive" src="https://via.placeholder.com/350x200" alt="">
+                  <img class="img-responsive" src="admin/uploads/items/default-item.png" alt="">
                   <div class="caption">
                     <h3 class="live-title">Item Title</h3>
                     <p class="live-description">Description</p>
